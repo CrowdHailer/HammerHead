@@ -10,4 +10,12 @@ function viewFrame (origin, size) {
   this.height = function () {
     return size.y;
   };
+
+  this.left = function () {
+    return origin.x;
+  };
+
+  this.bottom = function () {
+    return origin.y;
+  };
 }
