@@ -18,4 +18,8 @@ function viewFrame (origin, size) {
   this.bottom = function () {
     return origin.y;
   };
+  
+  this.toString = function () {
+  return [this.left(), this.bottom(), this.width(), this.height()].join(' ');
+  };
 }
