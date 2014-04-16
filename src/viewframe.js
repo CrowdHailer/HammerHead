@@ -3,11 +3,11 @@ function viewFrame (origin, size) {
     return origin;
   };
 
-  this.getWidth = function () {
+  this.width = function () {
     return size.x;
   };
 
-  this.getHeight = function () {
+  this.height = function () {
     return size.y;
   };
 }
