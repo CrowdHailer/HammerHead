@@ -1,7 +1,4 @@
 function viewFrame (origin, size) {
-  this.getOrigin = function () {
-    return origin;
-  };
 
   this.width = function () {
     return size.x;
@@ -25,5 +22,9 @@ function viewFrame (origin, size) {
 
   this.translate = function (vector) {
     return new viewFrame(origin.add(vector), size);
+  };
+
+  this.anchorTranslate = function (vector) {
+    origin = origin.add(vector);
   };
 }

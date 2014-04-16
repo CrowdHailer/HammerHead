@@ -26,4 +26,13 @@ describe("Viewframe", function () {
       expect(frame.toString()).toEqual('0 100 800 600');
     });
   });
+
+  describe('deep transform', function () {
+    it('should be able to translate permanently', function () {
+      var translation = new Point (100, 100);
+      frame.anchorTranslate(translation);
+      expect(frame.left()).toEqual(100);
+      expect(frame.bottom()).toEqual(200);
+    });
+  });
 });
