@@ -18,4 +18,12 @@ describe("Viewframe", function () {
       expect(frame.toString()).toBe('0 100 800 600');
     });
   });
+
+  describe('shallow transform', function () {
+    it('should be able to translate', function () {
+      var translation = new Point (100, 100);
+      expect(frame.translate(translation).toString()).toEqual('100 200 800 600');
+      expect(frame.toString()).toEqual('0 100 800 600');
+    });
+  });
 });

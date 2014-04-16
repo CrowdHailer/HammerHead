@@ -18,8 +18,12 @@ function viewFrame (origin, size) {
   this.bottom = function () {
     return origin.y;
   };
-  
+
   this.toString = function () {
   return [this.left(), this.bottom(), this.width(), this.height()].join(' ');
   };
+
+  this.translate = function (vector) {
+    return new viewFrame({x: 100, y: 200}, {x: 800, y: 600});
+  }
 }
