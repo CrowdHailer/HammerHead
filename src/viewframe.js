@@ -24,6 +24,6 @@ function viewFrame (origin, size) {
   };
 
   this.translate = function (vector) {
-    return new viewFrame({x: 100, y: 200}, {x: 800, y: 600});
-  }
+    return new viewFrame(origin.add(vector), size);
+  };
 }
