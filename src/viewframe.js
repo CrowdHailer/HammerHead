@@ -31,4 +31,8 @@ viewFrame.prototype = {
     finalSize = this.size.multiply(magnification);
     return new viewFrame(finalOrigin, finalSize);
   },
+  anchorScale: function (center, magnification) {
+    this.origin = this.origin.subtract(center).multiply(magnification).add(center);
+    this.size = this.size.multiply(magnification);
+  }
 };

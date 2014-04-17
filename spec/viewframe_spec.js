@@ -60,8 +60,10 @@ describe("Viewframe", function () {
       expect(frame.bottom()).toEqual(100);
     });
 
-    xit('should be able to scale Permanently', function () {
-      pending();
+    it('should be able to scale Permanently', function () {
+      var center = new Point (0, 100);
+      frame.anchorScale(center, 2);
+      expect(frame.toString()).toEqual('0 100 1600 1200');
     });
   });
 });
