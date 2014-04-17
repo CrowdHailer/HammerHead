@@ -41,5 +41,14 @@ describe("Viewframe", function () {
       expect(frame.left()).toEqual(100);
       expect(frame.bottom()).toEqual(200);
     });
+
+    it('should multitranslate', function () {
+      var translation1 = new Point (100, 100);
+      var translation2 = new Point (200, -100);
+      frame.anchorTranslate(translation1);
+      frame.anchorTranslate(translation2);
+      expect(frame.left()).toEqual(300);
+      expect(frame.bottom()).toEqual(100);
+    });
   });
 });
