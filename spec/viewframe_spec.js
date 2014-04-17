@@ -25,6 +25,13 @@ describe("Viewframe", function () {
       expect(frame.translate(translation).toString()).toEqual('100 200 800 600');
       expect(frame.toString()).toEqual('0 100 800 600');
     });
+
+    it('should translate from the anchor point', function () {
+      var translation1 = new Point (100, 100);
+      var translation2 = new Point (200, -100);
+      frame.translate(translation1);
+      expect(frame.translate(translation2).toString()).toEqual('200 0 800 600');
+    });
   });
 
   describe('deep transform', function () {
