@@ -27,4 +27,8 @@ function viewFrame (origin, size) {
   this.anchorTranslate = function (vector) {
     origin = origin.add(vector);
   };
+
+  this.scaleAt = function (center, magnification) {
+    return new viewFrame(origin, {x: 400, y: 300});
+  };
 }

@@ -32,6 +32,11 @@ describe("Viewframe", function () {
       frame.translate(translation1);
       expect(frame.translate(translation2).toString()).toEqual('200 0 800 600');
     });
+
+    it('should scale to a point', function () {
+      var point = new Point (0, 100);
+      expect(frame.scaleAt(point, 2).toString()).toEqual('0 100 400 300');
+    });
   });
 
   describe('deep transform', function () {
