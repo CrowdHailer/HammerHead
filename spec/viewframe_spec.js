@@ -35,7 +35,11 @@ describe("Viewframe", function () {
 
     it('should scale to a point', function () {
       var point = new Point (0, 100);
-      expect(frame.scaleAt(point, 2).toString()).toEqual('0 100 400 300');
+      expect(frame.scaleAt(point, 0.5).toString()).toEqual('0 100 400 300');
+    });
+    it('should scale to a point', function () {
+      var point = new Point (800, 700);
+      expect(frame.scaleAt(point, 0.5).toString()).toEqual('400 400 400 300');
     });
   });
 
@@ -54,6 +58,10 @@ describe("Viewframe", function () {
       frame.anchorTranslate(translation2);
       expect(frame.left()).toEqual(300);
       expect(frame.bottom()).toEqual(100);
+    });
+
+    xit('should be able to scale Permanently', function () {
+      pending();
     });
   });
 });

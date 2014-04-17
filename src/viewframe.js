@@ -1,34 +1,34 @@
 function viewFrame (origin, size) {
-
-  this.width = function () {
-    return size.x;
-  };
-
-  this.height = function () {
-    return size.y;
-  };
-
-  this.left = function () {
-    return origin.x;
-  };
-
-  this.bottom = function () {
-    return origin.y;
-  };
-
-  this.toString = function () {
-  return [this.left(), this.bottom(), this.width(), this.height()].join(' ');
-  };
-
-  this.translate = function (vector) {
-    return new viewFrame(origin.add(vector), size);
-  };
-
-  this.anchorTranslate = function (vector) {
-    origin = origin.add(vector);
-  };
-
-  this.scaleAt = function (center, magnification) {
-    return new viewFrame(origin, {x: 400, y: 300});
-  };
+  this.origin = origin;
+  this.size = size;
 }
+
+viewFrame.prototype = {
+  constructor: viewFrame,
+  width: function () {
+    return this.size.x;
+  },
+  height: function () {
+    return this.size.y;
+  },
+  left: function () {
+    return this.origin.x;
+  },
+  bottom: function () {
+    return this.origin.y;
+  },
+  toString: function () {
+    return [this.left(), this.bottom(), this.width(), this.height()].join(' ');
+  },
+  translate: function (vector) {
+    return new viewFrame(this.origin.add(vector), this.size);
+  },
+  anchorTranslate: function (vector) {
+    this.origin = this.origin.add(vector);
+  },
+  scaleAt: function (center, magnification) {
+    finalOrigin = this.origin.subtract(center).multiply(magnification).add(center);
+    finalSize = this.size.multiply(magnification);
+    return new viewFrame(finalOrigin, finalSize);
+  },
+};
