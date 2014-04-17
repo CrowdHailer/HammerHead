@@ -12,4 +12,20 @@ describe('Point', function(){
     expect(newPoint.x).toEqual(5);
     expect(newPoint.y).toEqual(2);
   });
+
+  it('should be possible to scale a point', function () {
+    var point = new Point(2,3);
+    var scale = 2;
+    var newPoint = point.multiply(scale);
+    expect(newPoint.x).toEqual(4);
+    expect(newPoint.y).toEqual(6);
+  });
+
+  it('should be possible to scale a point by a fraction', function () {
+    var point = new Point(2,3);
+    var scale = 0.5;
+    var newPoint = point.multiply(scale);
+    expect(newPoint.x).toEqual(1);
+    expect(newPoint.y).toEqual(1.5);
+  });
 });
