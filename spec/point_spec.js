@@ -13,6 +13,14 @@ describe('Point', function(){
     expect(newPoint.y).toEqual(2);
   });
 
+  it('should be able to subtract points', function () {
+    var point1 = new Point(2,3);
+    var point2 = new Point(3,-1);
+    var newPoint = point1.subtract(point2);
+    expect(newPoint.x).toEqual(-1);
+    expect(newPoint.y).toEqual(4);
+  });
+
   it('should be possible to scale a point', function () {
     var point = new Point(2,3);
     var scale = 2;
