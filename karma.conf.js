@@ -4,6 +4,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     files: [
       'src/**/*.js',
+      'lib/**/*.js',
       'spec/**/*spec.js'
     ],
     exclude: [
