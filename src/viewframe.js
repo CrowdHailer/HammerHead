@@ -13,18 +13,23 @@ function viewFrame (origin, size) {
     return new viewFrame(origin.add(vector), size);
   };
 
-  this.anchorTranslate = function (vector) {
-    origin = origin.add(vector);
+  this.scale = function (center, magnification) {
+    newOrigin = origin.subtract(center).multiply(magnification).add(center);
+    newSize = size.multiply(magnification);
+    return new viewFrame(newOrigin, newSize);
   };
 
-  this.scaleAt = function (center, magnification) {
-    finalOrigin = origin.subtract(center).multiply(magnification).add(center);
-    finalSize = size.multiply(magnification);
-    return new viewFrame(finalOrigin, finalSize);
+  this.anchor = {
+
+    translate: function (vector) {
+      origin = origin.add(vector);
+    },
+
+    scale: function (center, magnification) {
+      origin = origin.subtract(center).multiply(magnification).add(center);
+      size = size.multiply(magnification);
+    }
+
   };
-  
-  this.anchorScale = function (center, magnification) {
-    origin = origin.subtract(center).multiply(magnification).add(center);
-    size = size.multiply(magnification);
-  };
+
 }
