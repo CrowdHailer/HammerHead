@@ -71,6 +71,13 @@ describe("Viewframe", function () {
     var translation = new Point (100, 100);
     frame.anchor.translate(translation);
     frame.home();
-    expect(frame.toString()).toEqual('0 100 800 600')
+    expect(frame.toString()).toEqual('0 100 800 600');
+  });
+
+  it('should be able to home to a point', function () {
+    var location = new Point (-100, 200);
+    var extent = new Point (400, 400);
+    frame.home({origin: location, size: extent});
+    expect(frame.toString()).toEqual('-100 200 400 400');
   });
 });

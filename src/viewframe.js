@@ -20,9 +20,10 @@ function viewFrame (origin, size) {
     return new viewFrame(newOrigin, newSize);
   };
 
-  this.home = function () {
-    origin = HOME.origin;
-    size = HOME.size;
+  this.home = function (destination) {
+    var target = destination || HOME;
+    origin = target.origin;
+    size = target.size;
   };
 
   this.anchor = {
