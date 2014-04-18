@@ -12,6 +12,6 @@ describe('viewer', function () {
   });
 
   it('should return true if given svg element', function () {
-    expect(new Viewer('test')).toBe(false);
+    expect(new Viewer('test')).not.toBe(false);
   });
 });
