@@ -8,7 +8,7 @@ describe("Viewframe", function () {
 
   describe('Dimensions', function () {
     
-    [['height',600], ['width',800], ['left',0], ['bottom', 100]].forEach(function (dimension) {
+    [['dY',600], ['dX',800], ['x0',0], ['y0', 100]].forEach(function (dimension) {
       it('should have a '+dimension[0], function(){
         expect(frame[dimension[0]]()).toEqual(dimension[1]);
       });
@@ -47,8 +47,8 @@ describe("Viewframe", function () {
     it('should be able to translate permanently', function () {
       var translation = new Point (100, 100);
       frame.anchorTranslate(translation);
-      expect(frame.left()).toEqual(100);
-      expect(frame.bottom()).toEqual(200);
+      expect(frame.x0()).toEqual(100);
+      expect(frame.y0()).toEqual(200);
     });
 
     it('should multitranslate', function () {
@@ -56,8 +56,8 @@ describe("Viewframe", function () {
       var translation2 = new Point (200, -100);
       frame.anchorTranslate(translation1);
       frame.anchorTranslate(translation2);
-      expect(frame.left()).toEqual(300);
-      expect(frame.bottom()).toEqual(100);
+      expect(frame.x0()).toEqual(300);
+      expect(frame.y0()).toEqual(100);
     });
 
     it('should be able to scale Permanently', function () {
