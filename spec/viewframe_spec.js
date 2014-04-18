@@ -66,4 +66,11 @@ describe("Viewframe", function () {
       expect(frame.toString()).toEqual('0 100 1600 1200');
     });
   });
+
+  it('should have a permanent home value', function () {
+    var translation = new Point (100, 100);
+    frame.anchor.translate(translation);
+    frame.home();
+    expect(frame.toString()).toEqual('0 100 800 600')
+  });
 });

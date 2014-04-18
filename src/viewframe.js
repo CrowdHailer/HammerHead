@@ -1,4 +1,5 @@
 function viewFrame (origin, size) {
+  var HOME = { origin: origin, size: size };
 
   this.dX = function () { return size.x;   };
   this.dY = function () { return size.y;   };
@@ -17,6 +18,11 @@ function viewFrame (origin, size) {
     newOrigin = origin.subtract(center).multiply(magnification).add(center);
     newSize = size.multiply(magnification);
     return new viewFrame(newOrigin, newSize);
+  };
+
+  this.home = function () {
+    origin = HOME.origin;
+    size = HOME.size;
   };
 
   this.anchor = {
