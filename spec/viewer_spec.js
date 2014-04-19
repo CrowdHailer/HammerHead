@@ -25,15 +25,15 @@ describe('viewer', function () {
     });
   });
 
-  beforeEach(function () {
-    svgString = '<svg id="test" viewBox="0 0 2000 1000"></svg>';
-    svgStringNoViewBox = '<svg id="test"></svg>';
+  describe('valid properties' ,function () {
+    beforeEach(function () {
+      svgString = '<svg id="test" viewBox="0 0 2000 1000"></svg>';
+      document.body.innerHTML += svgString;
+    });
 
-    document.body.innerHTML += svgString;
-  });
 
-
-  it('should return true if given svg element', function () {
-    expect(new Viewer('test')).not.toBe(false);
+    it('should return true if given svg element', function () {
+      expect(new Viewer('test')).not.toBe(false);
+    });
   });
 });
