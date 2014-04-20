@@ -29,17 +29,28 @@ describe('viewer', function () {
     });
   });
 
+  it('create a view frame from valid input', function () {
+    svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"></svg>';
+    document.body.innerHTML += svgString;
+    spyOn(window, 'viewFrame');
+    viewer = new Viewer ('test');
+    expect(viewFrame).toHaveBeenCalledWith(new Point(0,0), new Point(2000,1000));
+    var fix = document.getElementById('test');
+    fix.parentElement.removeChild(fix);
+  });
+
   describe('valid properties' ,function () {
+    var viewer, testSVG;
     beforeEach(function () {
-      svgString = '<svg id="test" viewBox="0 0 2000 1000"></svg>';
+      svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"></svg>';
       document.body.innerHTML += svgString;
+      testSVG = document.getElementById('test');
+      viewer = new Viewer ('test');
     });
 
-
-    it('create a view frame from valid input', function () {
-      spyOn(window, 'viewFrame');
-      new Viewer ('test');
-      expect(viewFrame).toHaveBeenCalledWith(new Point(0,0), new Point(2000,1000));
+    it('should be possible to drag the svg', function(){
+      viewer.drag(250, -125);
+      expect(testSVG.getAttribute('viewBox')).toEqual('1000 -500 2000 1000');
     });
 
     afterEach(function () {

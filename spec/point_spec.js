@@ -54,4 +54,10 @@ describe('Point', function(){
     var matrix = {a:2, b:0, c:0, d:2, e:1, f:3};
     expect(screenPoint.transform(matrix)).toEqual(new Point(5, 9));
   });
+
+  it('should be possible to scale by a matrix', function (){
+    var delta = new Point(2,3);
+    var matrix = {a:2, b:0, c:0, d:2, e:1, f:3};
+    expect(delta.scaleTransform(matrix)).toEqual(new Point(4, 6));
+  });
 });
