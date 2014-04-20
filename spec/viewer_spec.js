@@ -42,13 +42,6 @@ describe('viewer', function () {
       expect(viewFrame).toHaveBeenCalledWith(new Point(0,0), new Point(2000,1000));
     });
 
-    it('should be able to transpose points', function () {
-      var element = document.getElementById('test');
-      console.log(element.getCTM());
-      console.log(element.getScreenCTM());
-      console.log(document.getElementsByTagName('svg').length);
-    });
-
     afterEach(function () {
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);
