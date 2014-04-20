@@ -8,7 +8,9 @@ module.exports = function(config) {
       'spec/**/*spec.js'
     ],
     exclude: [
-      
+      'lib/jasmine-jquery.js',
+      'lib/jasmine-fixture.min.js',
+      'lib/jquery-2.1.0.min.js'
     ],
     reporters: ['spec'],
     port: 9876,
