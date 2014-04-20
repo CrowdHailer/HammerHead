@@ -36,4 +36,14 @@ describe('Point', function(){
     expect(newPoint.x).toEqual(1);
     expect(newPoint.y).toEqual(1.5);
   });
+
+  it('should be possible to map to a svg element', function () {
+    var point = new Point(2,3);
+    var element = {
+      getScreenCTM: function () {
+        return {a:2, b:0, c:0, d:0}
+      }
+    };
+    var newPoint = point.mapTo(element);
+  });
 });

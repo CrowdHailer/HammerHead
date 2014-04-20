@@ -32,8 +32,16 @@ describe('viewer', function () {
     });
 
 
-    it('should return true if given svg element', function () {
-      expect(new Viewer('test')).not.toBe(false);
+    it('create a view frame from valid input', function () {
+      spyOn(window, 'viewFrame');
+      new Viewer ('test');
+      expect(viewFrame).toHaveBeenCalledWith(new Point(0,0), new Point(2000,1000));
+    });
+
+    it('should be able to transpose points', function () {
+      var element = document.getElementById('test');
+      console.log(element.getCTM());
+      console.log(element.getScreenCTM());
     });
   });
 });
