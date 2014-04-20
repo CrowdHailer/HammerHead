@@ -42,6 +42,7 @@ describe('viewer', function () {
       var element = document.getElementById('test');
       console.log(element.getCTM());
       console.log(element.getScreenCTM());
+      console.log(document.getElementsByTagName('svg').length);
     });
   });
 });

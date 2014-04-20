@@ -38,12 +38,21 @@ describe('Point', function(){
   });
 
   it('should be possible to map to a svg element', function () {
-    var point = new Point(2,3);
-    var element = {
-      getScreenCTM: function () {
-        return {a:2, b:0, c:0, d:0}
-      }
-    };
-    var newPoint = point.mapTo(element);
+    var screenPoint = new Point(2,3);
+    svgString = '<svg id="test" viewBox="0 0 2000 1000" width="200"></svg>';
+    document.body.innerHTML += svgString;
+    var element = document.getElementById('test');
+    console.log(element.getScreenCTM());
+    console.log(element.getScreenCTM().inverse());
+    var newPoint = screenPoint.mapTo(element);
+    console.log(screenPoint);
+    console.log(newPoint);
+  });
+
+  it('should be possible to transform by matrix', function () {
+    var screenPoint = new Point(2,3);
+    var matrix = {a:2, b:0, c:0, d:2, e:1, f:3};
+    expect(screenPoint.transform(matrix)).toEqual(new Point(5, 9));
+    console.log(document.getElementsByTagName('svg').length);
   });
 });

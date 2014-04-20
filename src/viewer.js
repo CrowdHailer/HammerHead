@@ -8,11 +8,9 @@ function Viewer (id) {
   var getViewFrame = function(element) {
     var viewBox = element.getAttribute('viewBox');
     if (viewBox === null) { return false; }
-    console.log(viewBox);
     viewBox = viewBox.split(' ').map(returnInt);
     var origin = new Point(viewBox[0], viewBox[1]);
     var size = new Point(viewBox[2], viewBox[3]);
-    console.log('here');
     return new viewFrame(origin,size);
   };
 
@@ -29,5 +27,13 @@ function Viewer (id) {
   if (getViewFrame(element) === false) {
     throw 'Id: ' + id + ' has no viewBox attribute';
   }
+  // Give argument to expand hammer instance
+  // return function will kill and home methods
+  // possibly take config map for shortcut keys
+  // include keystroke zoom and pan
+  // keep mouse handlers private
+  // Added mouse wheel support in configuration
+  // mobilise method auto called
+  // freeze method for swish loader
   
 }
