@@ -42,9 +42,10 @@ describe('viewer', function () {
   describe('valid properties' ,function () {
     var viewer, testSVG;
     beforeEach(function () {
-      svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"></svg>';
+      svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"><path id="test-path"></path></svg>';
       document.body.innerHTML += svgString;
       testSVG = document.getElementById('test');
+      testPath = document.getElementById('test-path');
       viewer = new Viewer ('test');
     });
 
@@ -56,6 +57,14 @@ describe('viewer', function () {
     it('should be possible to zoom the svg', function() {
       viewer.zoom(0, 0, 2);
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
+    });
+
+    it('should drag from touch events', function() {
+      var hammerHandle = viewer._test.hammertime;
+      hammerHandle.trigger('touch', {target: testPath});
+      hammerHandle.trigger('dragstart', {});
+      hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250});
+      expect(testSVG.getAttribute('viewBox')).toEqual('2000 1000 2000 1000');
     });
 
     afterEach(function () {

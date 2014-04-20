@@ -24,12 +24,11 @@
   }
 
 
-
   Viewer = function (id) {
     var element = getSVG(id);
     var viewFrame = getViewFrame(element);
-    // var hammertime = Hammer(document).on('touch', touchHandler);
-    this.drag = function (deltaX, deltaY) {
+    var hammertime = Hammer(document).on('touch', touchHandler);
+    drag = function (deltaX, deltaY) {
       var screenVector = new Point(deltaX, deltaY);
       var SVGVector = screenVector.scaleTo(element);
       var viewBoxString = viewFrame.translate(SVGVector).toString();
@@ -42,16 +41,24 @@
       var viewBoxString = viewFrame.scale(SVGCenter, scaleFactor).toString();
       element.setAttribute('viewBox', viewBoxString);
     };
-    // function touchHandler (event) {
-    //   if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
-    // }
-    // this._test = {
-    //   hammertime: hammertime
-    // };
+    dragHandler = function (event) {
+      drag(event.gesture.deltaX, event.gesture.deltaY);
+    };
+    function activityOn(instance){
+      instance.on('drag', dragHandler);
+    }
+    function touchHandler (event) {
+      if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
+    }
+    this.drag = drag;
+    this._test = {
+      hammertime: hammertime
+    };
   };
 
 }());
 
+  // Doesnt work if target is svg
   // Give argument to expand hammer instance
   // return function will kill and home methods
   // possibly take config map for shortcut keys
@@ -60,3 +67,4 @@
   // Added mouse wheel support in configuration
   // mobilise method auto called
   // freeze method for swish loader
+  // Need to clear hammer for testing
