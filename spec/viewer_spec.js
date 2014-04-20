@@ -53,6 +53,11 @@ describe('viewer', function () {
       expect(testSVG.getAttribute('viewBox')).toEqual('1000 -500 2000 1000');
     });
 
+    it('should be possible to zoom the svg', function() {
+      viewer.zoom(0, 0, 2);
+      expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
+    });
+
     afterEach(function () {
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);

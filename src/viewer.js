@@ -35,6 +35,13 @@
       var viewBoxString = viewFrame.translate(SVGVector).toString();
       element.setAttribute('viewBox', viewBoxString);
     };
+    this.zoom = function (centerX, centerY, zoomFactor) {
+      var screenCenter = new Point(centerX, centerY);
+      var SVGCenter = screenCenter.mapTo(element);
+      var scaleFactor = 1.0/zoomFactor;
+      var viewBoxString = viewFrame.scale(SVGCenter, scaleFactor).toString();
+      element.setAttribute('viewBox', viewBoxString);
+    };
     // function touchHandler (event) {
     //   if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
     // }
