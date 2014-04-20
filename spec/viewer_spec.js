@@ -14,6 +14,8 @@ describe('viewer', function () {
       expect(function () {
         new Viewer ('not-svg');
       }).toThrow(new Error('Id: not-svg is not a SVG element'));
+      var fix = document.getElementById('not-svg');
+      fix.parentElement.removeChild(fix);
     });
 
     it('should raise an expection if SVG has no viewbox', function () {
@@ -22,6 +24,8 @@ describe('viewer', function () {
       expect(function () {
         new Viewer ('no-viewbox');
       }).toThrow(new Error('Id: no-viewbox has no viewBox attribute'));
+      var fix = document.getElementById('no-viewbox');
+      fix.parentElement.removeChild(fix);
     });
   });
 
@@ -43,6 +47,11 @@ describe('viewer', function () {
       console.log(element.getCTM());
       console.log(element.getScreenCTM());
       console.log(document.getElementsByTagName('svg').length);
+    });
+
+    afterEach(function () {
+      var fix = document.getElementById('test');
+      fix.parentElement.removeChild(fix);
     });
   });
 });
