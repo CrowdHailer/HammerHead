@@ -3,8 +3,8 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      'src/**/*.js',
       'lib/**/*.js',
+      'src/**/*.js',
       'spec/**/*spec.js'
     ],
     exclude: [
