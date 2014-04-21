@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Hammerhead by CrowdHailer</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Hammerhead</h1>
+        <h2>A minimal JavaScript utility to help view SVG&#39;s on webpages</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/CrowdHailer/HammerHead/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/CrowdHailer/HammerHead/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/CrowdHailer/HammerHead" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a name="hammerheadjs" class="anchor" href="#hammerheadjs"><span class="octicon octicon-link"></span></a>HammerheadJS</h1>
+
+<h4>
+<a name="a-minimal-javascript-utility-to-help-view-svgs-on-webpages" class="anchor" href="#a-minimal-javascript-utility-to-help-view-svgs-on-webpages"><span class="octicon octicon-link"></span></a>A minimal JavaScript utility to help view SVG's on webpages</h4>
+
+<h1>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h1>
+
+<h3>
+<a name="current" class="anchor" href="#current"><span class="octicon octicon-link"></span></a>Current</h3>
+
+<ul>
+<li>Small ~ 5kb</li>
+<li>Drag support with mouse and touch</li>
+<li>Pinch support for zoom</li>
+<li>Dependancy on <a href="http://eightmedia.github.io/hammer.js/">hammer.js</a>
+</li>
+</ul><h3>
+<a name="planned" class="anchor" href="#planned"><span class="octicon octicon-link"></span></a>Planned</h3>
+
+<ul>
+<li>Support for zooming with mousewheel</li>
+<li>minified code</li>
+<li>key zoom and pan support</li>
+<li>temporarily disable</li>
+<li>zoom to point</li>
+</ul><h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<ul>
+<li>Add <a href="https://raw.githubusercontent.com/CrowdHailer/HammerHead/master/hammerhead.js">hammerhead.js</a> and <a href="https://raw.githubusercontent.com/CrowdHailer/HammerHead/master/hammerhead.css">hammerhead.css</a> to your project directory</li>
+<li>Include <em>hammer.min.js</em> and <em>hammerhead.js</em> in you html</li>
+<li>Include <em>hammerhead.css</em> (This disables native scrolling and can effect other areas of your site)</li>
+<li>Optionally include <em>hammer.fakemultitouch.js</em> and/or <em>hammer.showtouches.js</em>
+</li>
+<li>Activate with the following script passing the SVG's id</li>
+</ul><div class="highlight highlight-js"><pre><span class="nx">Hammer</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">fakeMultitouch</span><span class="p">();</span> <span class="c1">// If including fake multitouch</span>
+<span class="nx">Hammer</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">showTouches</span><span class="p">();</span>    <span class="c1">// If including show touches</span>
+<span class="nx">viewer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Viewer</span><span class="p">(</span><span class="nx">svgIdString</span><span class="p">);</span>
+</pre></div>
+
+<h1>
+<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h1>
+
+<p>Built on top of <a href="http://eightmedia.github.io/hammer.js/">Hammerjs</a></p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
