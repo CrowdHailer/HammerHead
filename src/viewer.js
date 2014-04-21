@@ -28,12 +28,22 @@
     var element = getSVG(id);
     var viewFrame = getViewFrame(element);
     var hammertime = Hammer(document).on('touch', touchHandler);
+
     drag = function (deltaX, deltaY) {
       var screenVector = new Point(deltaX, deltaY);
       var SVGVector = screenVector.scaleTo(element);
       var viewBoxString = viewFrame.translate(SVGVector).toString();
       element.setAttribute('viewBox', viewBoxString);
     };
+
+    fixedDrag = function (deltaX, deltaY) {
+      var screenVector = new Point(deltaX, deltaY);
+      var SVGVector = screenVector.scaleTo(element);
+      viewFrame.anchor.translate(SVGVector);
+      var viewBoxString = viewFrame.toString();
+      element.setAttribute('viewBox', viewBoxString);
+    };
+
     this.zoom = function (centerX, centerY, zoomFactor) {
       var screenCenter = new Point(centerX, centerY);
       var SVGCenter = screenCenter.mapTo(element);
@@ -41,14 +51,29 @@
       var viewBoxString = viewFrame.scale(SVGCenter, scaleFactor).toString();
       element.setAttribute('viewBox', viewBoxString);
     };
+
     dragHandler = function (event) {
       drag(event.gesture.deltaX, event.gesture.deltaY);
     };
+
+    dragendHandler = function (event) {
+      fixedDrag(event.gesture.deltaX, event.gesture.deltaY);
+    };
     function activityOn(instance){
       instance.on('drag', dragHandler);
+      instance.on('dragend', dragendHandler);
+      instance.on('release', releaseHandler);
+    }
+    function activityOff(instance){
+      instance.off('drag', dragHandler);
+      instance.off('dragend', dragendHandler);
+      instance.off('release', releaseHandler);
     }
     function touchHandler (event) {
       if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
+    }
+    function releaseHandler (event) {
+      activityOff(hammertime);  
     }
     this.drag = drag;
     this._test = {

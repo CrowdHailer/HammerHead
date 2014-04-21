@@ -59,12 +59,25 @@ describe('viewer', function () {
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
     });
 
-    it('should drag from touch events', function() {
+    it('should drag from the same origin for drag events', function() {
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath});
       hammerHandle.trigger('dragstart', {});
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250});
       expect(testSVG.getAttribute('viewBox')).toEqual('2000 1000 2000 1000');
+      hammerHandle.trigger('drag', {deltaX: 200, deltaY: 100});
+      expect(testSVG.getAttribute('viewBox')).toEqual('800 400 2000 1000');
+      hammerHandle.trigger('release', {});
+    });
+
+    it('should drag permanently on drag end events', function () {
+      var hammerHandle = viewer._test.hammertime;
+      hammerHandle.trigger('touch', {target: testPath});
+      hammerHandle.trigger('dragstart', {});
+      hammerHandle.trigger('dragend', {deltaX: 500, deltaY: 250});
+      expect(testSVG.getAttribute('viewBox')).toEqual('2000 1000 2000 1000');
+      hammerHandle.trigger('drag', {deltaX: 200, deltaY: -100});
+      expect(testSVG.getAttribute('viewBox')).toEqual('2800 600 2000 1000');
     });
 
     afterEach(function () {
