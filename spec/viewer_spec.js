@@ -51,7 +51,7 @@ describe('viewer', function () {
 
     it('should be possible to drag the svg', function(){
       viewer.drag(250, -125);
-      expect(testSVG.getAttribute('viewBox')).toEqual('1000 -500 2000 1000');
+      expect(testSVG.getAttribute('viewBox')).toEqual('-1000 500 2000 1000');
     });
 
     it('should be possible to zoom the svg', function() {
@@ -64,9 +64,9 @@ describe('viewer', function () {
       hammerHandle.trigger('touch', {target: testPath});
       hammerHandle.trigger('dragstart', {});
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250});
-      expect(testSVG.getAttribute('viewBox')).toEqual('2000 1000 2000 1000');
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
       hammerHandle.trigger('drag', {deltaX: 200, deltaY: 100});
-      expect(testSVG.getAttribute('viewBox')).toEqual('800 400 2000 1000');
+      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
       hammerHandle.trigger('release', {});
     });
 
@@ -75,9 +75,9 @@ describe('viewer', function () {
       hammerHandle.trigger('touch', {target: testPath});
       hammerHandle.trigger('dragstart', {});
       hammerHandle.trigger('dragend', {deltaX: 500, deltaY: 250});
-      expect(testSVG.getAttribute('viewBox')).toEqual('2000 1000 2000 1000');
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
       hammerHandle.trigger('drag', {deltaX: 200, deltaY: -100});
-      expect(testSVG.getAttribute('viewBox')).toEqual('2800 600 2000 1000');
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -600 2000 1000');
       hammerHandle.trigger('release', {});
     });
 

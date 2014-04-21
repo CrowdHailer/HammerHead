@@ -10,7 +10,9 @@ module.exports = function(config) {
     exclude: [
       'lib/jasmine-jquery.js',
       'lib/jasmine-fixture.min.js',
-      'lib/jquery-2.1.0.min.js'
+      'lib/jquery-2.1.0.min.js',
+      'lib/hammer.fakemultitouch.js',
+      'lib/hammer.showtouches.js'
     ],
     reporters: ['spec'],
     port: 9876,

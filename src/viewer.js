@@ -31,14 +31,14 @@
 
     drag = function (deltaX, deltaY) {
       var screenVector = new Point(deltaX, deltaY);
-      var SVGVector = screenVector.scaleTo(element);
+      var SVGVector = screenVector.scaleTo(element).multiply(-1);
       var viewBoxString = viewFrame.translate(SVGVector).toString();
       element.setAttribute('viewBox', viewBoxString);
     };
 
     fixedDrag = function (deltaX, deltaY) {
       var screenVector = new Point(deltaX, deltaY);
-      var SVGVector = screenVector.scaleTo(element);
+      var SVGVector = screenVector.scaleTo(element).multiply(-1);
       viewFrame.anchor.translate(SVGVector);
       var viewBoxString = viewFrame.toString();
       element.setAttribute('viewBox', viewBoxString);
