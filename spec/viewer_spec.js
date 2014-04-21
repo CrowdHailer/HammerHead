@@ -80,6 +80,17 @@ describe('viewer', function () {
       expect(testSVG.getAttribute('viewBox')).toEqual('2800 600 2000 1000');
     });
 
+    it('should zoom from the same reference for pinch events', function() {
+      var hammerHandle = viewer._test.hammertime;
+      hammerHandle.trigger('touch', {target: testPath});
+      hammerHandle.trigger('transformstart', {});
+      hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 2});
+      expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
+      hammerHandle.trigger('pinch', {center:{pageX:500,  pageY: 0}, scale: 2});
+      expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
+      hammerHandle.trigger('release', {});
+    });
+
     afterEach(function () {
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);
