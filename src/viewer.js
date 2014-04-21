@@ -52,6 +52,15 @@
       element.setAttribute('viewBox', viewBoxString);
     };
 
+    fixedZoom = function (centerX, centerY, zoomFactor) {
+      var screenCenter = new Point(centerX, centerY);
+      var SVGCenter = screenCenter.mapTo(element);
+      var scaleFactor = 1.0/zoomFactor;
+      viewFrame.anchor.scale(SVGCenter, scaleFactor);
+      var viewBoxString = viewFrame.toString();
+      element.setAttribute('viewBox', viewBoxString);
+    };
+
     dragHandler = function (event) {
       drag(event.gesture.deltaX, event.gesture.deltaY);
     };
@@ -63,16 +72,22 @@
     pinchHandler = function (event) {
       zoom(event.gesture.center.pageX, event.gesture.center.pageY, event.gesture.scale);
     };
+
+    transformendHandler = function (event) {
+      fixedZoom(event.gesture.center.pageX, event.gesture.center.pageY, event.gesture.scale);
+    };
     function activityOn(instance){
       instance.on('drag', dragHandler);
       instance.on('dragend', dragendHandler);
       instance.on('pinch', pinchHandler);
+      instance.on('transformend', transformendHandler);
       instance.on('release', releaseHandler);
     }
     function activityOff(instance){
       instance.off('drag', dragHandler);
       instance.off('dragend', dragendHandler);
-      instance.on('pinch', pinchHandler);
+      instance.off('pinch', pinchHandler);
+      instance.off('transformend', transformendHandler);
       instance.off('release', releaseHandler);
     }
     function touchHandler (event) {
