@@ -73,6 +73,7 @@ function viewFrame (origin, size) {
   };
 
 }
+
 (function (){
 
   function isSVG (element) {
@@ -179,3 +180,14 @@ function viewFrame (origin, size) {
   };
 
 }());
+
+  // Doesnt work if target is svg
+  // Give argument to expand hammer instance
+  // return function will kill and home methods
+  // possibly take config map for shortcut keys
+  // include keystroke zoom and pan
+  // keep mouse handlers private
+  // Added mouse wheel support in configuration
+  // mobilise method auto called
+  // freeze method for swish loader
+  // Need to clear hammer for testing

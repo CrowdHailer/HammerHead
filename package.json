@@ -21,6 +21,7 @@
     "karma-spec-reporter": "0.0.12",
     "karma-cli": "0.0.4",
     "grunt-contrib-concat": "^0.4.0",
-    "grunt-contrib-uglify": "^0.4.0"
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-karma": "0.6"
   }
 }

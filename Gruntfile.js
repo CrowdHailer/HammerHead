@@ -23,10 +23,16 @@ module.exports = function(grunt) {
           '<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
       }
+    },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.registerTask('default', ['concat', 'uglify']);
+  grunt.registerTask('default', ['karma', 'concat', 'uglify']);
 };
