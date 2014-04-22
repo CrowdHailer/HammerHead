@@ -3,16 +3,16 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      'lib/**/*.js',
+      'bower_components/**/*.js',
       'src/**/*.js',
       'spec/**/*spec.js'
     ],
     exclude: [
-      'lib/jasmine-jquery.js',
-      'lib/jasmine-fixture.min.js',
-      'lib/jquery-2.1.0.min.js',
-      'lib/hammer.fakemultitouch.js',
-      'lib/hammer.showtouches.js'
+      'bower_components/jasmine-jquery.js',
+      'bower_components/jasmine-fixture.min.js',
+      'bower_components/jquery-2.1.0.min.js',
+      'bower_components/hammer.fakemultitouch.js',
+      'bower_components/hammer.showtouches.js'
     ],
     reporters: ['spec'],
     port: 9876,
