@@ -27,7 +27,7 @@
   Viewer = function (id) {
     var element = getSVG(id);
     var viewFrame = getViewFrame(element);
-    var hammertime = Hammer(document).on('touch', touchHandler);
+    var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
 
     drag = function (deltaX, deltaY) {
       var screenVector = new Point(deltaX, deltaY);
