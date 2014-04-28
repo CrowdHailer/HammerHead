@@ -175,7 +175,6 @@ function viewFrame (origin, size) {
       instance.off('release', releaseHandler);
     }
     function touchHandler (event) {
-      gesture.preventDefault();
       if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
     }
     function releaseHandler (event) {
