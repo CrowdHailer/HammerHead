@@ -1,0 +1,31 @@
+{
+  "name": "hammerhead",
+  "homepage": "https://github.com/CrowdHailer/HammerHead",
+  "authors": [
+    "Peter <peterhsaxton@gmail.com>"
+  ],
+  "description": "SVG manipulation by viewbox library",
+  "main": "hammerhead.min.js",
+  "keywords": [
+    "SVG"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "dependencies": {
+    "hammerjs": "1.0.10"
+  },
+  "_release": "089acd0da3",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "089acd0da373d32da029dd503eb0a833f412f107"
+  },
+  "_source": "git://github.com/CrowdHailer/HammerHead.git",
+  "_target": "*",
+  "_originalSource": "CrowdHailer/HammerHead"
+}

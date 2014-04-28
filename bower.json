@@ -1,0 +1,24 @@
+{
+  "name": "hammerhead-pages",
+  "version": "0.0.0",
+  "homepage": "http://crowdhailer.github.io/HammerHead/",
+  "authors": [
+    "Peter <peterhsaxton@gmail.com>"
+  ],
+  "description": "Page to show SVG manipulation library, HammerHead.js",
+  "main": "index.html",
+  "keywords": [
+    "SVG"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "dependencies": {
+    "hammerjs": "1.0.10",
+    "hammerhead": "CrowdHailer/HammerHead"
+  }
+}

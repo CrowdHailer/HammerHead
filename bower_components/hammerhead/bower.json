@@ -1,0 +1,23 @@
+{
+  "name": "hammerhead",
+  "version": "0.0.0",
+  "homepage": "https://github.com/CrowdHailer/HammerHead",
+  "authors": [
+    "Peter <peterhsaxton@gmail.com>"
+  ],
+  "description": "SVG manipulation by viewbox library",
+  "main": "hammerhead.min.js",
+  "keywords": [
+    "SVG"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "dependencies": {
+    "hammerjs": "1.0.10"
+  }
+}

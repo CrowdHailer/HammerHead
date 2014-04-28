@@ -1,78 +1,3 @@
-function Point (x, y) {
-  this.x = x;
-  this.y = y;
-}
-
-Point.prototype = {
-  constructor: Point,
-  add: function (point) {
-    return new Point(this.x + point.x, this.y + point.y);
-  },
-  subtract: function (point) {
-    return new Point(this.x - point.x, this.y - point.y);
-  },
-  multiply: function (scalar) {
-    return new Point(this.x * scalar, this.y * scalar);
-  },
-  mapTo: function(region){
-    var matrix = region.getScreenCTM().inverse();
-    return this.transform(matrix);
-  },
-  transform: function (matrix) {
-    var x = this.x;
-    var y = this.y;
-    return new Point(x*matrix.a + matrix.e, y*matrix.d + matrix.f);
-  },
-  scaleTransform: function (matrix) {
-    return new Point(this.x * matrix.a, this.y * matrix.d);
-  },
-  scaleTo: function (region) {
-    var matrix = region.getScreenCTM().inverse();
-    return this.scaleTransform(matrix);
-  }
-};
-function viewFrame (origin, size) {
-  var HOME = { origin: origin, size: size };
-
-  this.dX = function () { return size.x;   };
-  this.dY = function () { return size.y;   };
-  this.x0 = function () { return origin.x; };
-  this.y0 = function () { return origin.y; };
-
-  this.toString = function () {
-    return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
-  };
-
-  this.translate = function (vector) {
-    return new viewFrame(origin.add(vector), size);
-  };
-
-  this.scale = function (center, magnification) {
-    newOrigin = origin.subtract(center).multiply(magnification).add(center);
-    newSize = size.multiply(magnification);
-    return new viewFrame(newOrigin, newSize);
-  };
-
-  this.home = function (destination) {
-    var target = destination || HOME;
-    origin = target.origin;
-    size = target.size;
-  };
-
-  this.anchor = {
-
-    translate: function (vector) {
-      origin = origin.add(vector);
-    },
-
-    scale: function (center, magnification) {
-      origin = origin.subtract(center).multiply(magnification).add(center);
-      size = size.multiply(magnification);
-    }
-
-  };
-
-}
 (function (){
 
   function isSVG (element) {
@@ -179,3 +104,14 @@ function viewFrame (origin, size) {
   };
 
 }());
+
+  // Doesnt work if target is svg
+  // Give argument to expand hammer instance
+  // return function will kill and home methods
+  // possibly take config map for shortcut keys
+  // include keystroke zoom and pan
+  // keep mouse handlers private
+  // Added mouse wheel support in configuration
+  // mobilise method auto called
+  // freeze method for swish loader
+  // Need to clear hammer for testing
