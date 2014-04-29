@@ -119,6 +119,7 @@ var ViewFrame;
     } else{
       var temp = new ViewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
       this.setViewBox(temp.toString());
+      this.updateScreenCTM();
       return temp;
     }
   };
