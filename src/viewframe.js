@@ -14,12 +14,14 @@ var viewFrame;
   }
 
   viewFrame = function(element, origin, size) {
+    var HOME, inverseScreenCTM;
     if (origin === undefined) {
       var elementViewBox = getViewBox(element);
       origin = elementViewBox.origin;
       size = elementViewBox.size;
     }
-    var HOME = { origin: origin, size: size };
+    HOME = { origin: origin, size: size };
+    inverseScreenCTM = element.getScreenCTM().inverse();
 
     this.dX = function () { return size.x;   };
     this.dY = function () { return size.y;   };
@@ -33,6 +35,12 @@ var viewFrame;
     this.setSize = function(point){ size = point; };
 
     this.getHome = function(){ return HOME; };
+    this.getElement = function(){ return element; };
+    this.getInverseScreenCTM = function(){ return inverseScreenCTM; };
+  };
+
+  viewFrame.prototype.drag = function(vector, permanent){
+    vector = 1;
   };
 
   viewFrame.prototype.translate = function(vector, permanent){
@@ -40,7 +48,7 @@ var viewFrame;
     if (permanent) {
       this.setOrigin(newOrigin);
     } else{
-      return new viewFrame(null, newOrigin, this.getSize());
+      return new viewFrame(this.getElement(), newOrigin, this.getSize());
     }
   };
 
@@ -51,7 +59,7 @@ var viewFrame;
       this.setOrigin(newOrigin);
       this.setSize(newSize);
     } else{
-      return new viewFrame(null, newOrigin, newSize);
+      return new viewFrame(this.getElement(), newOrigin, newSize);
     }
   };
 

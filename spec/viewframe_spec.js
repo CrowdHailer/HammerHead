@@ -2,7 +2,12 @@ describe("Viewframe", function () {
   var element, origin, size;
   beforeEach(function(){
     element = {
-      getAttribute: function(){ return '1 2 3 4'; }
+      getAttribute: function(){ return '1 2 3 4'; },
+      getScreenCTM: function(){
+        return {
+          inverse: function(){ return {a: 2, b: 0, c: 0, d: 2, e: 0, f: 0}; }
+        };
+      }
     };
     origin = new Point (0, 1);
     size = new Point (8, 6);
@@ -53,6 +58,32 @@ describe("Viewframe", function () {
 
     it('should scale permanently when permanent argument true', function(){
       frame.scale(new Point(0, 1), 0.5, true);
+      expect(frame.toString()).toEqual('0 1 4 3');
+    });
+  });
+
+  describe('moving in page pixels', function(){
+    beforeEach(function () {
+      frame = new viewFrame (element, origin, size);
+    });
+
+    xit('should drag temporarily when permanent argument untrue', function(){
+      expect(frame.drag(new Point(1, 1)).toString()).toEqual('2 3 8 6');
+      expect(frame.toString()).toEqual('0 1 8 6');
+    });
+
+    xit('should drag permanently when permanent argument true', function(){
+      frame.drag(new Point(1, 1), true);
+      expect(frame.toString()).toEqual('2 3 8 6');
+    });
+
+    xit('should zoom temporarily when permanent argument untrue', function(){
+      expect(frame.zoom(new Point(0, 0), 0.5).toString()).toEqual('0 1 4 3');
+      expect(frame.toString()).toEqual('0 1 8 6');
+    });
+
+    xit('should zoom permanently when permanent argument true', function(){
+      frame.zoom(new Point(0, 1), 0.5, true);
       expect(frame.toString()).toEqual('0 1 4 3');
     });
   });
