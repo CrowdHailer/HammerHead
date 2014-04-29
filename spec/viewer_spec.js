@@ -35,7 +35,7 @@ describe('viewer', function () {
     document.body.innerHTML += svgString;
     spyOn(window, 'viewFrame');
     viewer = new Viewer ('test');
-    expect(viewFrame).toHaveBeenCalledWith(new Point(0,0), new Point(2000,1000));
+    expect(viewFrame).toHaveBeenCalledWith(null, new Point(0,0), new Point(2000,1000));
     var fix = document.getElementById('test');
     fix.parentElement.removeChild(fix);
   });

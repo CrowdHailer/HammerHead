@@ -20,7 +20,7 @@
     var viewBox = viewBoxString.split(' ').map(returnInt);
     var origin = new Point(viewBox[0], viewBox[1]);
     var size = new Point(viewBox[2], viewBox[3]);
-    return new viewFrame(origin, size);
+    return new viewFrame(null, origin, size);
   }
 
 

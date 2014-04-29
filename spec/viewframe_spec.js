@@ -1,9 +1,9 @@
 describe("Viewframe", function () {
-  var origin, size, frame;
+  var origin, size, frame, SVGElement;
   beforeEach(function () {
     origin = new Point (0, 100);
     size = new Point (800, 600);
-    frame = new viewFrame (origin, size);
+    frame = new viewFrame (SVGElement, origin, size);
   });
 
   describe('Dimensions', function () {

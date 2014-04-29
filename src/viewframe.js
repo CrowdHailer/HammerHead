@@ -1,6 +1,6 @@
 var viewFrame;
 (function(){
-  viewFrame = function(origin, size) {
+  viewFrame = function(element, origin, size) {
     var HOME = { origin: origin, size: size };
 
     this.dX = function () { return size.x;   };
@@ -22,7 +22,7 @@ var viewFrame;
     if (permanent) {
       this.setOrigin(newOrigin);
     } else{
-      return new viewFrame(newOrigin, this.getSize());
+      return new viewFrame(null, newOrigin, this.getSize());
     }
   };
 
@@ -33,7 +33,7 @@ var viewFrame;
       this.setOrigin(newOrigin);
       this.setSize(newSize);
     } else{
-      return new viewFrame(newOrigin, newSize);
+      return new viewFrame(null, newOrigin, newSize);
     }
   };
 

@@ -33,7 +33,7 @@ Point.prototype = {
 };
 var viewFrame;
 (function(){
-  viewFrame = function(origin, size) {
+  viewFrame = function(element, origin, size) {
     var HOME = { origin: origin, size: size };
 
     this.dX = function () { return size.x;   };
@@ -55,7 +55,7 @@ var viewFrame;
     if (permanent) {
       this.setOrigin(newOrigin);
     } else{
-      return new viewFrame(newOrigin, this.getSize());
+      return new viewFrame(null, newOrigin, this.getSize());
     }
   };
 
@@ -66,7 +66,7 @@ var viewFrame;
       this.setOrigin(newOrigin);
       this.setSize(newSize);
     } else{
-      return new viewFrame(newOrigin, newSize);
+      return new viewFrame(null, newOrigin, newSize);
     }
   };
 
@@ -103,7 +103,7 @@ var viewFrame;
     var viewBox = viewBoxString.split(' ').map(returnInt);
     var origin = new Point(viewBox[0], viewBox[1]);
     var size = new Point(viewBox[2], viewBox[3]);
-    return new viewFrame(origin, size);
+    return new viewFrame(null, origin, size);
   }
 
 
