@@ -19,11 +19,11 @@
   "dependencies": {
     "hammerjs": "1.0.10"
   },
-  "_release": "01e6c43c47",
+  "_release": "782743b078",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "01e6c43c4723b2000d70e8ca3dfbcb2ef9bc2821"
+    "commit": "782743b0786f648c418b1759cd3cca957cf9a990"
   },
   "_source": "git://github.com/CrowdHailer/HammerHead.git",
   "_target": "*",
