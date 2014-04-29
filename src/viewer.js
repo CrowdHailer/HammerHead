@@ -18,15 +18,18 @@ var Hammerhead;
 
     dragHandler = function (event) {
       event.gesture.preventDefault();
+      console.log(event.gesture);
       viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY));
     };
 
     dragendHandler = function (event) {
       event.gesture.preventDefault();
+      console.log(event.gesture);
       viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY), true);
     };
 
     dragstartHandler = function (event) {
+      console.log(event.gesture);
       event.gesture.preventDefault();
     };
 
