@@ -8,6 +8,12 @@ var viewFrame;
     this.x0 = function () { return origin.x; };
     this.y0 = function () { return origin.y; };
 
+    this.getOrigin = function(){ return origin; };
+    this.getSize   = function(){ return size;   };
+
+    this.setOrigin = function(point){ origin = point; };
+    this.setSize = function(point){ size = point; };
+
     this.translate = function (vector) {
       return new viewFrame(origin.add(vector), size);
     };
