@@ -4,29 +4,17 @@ describe('viewer', function () {
 
   describe('invalid svg situations', function () {
     it('should raise an exception if not given an element', function () {
+      spyOn(document, "getElementById").andReturn(null);
       expect(function () {
         new Hammerhead('invalid');
       }).toThrow(new Error('Id: invalid is not a SVG element'));
     });
 
     it('should raise an exception if not given an svg', function () {
-      svgString = '<p id="not-svg"></p>';
-      document.body.innerHTML += svgString;
+      spyOn(document, "getElementById").andReturn({tagName: 'p'});
       expect(function () {
         new Hammerhead ('not-svg');
       }).toThrow(new Error('Id: not-svg is not a SVG element'));
-      var fix = document.getElementById('not-svg');
-      fix.parentElement.removeChild(fix);
-    });
-
-    it('should raise an expection if SVG has no viewbox', function () {
-      svgString = '<svg id="no-viewbox"></svg>';
-      document.body.innerHTML += svgString;
-      expect(function () {
-        new Hammerhead ('no-viewbox');
-      }).toThrow(new Error('Id: no-viewbox has no viewBox attribute'));
-      var fix = document.getElementById('no-viewbox');
-      fix.parentElement.removeChild(fix);
     });
   });
 
