@@ -75,7 +75,12 @@ var ViewFrame;
 
     this.getInverseScreenCTM = function(){ return inverseScreenCTM; };
     this.updateScreenCTM = function(){
-      return (inverseScreenCTM = element.getScreenCTM().inverse());
+      var inverse = element.getScreenCTM().inverse();
+      if (!window.devicePixelRatio) {
+        inverse = inverse.multiply(2);
+      }
+      inverseScreenCTM = inverse;
+      return inverse;
     };
     inverseScreenCTM = inverseScreenCTM || this.updateScreenCTM();
   };
