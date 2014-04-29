@@ -54,7 +54,7 @@ var ViewFrame;
   };
 
   ViewFrame.prototype.translate = function(vector, permanent){
-    var newOrigin = this.getOrigin().add(vector);
+    var newOrigin = this.getOrigin().subtract(vector);
     if (permanent) {
       this.setOrigin(newOrigin);
     } else{

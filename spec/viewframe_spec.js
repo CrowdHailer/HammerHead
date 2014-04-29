@@ -42,13 +42,13 @@ describe("Viewframe", function () {
     });
 
     it('should translate temporarily when permanent argument untrue', function(){
-      expect(frame.translate(new Point(1, 1)).toString()).toEqual('1 2 8 6');
+      expect(frame.translate(new Point(1, 1)).toString()).toEqual('-1 0 8 6');
       expect(frame.toString()).toEqual('0 1 8 6');
     });
 
     it('should translate permanently when permanent argument true', function(){
       frame.translate(new Point(1, 1), true);
-      expect(frame.toString()).toEqual('1 2 8 6');
+      expect(frame.toString()).toEqual('-1 0 8 6');
     });
 
     it('should scale temporarily when permanent argument untrue', function(){
@@ -68,13 +68,13 @@ describe("Viewframe", function () {
     });
 
     it('should drag temporarily when permanent argument untrue', function(){
-      expect(frame.drag(new Point(1, 1)).toString()).toEqual('2 3 8 6');
+      expect(frame.drag(new Point(1, 1)).toString()).toEqual('-2 -1 8 6');
       expect(frame.toString()).toEqual('0 1 8 6');
     });
 
     it('should drag permanently when permanent argument true', function(){
       frame.drag(new Point(1, 1), true);
-      expect(frame.toString()).toEqual('2 3 8 6');
+      expect(frame.toString()).toEqual('-2 -1 8 6');
     });
 
     it('should zoom temporarily when permanent argument untrue', function(){
