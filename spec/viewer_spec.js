@@ -5,7 +5,7 @@ describe('viewer', function () {
   describe('invalid svg situations', function () {
     it('should raise an exception if not given an element', function () {
       expect(function () {
-        new Viewer('invalid');
+        new Hammerhead('invalid');
       }).toThrow(new Error('Id: invalid is not a SVG element'));
     });
 
@@ -13,7 +13,7 @@ describe('viewer', function () {
       svgString = '<p id="not-svg"></p>';
       document.body.innerHTML += svgString;
       expect(function () {
-        new Viewer ('not-svg');
+        new Hammerhead ('not-svg');
       }).toThrow(new Error('Id: not-svg is not a SVG element'));
       var fix = document.getElementById('not-svg');
       fix.parentElement.removeChild(fix);
@@ -23,7 +23,7 @@ describe('viewer', function () {
       svgString = '<svg id="no-viewbox"></svg>';
       document.body.innerHTML += svgString;
       expect(function () {
-        new Viewer ('no-viewbox');
+        new Hammerhead ('no-viewbox');
       }).toThrow(new Error('Id: no-viewbox has no viewBox attribute'));
       var fix = document.getElementById('no-viewbox');
       fix.parentElement.removeChild(fix);
@@ -34,7 +34,7 @@ describe('viewer', function () {
     svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"></svg>';
     document.body.innerHTML += svgString;
     spyOn(window, 'viewFrame');
-    viewer = new Viewer ('test');
+    viewer = new Hammerhead ('test');
     var fix = document.getElementById('test');
     expect(viewFrame).toHaveBeenCalledWith(fix, new Point(0,0), new Point(2000,1000));
     fix.parentElement.removeChild(fix);
@@ -47,7 +47,7 @@ describe('viewer', function () {
       document.body.innerHTML += svgString;
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
-      viewer = new Viewer ('test');
+      viewer = new Hammerhead ('test');
     });
 
     it('should be possible to drag the svg', function(){

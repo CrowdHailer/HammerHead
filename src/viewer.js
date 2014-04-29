@@ -1,3 +1,4 @@
+var Hammerhead;
 (function (){
 
   function isSVG (element) {
@@ -24,7 +25,7 @@
   }
 
 
-  Viewer = function (id) {
+  Hammerhead = function (id) {
     var element = getSVG(id);
     var viewFrame = getViewFrame(element);
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
