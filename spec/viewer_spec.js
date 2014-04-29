@@ -1,5 +1,6 @@
 describe('viewer', function () {
   var svgString;
+  var preventDefault = function(){ };
 
   describe('invalid svg situations', function () {
     it('should raise an exception if not given an element', function () {
@@ -61,44 +62,44 @@ describe('viewer', function () {
 
     it('should drag from the same origin for drag events', function() {
       var hammerHandle = viewer._test.hammertime;
-      hammerHandle.trigger('touch', {target: testPath});
-      hammerHandle.trigger('dragstart', {});
-      hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250});
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
+      hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
-      hammerHandle.trigger('drag', {deltaX: 200, deltaY: 100});
+      hammerHandle.trigger('drag', {deltaX: 200, deltaY: 100, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
       hammerHandle.trigger('release', {});
     });
 
     it('should drag permanently on drag end events', function () {
       var hammerHandle = viewer._test.hammertime;
-      hammerHandle.trigger('touch', {target: testPath});
-      hammerHandle.trigger('dragstart', {});
-      hammerHandle.trigger('dragend', {deltaX: 500, deltaY: 250});
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
+      hammerHandle.trigger('dragend', {deltaX: 500, deltaY: 250, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
-      hammerHandle.trigger('drag', {deltaX: 200, deltaY: -100});
+      hammerHandle.trigger('drag', {deltaX: 200, deltaY: -100, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -600 2000 1000');
       hammerHandle.trigger('release', {});
     });
 
     it('should zoom from the same reference for pinch events', function() {
       var hammerHandle = viewer._test.hammertime;
-      hammerHandle.trigger('touch', {target: testPath});
-      hammerHandle.trigger('transformstart', {});
-      hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 2});
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      hammerHandle.trigger('transformstart', {preventDefault: preventDefault});
+      hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 2, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
-      hammerHandle.trigger('pinch', {center:{pageX:500,  pageY: 0}, scale: 2});
+      hammerHandle.trigger('pinch', {center:{pageX:500,  pageY: 0}, scale: 2, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
       hammerHandle.trigger('release', {});
     });
 
     it('should zoomg permanently on transformend events', function () {
       var hammerHandle = viewer._test.hammertime;
-      hammerHandle.trigger('touch', {target: testPath});
-      hammerHandle.trigger('transformstart', {});
-      hammerHandle.trigger('transformend', {center:{pageX:0,  pageY: 0}, scale: 2});
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      hammerHandle.trigger('transformstart', {preventDefault: preventDefault});
+      hammerHandle.trigger('transformend', {center:{pageX:0,  pageY: 0}, scale: 2, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
-      hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 0.5});
+      hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 0.5, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toEqual('0 0 2000 1000');
       hammerHandle.trigger('release', {});
     });

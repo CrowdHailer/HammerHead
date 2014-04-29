@@ -99,9 +99,7 @@
       instance.off('release', releaseHandler);
     }
     function touchHandler (event) {
-      console.log(event);
       event.gesture.preventDefault();
-      console.log(event);
       if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
     }
     function releaseHandler (event) {
