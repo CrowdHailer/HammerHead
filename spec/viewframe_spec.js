@@ -1,4 +1,19 @@
 describe("Viewframe", function () {
+  describe('reading from element', function(){
+    it('should read the viewbox charachteristics when not given specifics', function(){
+      var element = {
+        getAttribute: function(){
+          return '100 200 400 400';
+        }
+      };
+      var frame = new viewFrame(element);
+      expect(frame.x0()).toEqual(100);
+      expect(frame.y0()).toEqual(200);
+      expect(frame.dX()).toEqual(400);
+      expect(frame.dX()).toEqual(400);
+    });
+  });
+
   describe('viewfram given explicit parameter', function(){
     var origin, size, frame, SVGElement;
     beforeEach(function () {

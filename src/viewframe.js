@@ -1,6 +1,24 @@
 var viewFrame;
 (function(){
+  function returnInt (string) {
+    return parseInt(string, 10);
+  }
+
+  function getViewBox (element) {
+    var viewBoxString = element.getAttribute('viewBox');
+    if (!viewBoxString) { throw 'Id: ' + element.id + ' has no viewBox attribute'; }
+    var viewBox = viewBoxString.split(' ').map(returnInt);
+    var origin = new Point(viewBox[0], viewBox[1]);
+    var size = new Point(viewBox[2], viewBox[3]);
+    return {origin: origin, size: size};
+  }
+
   viewFrame = function(element, origin, size) {
+    if (origin === undefined) {
+      var elementViewBox = getViewBox(element);
+      origin = elementViewBox.origin;
+      size = elementViewBox.size;
+    }
     var HOME = { origin: origin, size: size };
 
     this.dX = function () { return size.x;   };
