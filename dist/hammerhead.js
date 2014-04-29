@@ -46,13 +46,14 @@ var viewFrame;
     return {origin: origin, size: size};
   }
 
-  viewFrame = function(element, origin, size) {
+  viewFrame = function(element, origin, size, inverseScreenCTM) {
+    var HOME;
     if (origin === undefined) {
       var elementViewBox = getViewBox(element);
       origin = elementViewBox.origin;
       size = elementViewBox.size;
     }
-    var HOME = { origin: origin, size: size };
+    HOME = { origin: origin, size: size };
 
     this.dX = function () { return size.x;   };
     this.dY = function () { return size.y;   };
@@ -66,6 +67,23 @@ var viewFrame;
     this.setSize = function(point){ size = point; };
 
     this.getHome = function(){ return HOME; };
+    this.getElement = function(){ return element; };
+
+    this.getInverseScreenCTM = function(){ return inverseScreenCTM; };
+    this.updateScreenCTM = function(){
+      return element.getScreenCTM().inverse();
+    };
+    inverseScreenCTM = inverseScreenCTM || this.updateScreenCTM();
+  };
+
+  viewFrame.prototype.drag = function(vector, permanent){
+    vector = vector.scaleTransform(this.getInverseScreenCTM());
+    return this.translate(vector, permanent);
+  };
+
+  viewFrame.prototype.zoom = function(center, magnification, permanent){
+    center = center.transform(this.getInverseScreenCTM());
+    return this.scale(center, magnification, permanent);
   };
 
   viewFrame.prototype.translate = function(vector, permanent){
@@ -73,7 +91,7 @@ var viewFrame;
     if (permanent) {
       this.setOrigin(newOrigin);
     } else{
-      return new viewFrame(null, newOrigin, this.getSize());
+      return new viewFrame(this.getElement(), newOrigin, this.getSize(), this.getInverseScreenCTM());
     }
   };
 
@@ -84,7 +102,7 @@ var viewFrame;
       this.setOrigin(newOrigin);
       this.setSize(newSize);
     } else{
-      return new viewFrame(null, newOrigin, newSize);
+      return new viewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
     }
   };
 
@@ -121,7 +139,7 @@ var viewFrame;
     var viewBox = viewBoxString.split(' ').map(returnInt);
     var origin = new Point(viewBox[0], viewBox[1]);
     var size = new Point(viewBox[2], viewBox[3]);
-    return new viewFrame(null, origin, size);
+    return new viewFrame(element, origin, size);
   }
 
 

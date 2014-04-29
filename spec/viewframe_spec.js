@@ -67,23 +67,23 @@ describe("Viewframe", function () {
       frame = new viewFrame (element, origin, size);
     });
 
-    xit('should drag temporarily when permanent argument untrue', function(){
+    it('should drag temporarily when permanent argument untrue', function(){
       expect(frame.drag(new Point(1, 1)).toString()).toEqual('2 3 8 6');
       expect(frame.toString()).toEqual('0 1 8 6');
     });
 
-    xit('should drag permanently when permanent argument true', function(){
+    it('should drag permanently when permanent argument true', function(){
       frame.drag(new Point(1, 1), true);
       expect(frame.toString()).toEqual('2 3 8 6');
     });
 
-    xit('should zoom temporarily when permanent argument untrue', function(){
-      expect(frame.zoom(new Point(0, 0), 0.5).toString()).toEqual('0 1 4 3');
+    it('should zoom temporarily when permanent argument untrue', function(){
+      expect(frame.zoom(new Point(0, 0.5), 0.5).toString()).toEqual('0 1 4 3');
       expect(frame.toString()).toEqual('0 1 8 6');
     });
 
-    xit('should zoom permanently when permanent argument true', function(){
-      frame.zoom(new Point(0, 1), 0.5, true);
+    it('should zoom permanently when permanent argument true', function(){
+      frame.zoom(new Point(0, 0.5), 0.5, true);
       expect(frame.toString()).toEqual('0 1 4 3');
     });
   });
