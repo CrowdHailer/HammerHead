@@ -48,28 +48,26 @@ var viewFrame;
     this.setSize = function(point){ size = point; };
 
     this.getHome = function(){ return HOME; };
+  };
 
-    this.translate = function (vector) {
-      return new viewFrame(origin.add(vector), size);
-    };
+  viewFrame.prototype.translate = function(vector, permanent){
+    var newOrigin = this.getOrigin().add(vector);
+    if (permanent) {
+      this.setOrigin(newOrigin);
+    } else{
+      return new viewFrame(newOrigin, this.getSize());
+    }
+  };
 
-    this.scale = function (center, magnification) {
-      newOrigin = origin.subtract(center).multiply(magnification).add(center);
-      newSize = size.multiply(magnification);
+  viewFrame.prototype.scale = function(center, magnification, permanent){
+    var newOrigin = this.getOrigin().subtract(center).multiply(magnification).add(center);
+    var newSize = this.getSize().multiply(magnification);
+    if (permanent) {
+      this.setOrigin(newOrigin);
+      this.setSize(newSize);
+    } else{
       return new viewFrame(newOrigin, newSize);
-    };
-
-    this.anchor = {
-
-      translate: function (vector) {
-        origin = origin.add(vector);
-      },
-
-      scale: function (center, magnification) {
-        origin = origin.subtract(center).multiply(magnification).add(center);
-        size = size.multiply(magnification);
-      }
-    };
+    }
   };
 
   viewFrame.prototype.toString = function(){
@@ -124,7 +122,7 @@ var viewFrame;
     fixedDrag = function (deltaX, deltaY) {
       var screenVector = new Point(deltaX, deltaY);
       var SVGVector = screenVector.scaleTo(element).multiply(-1);
-      viewFrame.anchor.translate(SVGVector);
+      viewFrame.translate(SVGVector, true);
       var viewBoxString = viewFrame.toString();
       element.setAttribute('viewBox', viewBoxString);
     };
@@ -141,7 +139,7 @@ var viewFrame;
       var screenCenter = new Point(centerX, centerY);
       var SVGCenter = screenCenter.mapTo(element);
       var scaleFactor = 1.0/zoomFactor;
-      viewFrame.anchor.scale(SVGCenter, scaleFactor);
+      viewFrame.scale(SVGCenter, scaleFactor, true);
       var viewBoxString = viewFrame.toString();
       element.setAttribute('viewBox', viewBoxString);
     };

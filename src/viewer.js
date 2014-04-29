@@ -39,7 +39,7 @@
     fixedDrag = function (deltaX, deltaY) {
       var screenVector = new Point(deltaX, deltaY);
       var SVGVector = screenVector.scaleTo(element).multiply(-1);
-      viewFrame.anchor.translate(SVGVector);
+      viewFrame.translate(SVGVector, true);
       var viewBoxString = viewFrame.toString();
       element.setAttribute('viewBox', viewBoxString);
     };
@@ -56,7 +56,7 @@
       var screenCenter = new Point(centerX, centerY);
       var SVGCenter = screenCenter.mapTo(element);
       var scaleFactor = 1.0/zoomFactor;
-      viewFrame.anchor.scale(SVGCenter, scaleFactor);
+      viewFrame.scale(SVGCenter, scaleFactor, true);
       var viewBoxString = viewFrame.toString();
       element.setAttribute('viewBox', viewBoxString);
     };
