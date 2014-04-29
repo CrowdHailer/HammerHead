@@ -8,10 +8,6 @@ var viewFrame;
     this.x0 = function () { return origin.x; };
     this.y0 = function () { return origin.y; };
 
-    this.toString = function () {
-      return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
-    };
-
     this.translate = function (vector) {
       return new viewFrame(origin.add(vector), size);
     };
@@ -39,5 +35,9 @@ var viewFrame;
         size = size.multiply(magnification);
       }
     };
+  };
+
+  viewFrame.prototype.toString = function(){
+    return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
   };
 }());
