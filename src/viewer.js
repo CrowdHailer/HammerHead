@@ -11,65 +11,21 @@ var Hammerhead;
     throw 'Id: ' + id + ' is not a SVG element';
   }
 
-  function returnInt (string) {
-    return parseInt(string, 10);
-  }
-
-  function getViewFrame (element) {
-    var viewBoxString = element.getAttribute('viewBox');
-    if (!viewBoxString) { throw 'Id: ' + element.id + ' has no viewBox attribute'; }
-    var viewBox = viewBoxString.split(' ').map(returnInt);
-    var origin = new Point(viewBox[0], viewBox[1]);
-    var size = new Point(viewBox[2], viewBox[3]);
-    return new viewFrame(element, origin, size);
-  }
-
-
   Hammerhead = function (id) {
     var element = getSVG(id);
-    var viewFrame = getViewFrame(element);
+    var viewFrame = new ViewFrame(element);
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
-
-    drag = function (deltaX, deltaY) {
-      var screenVector = new Point(deltaX, deltaY);
-      var SVGVector = screenVector.scaleTo(element).multiply(-1);
-      var viewBoxString = viewFrame.translate(SVGVector).toString();
-      element.setAttribute('viewBox', viewBoxString);
-    };
-
-    fixedDrag = function (deltaX, deltaY) {
-      var screenVector = new Point(deltaX, deltaY);
-      var SVGVector = screenVector.scaleTo(element).multiply(-1);
-      viewFrame.translate(SVGVector, true);
-      var viewBoxString = viewFrame.toString();
-      element.setAttribute('viewBox', viewBoxString);
-    };
-
-    zoom = function (centerX, centerY, zoomFactor) {
-      var screenCenter = new Point(centerX, centerY);
-      var SVGCenter = screenCenter.mapTo(element);
-      var scaleFactor = 1.0/zoomFactor;
-      var viewBoxString = viewFrame.scale(SVGCenter, scaleFactor).toString();
-      element.setAttribute('viewBox', viewBoxString);
-    };
-
-    fixedZoom = function (centerX, centerY, zoomFactor) {
-      var screenCenter = new Point(centerX, centerY);
-      var SVGCenter = screenCenter.mapTo(element);
-      var scaleFactor = 1.0/zoomFactor;
-      viewFrame.scale(SVGCenter, scaleFactor, true);
-      var viewBoxString = viewFrame.toString();
-      element.setAttribute('viewBox', viewBoxString);
-    };
 
     dragHandler = function (event) {
       event.gesture.preventDefault();
-      drag(event.gesture.deltaX, event.gesture.deltaY);
+      viewBoxString = viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY)).toString();
+      element.setAttribute('viewBox', viewBoxString);
     };
 
     dragendHandler = function (event) {
       event.gesture.preventDefault();
-      fixedDrag(event.gesture.deltaX, event.gesture.deltaY);
+      viewBoxString = viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY), true).toString();
+      element.setAttribute('viewBox', viewBoxString);
     };
 
     dragstartHandler = function (event) {
@@ -77,11 +33,15 @@ var Hammerhead;
     };
 
     pinchHandler = function (event) {
-      zoom(event.gesture.center.pageX, event.gesture.center.pageY, event.gesture.scale);
+      event.gesture.preventDefault();
+      viewBoxString = viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale).toString();
+      element.setAttribute('viewBox', viewBoxString);
     };
 
     transformendHandler = function (event) {
-      fixedZoom(event.gesture.center.pageX, event.gesture.center.pageY, event.gesture.scale);
+      event.gesture.preventDefault();
+      viewBoxString = viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale, true).toString();
+      element.setAttribute('viewBox', viewBoxString);
     };
     function activityOn(instance){
       instance.on('drag', dragHandler);
@@ -106,8 +66,6 @@ var Hammerhead;
     function releaseHandler (event) {
       activityOff(hammertime);  
     }
-    this.drag = drag;
-    this.zoom = zoom;
     this._test = {
       hammertime: hammertime
     };

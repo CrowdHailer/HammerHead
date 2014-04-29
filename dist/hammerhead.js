@@ -31,7 +31,7 @@ Point.prototype = {
     return this.scaleTransform(matrix);
   }
 };
-var viewFrame;
+var ViewFrame;
 (function(){
   function returnInt (string) {
     return parseInt(string, 10);
@@ -46,7 +46,7 @@ var viewFrame;
     return {origin: origin, size: size};
   }
 
-  viewFrame = function(element, origin, size, inverseScreenCTM) {
+  ViewFrame = function(element, origin, size, inverseScreenCTM) {
     var HOME;
     if (origin === undefined) {
       var elementViewBox = getViewBox(element);
@@ -71,52 +71,55 @@ var viewFrame;
 
     this.getInverseScreenCTM = function(){ return inverseScreenCTM; };
     this.updateScreenCTM = function(){
-      return element.getScreenCTM().inverse();
+      return (inverseScreenCTM = element.getScreenCTM().inverse());
     };
     inverseScreenCTM = inverseScreenCTM || this.updateScreenCTM();
   };
 
-  viewFrame.prototype.drag = function(vector, permanent){
+  ViewFrame.prototype.drag = function(vector, permanent){
     vector = vector.scaleTransform(this.getInverseScreenCTM());
     return this.translate(vector, permanent);
   };
 
-  viewFrame.prototype.zoom = function(center, magnification, permanent){
+  ViewFrame.prototype.zoom = function(center, magnification, permanent){
     center = center.transform(this.getInverseScreenCTM());
     return this.scale(center, magnification, permanent);
   };
 
-  viewFrame.prototype.translate = function(vector, permanent){
-    var newOrigin = this.getOrigin().add(vector);
+  ViewFrame.prototype.translate = function(vector, permanent){
+    var newOrigin = this.getOrigin().subtract(vector);
     if (permanent) {
       this.setOrigin(newOrigin);
+      return this;
     } else{
-      return new viewFrame(this.getElement(), newOrigin, this.getSize(), this.getInverseScreenCTM());
+      return new ViewFrame(this.getElement(), newOrigin, this.getSize(), this.getInverseScreenCTM());
     }
   };
 
-  viewFrame.prototype.scale = function(center, magnification, permanent){
+  ViewFrame.prototype.scale = function(center, magnification, permanent){
     var newOrigin = this.getOrigin().subtract(center).multiply(magnification).add(center);
     var newSize = this.getSize().multiply(magnification);
     if (permanent) {
       this.setOrigin(newOrigin);
       this.setSize(newSize);
+      return this;
     } else{
-      return new viewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
+      return new ViewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
     }
   };
 
-  viewFrame.prototype.toString = function(){
+  ViewFrame.prototype.toString = function(){
     return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
   };
 
-  viewFrame.prototype.home = function(destination){
+  ViewFrame.prototype.home = function(destination){
     var target = destination || this.getHome();
     this.setOrigin(target.origin);
     this.setSize(target.size);
   };
 }());
 
+var Hammerhead;
 (function (){
 
   function isSVG (element) {
@@ -129,65 +132,21 @@ var viewFrame;
     throw 'Id: ' + id + ' is not a SVG element';
   }
 
-  function returnInt (string) {
-    return parseInt(string, 10);
-  }
-
-  function getViewFrame (element) {
-    var viewBoxString = element.getAttribute('viewBox');
-    if (!viewBoxString) { throw 'Id: ' + element.id + ' has no viewBox attribute'; }
-    var viewBox = viewBoxString.split(' ').map(returnInt);
-    var origin = new Point(viewBox[0], viewBox[1]);
-    var size = new Point(viewBox[2], viewBox[3]);
-    return new viewFrame(element, origin, size);
-  }
-
-
-  Viewer = function (id) {
+  Hammerhead = function (id) {
     var element = getSVG(id);
-    var viewFrame = getViewFrame(element);
+    var viewFrame = new ViewFrame(element);
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
-
-    drag = function (deltaX, deltaY) {
-      var screenVector = new Point(deltaX, deltaY);
-      var SVGVector = screenVector.scaleTo(element).multiply(-1);
-      var viewBoxString = viewFrame.translate(SVGVector).toString();
-      element.setAttribute('viewBox', viewBoxString);
-    };
-
-    fixedDrag = function (deltaX, deltaY) {
-      var screenVector = new Point(deltaX, deltaY);
-      var SVGVector = screenVector.scaleTo(element).multiply(-1);
-      viewFrame.translate(SVGVector, true);
-      var viewBoxString = viewFrame.toString();
-      element.setAttribute('viewBox', viewBoxString);
-    };
-
-    zoom = function (centerX, centerY, zoomFactor) {
-      var screenCenter = new Point(centerX, centerY);
-      var SVGCenter = screenCenter.mapTo(element);
-      var scaleFactor = 1.0/zoomFactor;
-      var viewBoxString = viewFrame.scale(SVGCenter, scaleFactor).toString();
-      element.setAttribute('viewBox', viewBoxString);
-    };
-
-    fixedZoom = function (centerX, centerY, zoomFactor) {
-      var screenCenter = new Point(centerX, centerY);
-      var SVGCenter = screenCenter.mapTo(element);
-      var scaleFactor = 1.0/zoomFactor;
-      viewFrame.scale(SVGCenter, scaleFactor, true);
-      var viewBoxString = viewFrame.toString();
-      element.setAttribute('viewBox', viewBoxString);
-    };
 
     dragHandler = function (event) {
       event.gesture.preventDefault();
-      drag(event.gesture.deltaX, event.gesture.deltaY);
+      viewBoxString = viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY)).toString();
+      element.setAttribute('viewBox', viewBoxString);
     };
 
     dragendHandler = function (event) {
       event.gesture.preventDefault();
-      fixedDrag(event.gesture.deltaX, event.gesture.deltaY);
+      viewBoxString = viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY), true).toString();
+      element.setAttribute('viewBox', viewBoxString);
     };
 
     dragstartHandler = function (event) {
@@ -195,11 +154,15 @@ var viewFrame;
     };
 
     pinchHandler = function (event) {
-      zoom(event.gesture.center.pageX, event.gesture.center.pageY, event.gesture.scale);
+      event.gesture.preventDefault();
+      viewBoxString = viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale).toString();
+      element.setAttribute('viewBox', viewBoxString);
     };
 
     transformendHandler = function (event) {
-      fixedZoom(event.gesture.center.pageX, event.gesture.center.pageY, event.gesture.scale);
+      event.gesture.preventDefault();
+      viewBoxString = viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale, true).toString();
+      element.setAttribute('viewBox', viewBoxString);
     };
     function activityOn(instance){
       instance.on('drag', dragHandler);
@@ -224,8 +187,6 @@ var viewFrame;
     function releaseHandler (event) {
       activityOff(hammertime);  
     }
-    this.drag = drag;
-    this.zoom = zoom;
     this._test = {
       hammertime: hammertime
     };

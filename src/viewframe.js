@@ -57,6 +57,7 @@ var ViewFrame;
     var newOrigin = this.getOrigin().subtract(vector);
     if (permanent) {
       this.setOrigin(newOrigin);
+      return this;
     } else{
       return new ViewFrame(this.getElement(), newOrigin, this.getSize(), this.getInverseScreenCTM());
     }
@@ -68,6 +69,7 @@ var ViewFrame;
     if (permanent) {
       this.setOrigin(newOrigin);
       this.setSize(newSize);
+      return this;
     } else{
       return new ViewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
     }

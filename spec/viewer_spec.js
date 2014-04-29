@@ -26,16 +26,6 @@ describe('Hammerhead', function () {
       viewer = new Hammerhead ('test');
     });
 
-    it('should be possible to drag the svg', function(){
-      viewer.drag(250, -125);
-      expect(testSVG.getAttribute('viewBox')).toEqual('-1000 500 2000 1000');
-    });
-
-    it('should be possible to zoom the svg', function() {
-      viewer.zoom(0, 0, 2);
-      expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
-    });
-
     it('should drag from the same origin for drag events', function() {
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
