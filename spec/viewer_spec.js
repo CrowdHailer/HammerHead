@@ -1,5 +1,4 @@
 describe('viewer', function () {
-  var svgString;
   var preventDefault = function(){ };
 
   describe('invalid svg situations', function () {
@@ -16,16 +15,6 @@ describe('viewer', function () {
         new Hammerhead ('not-svg');
       }).toThrow(new Error('Id: not-svg is not a SVG element'));
     });
-  });
-
-  it('create a view frame from valid input', function () {
-    svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"></svg>';
-    document.body.innerHTML += svgString;
-    spyOn(window, 'viewFrame');
-    viewer = new Hammerhead ('test');
-    var fix = document.getElementById('test');
-    expect(viewFrame).toHaveBeenCalledWith(fix, new Point(0,0), new Point(2000,1000));
-    fix.parentElement.removeChild(fix);
   });
 
   describe('valid properties' ,function () {
