@@ -1,4 +1,4 @@
-var viewFrame;
+var ViewFrame;
 (function(){
   function returnInt (string) {
     return parseInt(string, 10);
@@ -13,7 +13,7 @@ var viewFrame;
     return {origin: origin, size: size};
   }
 
-  viewFrame = function(element, origin, size, inverseScreenCTM) {
+  ViewFrame = function(element, origin, size, inverseScreenCTM) {
     var HOME;
     if (origin === undefined) {
       var elementViewBox = getViewBox(element);
@@ -43,41 +43,41 @@ var viewFrame;
     inverseScreenCTM = inverseScreenCTM || this.updateScreenCTM();
   };
 
-  viewFrame.prototype.drag = function(vector, permanent){
+  ViewFrame.prototype.drag = function(vector, permanent){
     vector = vector.scaleTransform(this.getInverseScreenCTM());
     return this.translate(vector, permanent);
   };
 
-  viewFrame.prototype.zoom = function(center, magnification, permanent){
+  ViewFrame.prototype.zoom = function(center, magnification, permanent){
     center = center.transform(this.getInverseScreenCTM());
     return this.scale(center, magnification, permanent);
   };
 
-  viewFrame.prototype.translate = function(vector, permanent){
+  ViewFrame.prototype.translate = function(vector, permanent){
     var newOrigin = this.getOrigin().add(vector);
     if (permanent) {
       this.setOrigin(newOrigin);
     } else{
-      return new viewFrame(this.getElement(), newOrigin, this.getSize(), this.getInverseScreenCTM());
+      return new ViewFrame(this.getElement(), newOrigin, this.getSize(), this.getInverseScreenCTM());
     }
   };
 
-  viewFrame.prototype.scale = function(center, magnification, permanent){
+  ViewFrame.prototype.scale = function(center, magnification, permanent){
     var newOrigin = this.getOrigin().subtract(center).multiply(magnification).add(center);
     var newSize = this.getSize().multiply(magnification);
     if (permanent) {
       this.setOrigin(newOrigin);
       this.setSize(newSize);
     } else{
-      return new viewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
+      return new ViewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
     }
   };
 
-  viewFrame.prototype.toString = function(){
+  ViewFrame.prototype.toString = function(){
     return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
   };
 
-  viewFrame.prototype.home = function(destination){
+  ViewFrame.prototype.home = function(destination){
     var target = destination || this.getHome();
     this.setOrigin(target.origin);
     this.setSize(target.size);

@@ -15,7 +15,7 @@ describe("Viewframe", function () {
 
   describe('initialising the viewFrame', function(){
     it('should read the viewbox charachteristics when not given specifics', function(){
-      var frame = new viewFrame(element);
+      var frame = new ViewFrame(element);
       expect(frame.x0()).toEqual(1);
       expect(frame.y0()).toEqual(2);
       expect(frame.dX()).toEqual(3);
@@ -23,7 +23,7 @@ describe("Viewframe", function () {
     });
 
     it('should use origin and size arguments if provided', function(){
-      frame = new viewFrame (element, origin, size);
+      frame = new ViewFrame (element, origin, size);
       expect(frame.x0()).toEqual(0);
       expect(frame.y0()).toEqual(1);
       expect(frame.dX()).toEqual(8);
@@ -31,14 +31,14 @@ describe("Viewframe", function () {
     });
 
     it('should return a viewBox string', function(){
-      frame = new viewFrame (element, origin, size);
+      frame = new ViewFrame (element, origin, size);
       expect(frame.toString()).toBe('0 1 8 6');
     });
   });
 
   describe('transformations in SVG pixels', function(){
     beforeEach(function () {
-      frame = new viewFrame (element, origin, size);
+      frame = new ViewFrame (element, origin, size);
     });
 
     it('should translate temporarily when permanent argument untrue', function(){
@@ -64,7 +64,7 @@ describe("Viewframe", function () {
 
   describe('moving in page pixels', function(){
     beforeEach(function () {
-      frame = new viewFrame (element, origin, size);
+      frame = new ViewFrame (element, origin, size);
     });
 
     it('should drag temporarily when permanent argument untrue', function(){
@@ -90,7 +90,7 @@ describe("Viewframe", function () {
 
   describe('moving to a target view', function(){
     beforeEach(function () {
-      frame = new viewFrame (element, origin, size);
+      frame = new ViewFrame (element, origin, size);
     });
 
     it('should home to its initial values if no argument given', function(){
