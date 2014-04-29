@@ -46,7 +46,7 @@ describe("Viewframe", function () {
   describe('deep transform', function () {
     it('should be able to translate permanently', function () {
       var translation = new Point (100, 100);
-      frame.anchor.translate(translation);
+      frame.translate(translation, true);
       expect(frame.x0()).toEqual(100);
       expect(frame.y0()).toEqual(200);
     });
@@ -54,22 +54,22 @@ describe("Viewframe", function () {
     it('should multitranslate', function () {
       var translation1 = new Point (100, 100);
       var translation2 = new Point (200, -100);
-      frame.anchor.translate(translation1);
-      frame.anchor.translate(translation2);
+      frame.translate(translation1, true);
+      frame.translate(translation2, true);
       expect(frame.x0()).toEqual(300);
       expect(frame.y0()).toEqual(100);
     });
 
     it('should be able to scale Permanently', function () {
       var center = new Point (0, 100);
-      frame.anchor.scale(center, 2);
+      frame.scale(center, 2, true);
       expect(frame.toString()).toEqual('0 100 1600 1200');
     });
   });
 
   it('should have a permanent home value', function () {
     var translation = new Point (100, 100);
-    frame.anchor.translate(translation);
+    frame.translate(translation, true);
     frame.home();
     expect(frame.toString()).toEqual('0 100 800 600');
   });
