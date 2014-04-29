@@ -115,11 +115,11 @@ var ViewFrame;
       this.setOrigin(newOrigin);
       this.setSize(newSize);
       this.setViewBox();
+      this.updateScreenCTM();
       return this;
     } else{
       var temp = new ViewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
       this.setViewBox(temp.toString());
-      this.updateScreenCTM();
       return temp;
     }
   };
