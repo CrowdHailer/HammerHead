@@ -18,14 +18,12 @@ var Hammerhead;
 
     dragHandler = function (event) {
       event.gesture.preventDefault();
-      viewBoxString = viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY)).toString();
-      element.setAttribute('viewBox', viewBoxString);
+      viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY));
     };
 
     dragendHandler = function (event) {
       event.gesture.preventDefault();
-      viewBoxString = viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY), true).toString();
-      element.setAttribute('viewBox', viewBoxString);
+      viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY), true);
     };
 
     dragstartHandler = function (event) {
@@ -34,14 +32,12 @@ var Hammerhead;
 
     pinchHandler = function (event) {
       event.gesture.preventDefault();
-      viewBoxString = viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale).toString();
-      element.setAttribute('viewBox', viewBoxString);
+      viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale);
     };
 
     transformendHandler = function (event) {
       event.gesture.preventDefault();
-      viewBoxString = viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale, true).toString();
-      element.setAttribute('viewBox', viewBoxString);
+      viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale, true);
     };
     function activityOn(instance){
       instance.on('drag', dragHandler);

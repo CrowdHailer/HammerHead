@@ -32,6 +32,10 @@ var ViewFrame;
 
     this.setOrigin = function(point){ origin = point; };
     this.setSize = function(point){ size = point; };
+    this.setViewBox = function(viewBoxString){
+      viewBoxString = viewBoxString || this.toString();
+      element.setAttribute('viewBox', viewBoxString);
+    };
 
     this.getHome = function(){ return HOME; };
     this.getElement = function(){ return element; };
@@ -57,9 +61,12 @@ var ViewFrame;
     var newOrigin = this.getOrigin().subtract(vector);
     if (permanent) {
       this.setOrigin(newOrigin);
+      this.setViewBox();
       return this;
     } else{
-      return new ViewFrame(this.getElement(), newOrigin, this.getSize(), this.getInverseScreenCTM());
+      var temp = new ViewFrame(this.getElement(), newOrigin, this.getSize(), this.getInverseScreenCTM());
+      this.setViewBox(temp.toString());
+      return temp;
     }
   };
 
@@ -69,9 +76,12 @@ var ViewFrame;
     if (permanent) {
       this.setOrigin(newOrigin);
       this.setSize(newSize);
+      this.setViewBox();
       return this;
     } else{
-      return new ViewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
+      var temp = new ViewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
+      this.setViewBox(temp.toString());
+      return temp;
     }
   };
 

@@ -3,6 +3,7 @@ describe("Viewframe", function () {
   beforeEach(function(){
     element = {
       getAttribute: function(){ return '1 2 3 4'; },
+      setAttribute: function(){ return true; },
       getScreenCTM: function(){
         return {
           inverse: function(){ return {a: 2, b: 0, c: 0, d: 2, e: 0, f: 0}; }
