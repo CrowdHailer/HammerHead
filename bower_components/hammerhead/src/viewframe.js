@@ -44,7 +44,7 @@ var ViewFrame;
     this.updateScreenCTM = function(){
       var inverse = element.getScreenCTM().inverse();
       if (!window.devicePixelRatio) {
-        inverse = inverse.multiply(2);
+        inverse = inverse.scale(0.5);
       }
       inverseScreenCTM = inverse;
       return inverse;
