@@ -38,7 +38,7 @@ var viewFrame;
 
     this.getInverseScreenCTM = function(){ return inverseScreenCTM; };
     this.updateScreenCTM = function(){
-      return element.getScreenCTM().inverse();
+      return (inverseScreenCTM = element.getScreenCTM().inverse());
     };
     inverseScreenCTM = inverseScreenCTM || this.updateScreenCTM();
   };
