@@ -16,34 +16,27 @@ describe('Hammerhead', function () {
   });
 
   describe('valid properties' ,function () {
-    var viewer, testSVG, element;
+    var viewer, testSVG, preventDefault;
     beforeEach(function () {
-      var preventDefault = function(){ };
-      element = {
-        tagName: 'svg',
-        getAttribute: function(){ return '1 2 3 4'; },
-        setAttribute: function(){},
-        getScreenCTM: function(){
-          return {
-            inverse: function(){ return {a: 2, b: 0, c: 0, d: 2, e: 0, f: 0}; }
-          };
-        }
-      };
-      spyOn(document, "getElementById").andReturn(element);
-      viewer = new Hammerhead('test');
+      preventDefault = function(){ };
+      svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"><path id="test-path"></path></svg>';
+      document.body.innerHTML += svgString;
+      testSVG = document.getElementById('test');
+      testPath = document.getElementById('test-path');
+      viewer = new Hammerhead ('test');
     });
 
-    xit('should be possible to drag the svg', function(){
+    it('should be possible to drag the svg', function(){
       viewer.drag(250, -125);
       expect(testSVG.getAttribute('viewBox')).toEqual('-1000 500 2000 1000');
     });
 
-    xit('should be possible to zoom the svg', function() {
+    it('should be possible to zoom the svg', function() {
       viewer.zoom(0, 0, 2);
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
     });
 
-    xit('should drag from the same origin for drag events', function() {
+    it('should drag from the same origin for drag events', function() {
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
@@ -54,7 +47,7 @@ describe('Hammerhead', function () {
       hammerHandle.trigger('release', {});
     });
 
-    xit('should drag permanently on drag end events', function () {
+    it('should drag permanently on drag end events', function () {
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
@@ -65,7 +58,7 @@ describe('Hammerhead', function () {
       hammerHandle.trigger('release', {});
     });
 
-    xit('should zoom from the same reference for pinch events', function() {
+    it('should zoom from the same reference for pinch events', function() {
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('transformstart', {preventDefault: preventDefault});
@@ -76,7 +69,7 @@ describe('Hammerhead', function () {
       hammerHandle.trigger('release', {});
     });
 
-    xit('should zoomg permanently on transformend events', function () {
+    it('should zoomg permanently on transformend events', function () {
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('transformstart', {preventDefault: preventDefault});
