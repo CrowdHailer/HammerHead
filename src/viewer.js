@@ -18,18 +18,15 @@ var Hammerhead;
 
     dragHandler = function (event) {
       event.gesture.preventDefault();
-      console.log(event.gesture);
       viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY));
     };
 
     dragendHandler = function (event) {
       event.gesture.preventDefault();
-      console.log(event.gesture);
       viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY), true);
     };
 
     dragstartHandler = function (event) {
-      console.log(event.gesture);
       event.gesture.preventDefault();
     };
 
@@ -42,6 +39,7 @@ var Hammerhead;
       event.gesture.preventDefault();
       viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale, true);
     };
+
     function activityOn(instance){
       instance.on('drag', dragHandler);
       instance.on('dragstart', dragstartHandler);
@@ -65,9 +63,11 @@ var Hammerhead;
     function releaseHandler (event) {
       activityOff(hammertime);  
     }
+    /* test-code */
     this._test = {
       hammertime: hammertime
     };
+    /* end-test-code */
   };
 
 }());
