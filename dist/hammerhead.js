@@ -149,6 +149,7 @@ var Hammerhead;
   }
 
   Hammerhead = function (id) {
+    var scaling, lastFrame;
     var element = getSVG(id);
     var viewFrame = new ViewFrame(element);
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
@@ -169,12 +170,14 @@ var Hammerhead;
 
     pinchHandler = function (event) {
       event.gesture.preventDefault();
-      viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale);
+      lastFrame = viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale);
+      scaling = true;
     };
 
     transformendHandler = function (event) {
       event.gesture.preventDefault();
       viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale, true);
+      scaling = false;
     };
 
     function activityOn(instance){
@@ -198,6 +201,7 @@ var Hammerhead;
       if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
     }
     function releaseHandler (event) {
+      if (scaling) { alert('boo'); };
       activityOff(hammertime);  
     }
     /* test-code */
