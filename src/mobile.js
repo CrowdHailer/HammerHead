@@ -31,6 +31,11 @@ var MobileSVG;
       return this;
     };
 
+    this.zoom = function(screenCenter, magnfication){
+      var center = screenCenter.transform(inverseScreenCTM);
+      this.scale(center, magnfication);
+    };
+
     this.fix = function(){
       viewBox = temporaryViewBox;
       return this;

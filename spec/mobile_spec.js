@@ -13,6 +13,7 @@ describe('Mobile SVG', function(){
     mobileSVG = new MobileSVG(element);
     delta = new Point(1, 1);
     center = new Point(0, 1);
+    screenCenter = new Point(0, 0.5);
   });
 
   it('should read the viewbox attribute when not given specifics', function(){
@@ -63,6 +64,11 @@ describe('Mobile SVG', function(){
   it('should fix a drag', function(){
     mobileSVG.drag(delta).fix().drag(delta);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-4 -3 8 6');
+  });
+
+  it('should zoom in SVG units', function(){
+    mobileSVG.zoom(screenCenter, 2);
+    expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '0 1 4 3');
   });
 
   it('should home to its initial settings', function(){
