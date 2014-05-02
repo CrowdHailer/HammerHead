@@ -5,6 +5,13 @@ describe('Point', function(){
     expect(point.y).toBe(3);
   });
 
+  it('should be possible to initialize from another point', function(){
+    var pointInit = new Point(2,3);
+    var point = new Point(pointInit);
+    expect(point.x).toBe(2);
+    expect(point.y).toBe(3);
+  });
+
   it('should be able to add points', function () {
     var point1 = new Point(2,3);
     var point2 = new Point(3,-1);
