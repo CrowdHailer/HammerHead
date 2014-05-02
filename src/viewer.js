@@ -18,35 +18,33 @@ var Hammerhead;
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
 
     var handlers = {
-      drag: function(gesture){
-        return mobileSVG.drag(new Point(gesture.deltaX, gesture.deltaY));
+      dragstart: function(gesture){
+        mobileSVG.fix();
       },
-      dragend: function(gesture){
-        return mobileSVG.drag(new Point(gesture.deltaX, gesture.deltaY)).fix();
+      drag: function(gesture){
+        mobileSVG.drag(new Point(gesture.deltaX, gesture.deltaY));
+      },
+      transformstart: function(){
+        mobileSVG.fix();
       },
       pinch: function(gesture){
         mobileSVG.zoom(new Point(gesture.center.pageX, gesture.center.pageY), gesture.scale);
-      },
-      transformend: function(gesture){
-        mobileSVG.zoom(new Point(gesture.center.pageX, gesture.center.pageY), event.gesture.scale).fix();
       }
+
     };
 
     var gestureHandler = function(event){
       var gesture = event.gesture;
       gesture.preventDefault();
-      var handler = handlers[event.type];
-      if (handler) { 
-        lastFrame = handler(gesture);
-      }
+      handlers[event.type](gesture);
     };
 
     function activityOn(instance){
-      instance.on('dragstart drag dragend pinch transformend', gestureHandler);
+      instance.on('dragstart drag dragend transformstart pinch transformend', gestureHandler);
       instance.on('release', releaseHandler);
     }
     function activityOff(instance){
-      instance.off('dragstart drag dragend pinch transformend', gestureHandler);
+      instance.off('dragstart drag dragend transformstart pinch transformend', gestureHandler);
       instance.off('release', releaseHandler);
     }
     function touchHandler (event) {
@@ -54,9 +52,7 @@ var Hammerhead;
       if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
     }
     function releaseHandler (event) {
-      if (lastFrame) {
-        mobileSVG.fix();
-      }
+      mobileSVG.fix();
       activityOff(hammertime);
     }
     /* test-code */

@@ -5,6 +5,7 @@ var MobileSVG;
     var viewBoxString = element.getAttribute('viewBox');
     var viewBox = ViewBox.fromString(viewBoxString);
     var HOME = viewBox;
+    temporaryViewBox = viewBox;
     var getIverseScreenCTM = function(){
       var inverse = element.getScreenCTM().inverse();
       // Windows Phone hack

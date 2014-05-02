@@ -41,8 +41,11 @@ describe('Hammerhead', function () {
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
-      hammerHandle.trigger('dragend', {deltaX: 500, deltaY: 250, preventDefault: preventDefault});
+      hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault});
+      hammerHandle.trigger('release', {});
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
       hammerHandle.trigger('drag', {deltaX: 200, deltaY: -100, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -600 2000 1000');
       hammerHandle.trigger('release', {});
@@ -59,12 +62,13 @@ describe('Hammerhead', function () {
       hammerHandle.trigger('release', {});
     });
 
-    it('should zoomg permanently on transformend events', function () {
+    it('should zoom permanently on release events', function () {
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
-      hammerHandle.trigger('transformstart', {preventDefault: preventDefault});
-      hammerHandle.trigger('transformend', {center:{pageX:0,  pageY: 0}, scale: 2, preventDefault: preventDefault});
+      hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 2, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
+      hammerHandle.trigger('release', {});
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 0.5, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toEqual('0 0 2000 1000');
       hammerHandle.trigger('release', {});
