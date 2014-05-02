@@ -39,4 +39,10 @@ describe('ViewBox', function(){
     newViewBox = viewBox.translate(delta);
     expect(newViewBox.toString()).toEqual('-1 0 8 6');
   });
+
+  it('should scale to a centerpoint', function(){
+    center = new Point(0, 1);
+    newViewBox = viewBox.scale(center, 2);
+    expect(newViewBox.toString()).toEqual('0 1 4 3');
+  });
 });

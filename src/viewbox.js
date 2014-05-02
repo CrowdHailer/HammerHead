@@ -22,6 +22,12 @@ var ViewBox;
       var newMinimal = this.getMinimal().subtract(delta);
       var newMaximal = this.getMaximal().subtract(delta);
       return new this.constructor(newMinimal, newMaximal);
+    },
+    scale: function(center, scale){
+      var boxScale = 1.0/scale;
+      var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
+      var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
+      return new this.constructor(newMinimal, newMaximal);
     }
   };
 }());
