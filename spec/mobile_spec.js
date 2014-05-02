@@ -3,10 +3,13 @@ describe('Mobile SVG', function(){
   beforeEach(function(){
     element = {
       getAttribute: function(){},
-      setAttribute: function(){}
+      setAttribute: function(){},
+      getScreenCTM: function(){}
     };
+    var inverse = function(){ return {a: 2, b: 0, c: 0, d: 2, e: 0, f: 0}; };
     spyOn(element, 'getAttribute').andReturn('0 1 8 6');
     spyOn(element, 'setAttribute');
+    spyOn(element, 'getScreenCTM').andReturn({inverse: inverse});
     mobileSVG = new MobileSVG(element);
     delta = new Point(1, 1);
     center = new Point(0, 1);
@@ -20,6 +23,11 @@ describe('Mobile SVG', function(){
   it('should translate in SVG units', function(){
     mobileSVG.translate(delta);
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '-1 0 8 6');
+  });
+
+  it('should drag in Screen units', function(){
+    mobileSVG.drag(delta);
+    expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '-2 -1 8 6');
   });
 
   it('should translate from the same start point', function(){
