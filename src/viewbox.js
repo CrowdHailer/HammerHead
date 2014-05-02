@@ -1,18 +1,16 @@
 var ViewBox;
 (function(){
   ViewBox = function(minimal, maximal){
-    this.x0 = function(){ return minimal.x; };
-    this.y0 = function(){ return minimal.y; };
-
-    this.x1 = function(){ return maximal.x; };
-    this.y1 = function(){ return maximal.y; };
-
     this.getMinimal = function(){ return minimal; };
     this.getMaximal = function(){ return maximal; };
   };
 
   ViewBox.prototype = {
     constructor: ViewBox,
+    x0: function(){ return this.getMinimal().x; },
+    y0: function(){ return this.getMinimal().y; },
+    x1: function(){ return this.getMaximal().x; },
+    y1: function(){ return this.getMaximal().y; },
     dX: function(){ return this.x1() - this.x0(); },
     dY: function(){ return this.y1() - this.y0(); },
     toString: function(){
