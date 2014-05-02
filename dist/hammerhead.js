@@ -31,110 +31,103 @@ Point.prototype = {
     return this.scaleTransform(matrix);
   }
 };
-var ViewFrame;
+var ViewBox;
 (function(){
-  function returnInt (string) {
-    return parseInt(string, 10);
-  }
+  ViewBox = function(minimal, maximal){
+    this.getMinimal = function(){ return minimal; };
+    this.getMaximal = function(){ return maximal; };
+  };
 
-  function getViewBox (element) {
-    var viewBoxString = element.getAttribute('viewBox');
-    if (!viewBoxString) { throw 'Id: ' + element.id + ' has no viewBox attribute'; }
-    var viewBox = viewBoxString.split(' ').map(returnInt);
-    var origin = new Point(viewBox[0], viewBox[1]);
-    var size = new Point(viewBox[2], viewBox[3]);
-    return {origin: origin, size: size};
-  }
-
-  ViewFrame = function(element, origin, size, inverseScreenCTM) {
-    var HOME;
-    if (origin === undefined) {
-      var elementViewBox = getViewBox(element);
-      origin = elementViewBox.origin;
-      size = elementViewBox.size;
+  ViewBox.prototype = {
+    constructor: ViewBox,
+    x0: function(){ return this.getMinimal().x; },
+    y0: function(){ return this.getMinimal().y; },
+    x1: function(){ return this.getMaximal().x; },
+    y1: function(){ return this.getMaximal().y; },
+    dX: function(){ return this.x1() - this.x0(); },
+    dY: function(){ return this.y1() - this.y0(); },
+    toString: function(){
+      return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
+    },
+    translate: function(delta){
+      var newMinimal = this.getMinimal().subtract(delta);
+      var newMaximal = this.getMaximal().subtract(delta);
+      return new this.constructor(newMinimal, newMaximal);
+    },
+    scale: function(center, scale){
+      var boxScale = 1.0/scale;
+      var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
+      var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
+      return new this.constructor(newMinimal, newMaximal);
     }
-    HOME = { origin: origin, size: size };
+  };
 
-    this.dX = function () { return size.x;   };
-    this.dY = function () { return size.y;   };
-    this.x0 = function () { return origin.x; };
-    this.y0 = function () { return origin.y; };
-
-    this.getOrigin = function(){ return origin; };
-    this.getSize   = function(){ return size;   };
-
-    this.setOrigin = function(point){ origin = point; };
-    this.setSize = function(point){ size = point; };
-    this.setViewBox = function(viewBoxString){
-      viewBoxString = viewBoxString || this.toString();
-      element.setAttribute('viewBox', viewBoxString);
+  ViewBox.fromString = function(viewBoxString){
+    
+    var returnInt = function(string) {
+      return parseInt(string, 10);
     };
 
-    this.getHome = function(){ return HOME; };
-    this.getElement = function(){ return element; };
-
-    this.getInverseScreenCTM = function(){ return inverseScreenCTM; };
-    this.updateScreenCTM = function(){
-      var inverse = element.getScreenCTM().inverse();
-      if (!window.devicePixelRatio) {
-        inverse = inverse.scale(2);
-      }
-      inverseScreenCTM = inverse;
-      return inverse;
-    };
-    inverseScreenCTM = inverseScreenCTM || this.updateScreenCTM();
-  };
-
-  ViewFrame.prototype.drag = function(vector, permanent){
-    vector = vector.scaleTransform(this.getInverseScreenCTM());
-    return this.translate(vector, permanent);
-  };
-
-  ViewFrame.prototype.zoom = function(center, magnification, permanent){
-    center = center.transform(this.getInverseScreenCTM());
-    return this.scale(center, magnification, permanent);
-  };
-
-  ViewFrame.prototype.translate = function(vector, permanent){
-    var newOrigin = this.getOrigin().subtract(vector);
-    if (permanent) {
-      this.setOrigin(newOrigin);
-      this.setViewBox();
-      return this;
-    } else{
-      var temp = new ViewFrame(this.getElement(), newOrigin, this.getSize(), this.getInverseScreenCTM());
-      this.setViewBox(temp.toString());
-      return temp;
-    }
-  };
-
-  ViewFrame.prototype.scale = function(center, magnification, permanent){
-    var newOrigin = this.getOrigin().subtract(center).multiply(magnification).add(center);
-    var newSize = this.getSize().multiply(magnification);
-    if (permanent) {
-      this.setOrigin(newOrigin);
-      this.setSize(newSize);
-      this.setViewBox();
-      this.updateScreenCTM();
-      return this;
-    } else{
-      var temp = new ViewFrame(this.getElement(), newOrigin, newSize, this.getInverseScreenCTM());
-      this.setViewBox(temp.toString());
-      return temp;
-    }
-  };
-
-  ViewFrame.prototype.toString = function(){
-    return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
-  };
-
-  ViewFrame.prototype.home = function(destination){
-    var target = destination || this.getHome();
-    this.setOrigin(target.origin);
-    this.setSize(target.size);
+    var limits = viewBoxString.split(' ').map(returnInt);
+    var minimal = new Point(limits[0], limits[1]);
+    var delta = new Point(limits[2], limits[3]);
+    var maximal = minimal.add(delta);
+    return new this(minimal, maximal);
   };
 }());
+var MobileSVG;
+(function(){
+  MobileSVG = function(element){
+    var temporaryViewBox, inverseScreenCTM;
+    var viewBoxString = element.getAttribute('viewBox');
+    var viewBox = ViewBox.fromString(viewBoxString);
+    var HOME = viewBox;
+    var getIverseScreenCTM = function(){
+      var inverse = element.getScreenCTM().inverse();
+      // Windows Phone hack
+      if (!window.devicePixelRatio) { inverse = inverse.scale(2); }
+      return inverse;
+    };
 
+    inverseScreenCTM = getIverseScreenCTM();
+
+    this.translate = function(delta){
+      temporaryViewBox = viewBox.translate(delta);
+      element.setAttribute('viewBox', temporaryViewBox.toString());
+      return this;
+    };
+
+    this.drag = function(screenDelta){
+      var delta = screenDelta.scaleTransform(inverseScreenCTM);
+      return this.translate(delta);
+    };
+
+    this.scale = function(center, magnfication){
+      temporaryViewBox = viewBox.scale(center, magnfication);
+      element.setAttribute('viewBox', temporaryViewBox.toString());
+      return this;
+    };
+
+    this.zoom = function(screenCenter, magnfication){
+      var center = screenCenter.transform(inverseScreenCTM);
+      return this.scale(center, magnfication);
+    };
+
+    this.fix = function(){
+      viewBox = temporaryViewBox;
+      return this;
+    };
+
+    this.home = function(){
+      viewBox = HOME;
+      element.setAttribute('viewBox', viewBox.toString());
+    };
+
+    this._test = {
+      viewBox: viewBox
+    };
+  };
+}());
 var Hammerhead;
 (function (){
 
@@ -151,21 +144,21 @@ var Hammerhead;
   Hammerhead = function (id) {
     var lastFrame;
     var element = getSVG(id);
-    var viewFrame = new ViewFrame(element);
+    var mobileSVG = new MobileSVG(element);
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
 
     var handlers = {
       drag: function(gesture){
-        return viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY));
+        return mobileSVG.drag(new Point(gesture.deltaX, gesture.deltaY));
       },
       dragend: function(gesture){
-        return viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY), true);
+        return mobileSVG.drag(new Point(gesture.deltaX, gesture.deltaY)).fix();
       },
       pinch: function(gesture){
-        viewFrame.zoom(new Point(gesture.center.pageX, gesture.center.pageY), 1.0/gesture.scale);
+        mobileSVG.zoom(new Point(gesture.center.pageX, gesture.center.pageY), gesture.scale);
       },
       transformend: function(gesture){
-        viewFrame.zoom(new Point(gesture.center.pageX, gesture.center.pageY), 1.0/event.gesture.scale, true);
+        mobileSVG.zoom(new Point(gesture.center.pageX, gesture.center.pageY), event.gesture.scale).fix();
       }
     };
 
@@ -192,9 +185,7 @@ var Hammerhead;
     }
     function releaseHandler (event) {
       if (lastFrame) {
-        viewFrame.setViewBox(lastFrame.toString());
-        viewFrame.setOrigin(lastFrame.getOrigin());
-        viewFrame.setSize(lastFrame.getSize());
+        mobileSVG.fix();
       }
       activityOff(hammertime);
     }

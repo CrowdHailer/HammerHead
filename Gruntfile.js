@@ -8,7 +8,8 @@ module.exports = function(grunt) {
       dist: {
         src: [
           'src/point.js',
-          'src/viewframe.js',
+          'src/viewbox.js',
+          'src/mobile.js',
           'src/viewer.js'
         ],
         dest: 'dist/<%= pkg.name %>.js'
