@@ -11,6 +11,12 @@ var Hammerhead;
     throw 'Id: ' + id + ' is not a SVG element';
   }
 
+  // function vectorizeGesture(gesture){
+  //   var delta = new Point(gesture.deltaX, gesture.deltaY);
+  //   var center = (gesture.center) ? (new Point(gesture.center.pageX, gesture.center.pageY)) : null;
+  //   return {delta: delta, center: center, magnification: gesture.scale};
+  // }
+
   Hammerhead = function (id) {
     var lastFrame;
     var element = getSVG(id);
@@ -30,7 +36,6 @@ var Hammerhead;
       pinch: function(gesture){
         mobileSVG.zoom(new Point(gesture.center.pageX, gesture.center.pageY), gesture.scale);
       }
-
     };
 
     var gestureHandler = function(event){
@@ -40,11 +45,11 @@ var Hammerhead;
     };
 
     function activityOn(instance){
-      instance.on('dragstart drag dragend transformstart pinch transformend', gestureHandler);
+      instance.on('dragstart drag transformstart pinch', gestureHandler);
       instance.on('release', releaseHandler);
     }
     function activityOff(instance){
-      instance.off('dragstart drag dragend transformstart pinch transformend', gestureHandler);
+      instance.off('dragstart drag transformstart pinch', gestureHandler);
       instance.off('release', releaseHandler);
     }
     function touchHandler (event) {
