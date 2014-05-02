@@ -1,10 +1,9 @@
 var MobileSVG;
 (function(){
   MobileSVG = function(element){
-    var temporaryViewBox, inverseScreenCTM;
-    var viewBoxString = element.getAttribute('viewBox');
-    var viewBox = ViewBox.fromString(viewBoxString);
-    var HOME = viewBox;
+    var temporaryViewBox, inverseScreenCTM, viewBox, HOME;
+    viewBox = ViewBox.fromString(element.getAttribute('viewBox'));
+    HOME = viewBox;
     temporaryViewBox = viewBox;
     var getIverseScreenCTM = function(){
       var inverse = element.getScreenCTM().inverse();
@@ -45,10 +44,6 @@ var MobileSVG;
     this.home = function(){
       viewBox = HOME;
       element.setAttribute('viewBox', viewBox.toString());
-    };
-
-    this._test = {
-      viewBox: viewBox
     };
   };
 }());

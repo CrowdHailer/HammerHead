@@ -18,10 +18,9 @@ var Hammerhead;
   // }
 
   Hammerhead = function (id) {
-    var lastFrame;
     var element = getSVG(id);
     var mobileSVG = new MobileSVG(element);
-    var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
+    var hammertime = Hammer(document).on('touch', touchHandler);
 
     var handlers = {
       dragstart: function(gesture){
