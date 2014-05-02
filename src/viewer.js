@@ -12,17 +12,17 @@ var Hammerhead;
   }
 
   Hammerhead = function (id) {
-    // var scaling, lastFrame;
+    var lastFrame;
     var element = getSVG(id);
     var viewFrame = new ViewFrame(element);
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
 
     var handlers = {
       drag: function(gesture){
-        viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY));
+        return viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY));
       },
       dragend: function(gesture){
-        viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY), true);
+        return viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY), true);
       },
       pinch: function(gesture){
         viewFrame.zoom(new Point(gesture.center.pageX, gesture.center.pageY), 1.0/gesture.scale);
@@ -36,7 +36,9 @@ var Hammerhead;
       var gesture = event.gesture;
       gesture.preventDefault();
       var handler = handlers[event.type];
-      if (handler) { handler(gesture); }
+      if (handler) { 
+        lastFrame = handler(gesture);
+      }
     };
 
     function activityOn(instance){
@@ -52,7 +54,12 @@ var Hammerhead;
       if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
     }
     function releaseHandler (event) {
-      activityOff(hammertime);  
+      if (lastFrame) {
+        viewFrame.setViewBox(lastFrame.toString());
+        viewFrame.setOrigin(lastFrame.getOrigin());
+        viewFrame.setSize(lastFrame.getSize());
+      }
+      activityOff(hammertime);
     }
     /* test-code */
     this._test = {
