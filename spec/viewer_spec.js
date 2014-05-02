@@ -70,6 +70,20 @@ describe('Hammerhead', function () {
       hammerHandle.trigger('release', {});
     });
 
+    it('should clean up temporary transform events', function(){
+      var hammerHandle = viewer._test.hammertime;
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
+      hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault});
+      hammerHandle.trigger('release', {});
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
+      hammerHandle.trigger('drag', {deltaX: 200, deltaY: -100, preventDefault: preventDefault});
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -600 2000 1000');
+      hammerHandle.trigger('release', {});
+    });
+
     afterEach(function () {
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);

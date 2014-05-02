@@ -12,51 +12,41 @@ var Hammerhead;
   }
 
   Hammerhead = function (id) {
-    var scaling, lastFrame;
+    var lastFrame;
     var element = getSVG(id);
     var viewFrame = new ViewFrame(element);
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
 
-    dragHandler = function (event) {
-      event.gesture.preventDefault();
-      viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY));
+    var handlers = {
+      drag: function(gesture){
+        return viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY));
+      },
+      dragend: function(gesture){
+        return viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY), true);
+      },
+      pinch: function(gesture){
+        viewFrame.zoom(new Point(gesture.center.pageX, gesture.center.pageY), 1.0/gesture.scale);
+      },
+      transformend: function(gesture){
+        viewFrame.zoom(new Point(gesture.center.pageX, gesture.center.pageY), 1.0/event.gesture.scale, true);
+      }
     };
 
-    dragendHandler = function (event) {
-      event.gesture.preventDefault();
-      viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY), true);
-    };
-
-    dragstartHandler = function (event) {
-      event.gesture.preventDefault();
-    };
-
-    pinchHandler = function (event) {
-      event.gesture.preventDefault();
-      lastFrame = viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale);
-      scaling = true;
-    };
-
-    transformendHandler = function (event) {
-      event.gesture.preventDefault();
-      viewFrame.zoom(new Point(event.gesture.center.pageX, event.gesture.center.pageY), 1.0/event.gesture.scale, true);
-      scaling = false;
+    var gestureHandler = function(event){
+      var gesture = event.gesture;
+      gesture.preventDefault();
+      var handler = handlers[event.type];
+      if (handler) { 
+        lastFrame = handler(gesture);
+      }
     };
 
     function activityOn(instance){
-      instance.on('drag', dragHandler);
-      instance.on('dragstart', dragstartHandler);
-      instance.on('dragend', dragendHandler);
-      instance.on('pinch', pinchHandler);
-      instance.on('transformend', transformendHandler);
+      instance.on('dragstart drag dragend pinch transformend', gestureHandler);
       instance.on('release', releaseHandler);
     }
     function activityOff(instance){
-      instance.off('drag', dragHandler);
-      instance.off('dragstart', dragstartHandler);
-      instance.off('dragend', dragendHandler);
-      instance.off('pinch', pinchHandler);
-      instance.off('transformend', transformendHandler);
+      instance.off('dragstart drag dragend pinch transformend', gestureHandler);
       instance.off('release', releaseHandler);
     }
     function touchHandler (event) {
@@ -64,8 +54,12 @@ var Hammerhead;
       if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
     }
     function releaseHandler (event) {
-      if (scaling) { alert('boo'); };
-      activityOff(hammertime);  
+      if (lastFrame) {
+        viewFrame.setViewBox(lastFrame.toString());
+        viewFrame.setOrigin(lastFrame.getOrigin());
+        viewFrame.setSize(lastFrame.getSize());
+      }
+      activityOff(hammertime);
     }
     /* test-code */
     this._test = {
