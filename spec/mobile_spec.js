@@ -20,4 +20,11 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '-1 0 8 6');
   });
 
+  it('should translate from the same start point', function(){
+    delta = new Point(1, 1);
+    mobileSVG.translate(delta);
+    mobileSVG.translate(delta);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-1 0 8 6');
+  });
+
 });
