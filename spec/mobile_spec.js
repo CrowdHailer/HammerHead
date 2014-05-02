@@ -40,6 +40,13 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '0 1 4 3');
   });
 
+  it('should scale from the same start point', function(){
+    center = new Point(0, 1);
+    mobileSVG.scale(center, 2);
+    mobileSVG.scale(center, 2);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 4 3');
+  });
+
   it('should home to its initial settings', function(){
     delta = new Point(1, 1);
     mobileSVG.translate(delta).fix();
