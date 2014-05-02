@@ -47,6 +47,13 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 4 3');
   });
 
+  it('should fix a scaling', function(){
+    center = new Point(0, 1);
+    mobileSVG.scale(center, 2).fix();
+    mobileSVG.scale(center, 2);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 2 1.5');
+  });
+
   it('should home to its initial settings', function(){
     delta = new Point(1, 1);
     mobileSVG.translate(delta).fix();

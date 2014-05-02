@@ -15,6 +15,7 @@ var MobileSVG;
     this.scale = function(center, magnfication){
       temporaryViewBox = viewBox.scale(center, magnfication);
       element.setAttribute('viewBox', temporaryViewBox.toString());
+      return this;
     };
 
     this.fix = function(){
