@@ -4,6 +4,7 @@ var MobileSVG;
     var temporaryViewBox;
     var viewBoxString = element.getAttribute('viewBox');
     var viewBox = ViewBox.fromString(viewBoxString);
+    var HOME = viewBox;
 
     this.translate = function(delta){
       temporaryViewBox = viewBox.translate(delta);
@@ -13,6 +14,11 @@ var MobileSVG;
 
     this.fix = function(){
       viewBox = temporaryViewBox;
+    };
+
+    this.home = function(){
+      viewBox = HOME;
+      element.setAttribute('viewBox', viewBox.toString());
     };
 
     this._test = {
