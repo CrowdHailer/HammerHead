@@ -16,11 +16,6 @@ describe('Mobile SVG', function(){
     screenCenter = new Point(0, 0.5);
   });
 
-  it('should read the viewbox attribute when not given specifics', function(){
-    expect(element.getAttribute).toHaveBeenCalledWith('viewBox');
-    expect(mobileSVG._test.viewBox.x0()).toEqual(0);
-  });
-
   it('should translate in SVG units', function(){
     mobileSVG.translate(delta);
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '-1 0 8 6');
