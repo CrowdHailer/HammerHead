@@ -28,4 +28,17 @@ var ViewBox;
       return new this.constructor(newMinimal, newMaximal);
     }
   };
+
+  ViewBox.fromString = function(viewBoxString){
+    
+    var returnInt = function(string) {
+      return parseInt(string, 10);
+    };
+
+    var limits = viewBoxString.split(' ').map(returnInt);
+    var minimal = new Point(limits[0], limits[1]);
+    var delta = new Point(limits[2], limits[3]);
+    var maximal = minimal.add(delta);
+    return new this(minimal, maximal);
+  };
 }());

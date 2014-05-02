@@ -36,13 +36,19 @@ describe('ViewBox', function(){
 
   it('should translate', function(){
     delta = new Point(1, 1);
-    newViewBox = viewBox.translate(delta);
+    var newViewBox = viewBox.translate(delta);
     expect(newViewBox.toString()).toEqual('-1 0 8 6');
   });
 
   it('should scale to a centerpoint', function(){
     center = new Point(0, 1);
-    newViewBox = viewBox.scale(center, 2);
+    var newViewBox = viewBox.scale(center, 2);
     expect(newViewBox.toString()).toEqual('0 1 4 3');
+  });
+
+  it('should build a viewbox from a string', function(){
+    var newViewBox = ViewBox.fromString('1 2 3 4');
+    expect(newViewBox.x0()).toEqual(1);
+    expect(newViewBox.y1()).toEqual(6);
   });
 });
