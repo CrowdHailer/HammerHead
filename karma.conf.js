@@ -4,8 +4,10 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     files: [
       'bower_components/**/*.js',
-      'src/**/*.js',
-      'spec/**/*spec.js'
+      'src/point.js',
+      'src/viewbox.js',
+      'spec/point_spec.js',
+      'spec/viewbox_spec.js'
     ],
     exclude: [
       'bower_components/jasmine-jquery.js',
