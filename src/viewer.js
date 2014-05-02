@@ -14,21 +14,21 @@ var Hammerhead;
   Hammerhead = function (id) {
     var lastFrame;
     var element = getSVG(id);
-    var viewFrame = new ViewFrame(element);
+    var mobileSVG = new MobileSVG(element);
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
 
     var handlers = {
       drag: function(gesture){
-        return viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY));
+        return mobileSVG.drag(new Point(gesture.deltaX, gesture.deltaY));
       },
       dragend: function(gesture){
-        return viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY), true);
+        return mobileSVG.drag(new Point(gesture.deltaX, gesture.deltaY)).fix();
       },
       pinch: function(gesture){
-        viewFrame.zoom(new Point(gesture.center.pageX, gesture.center.pageY), 1.0/gesture.scale);
+        mobileSVG.zoom(new Point(gesture.center.pageX, gesture.center.pageY), gesture.scale);
       },
       transformend: function(gesture){
-        viewFrame.zoom(new Point(gesture.center.pageX, gesture.center.pageY), 1.0/event.gesture.scale, true);
+        mobileSVG.zoom(new Point(gesture.center.pageX, gesture.center.pageY), event.gesture.scale).fix();
       }
     };
 
@@ -55,9 +55,7 @@ var Hammerhead;
     }
     function releaseHandler (event) {
       if (lastFrame) {
-        viewFrame.setViewBox(lastFrame.toString());
-        viewFrame.setOrigin(lastFrame.getOrigin());
-        viewFrame.setSize(lastFrame.getSize());
+        mobileSVG.fix();
       }
       activityOff(hammertime);
     }
