@@ -5,6 +5,25 @@ describe('Point', function(){
     expect(point.y).toBe(3);
   });
 
+  it('should be possible to initialize from another point', function(){
+    var pointInit = new Point(2,3);
+    var point = new Point(pointInit);
+    expect(point.x).toBe(2);
+    expect(point.y).toBe(3);
+  });
+
+  it('should be possible to initialize from a screen point', function(){
+    var point = new Point({pageX: 2, pageY: 3});
+    expect(point.x).toBe(2);
+    expect(point.y).toBe(3);
+  });
+
+  it('should be possible to initialize from a displacement vector', function(){
+    var point = new Point({deltaX: 2, deltaY: 3});
+    expect(point.x).toBe(2);
+    expect(point.y).toBe(3);
+  });
+
   it('should be able to add points', function () {
     var point1 = new Point(2,3);
     var point2 = new Point(3,-1);
