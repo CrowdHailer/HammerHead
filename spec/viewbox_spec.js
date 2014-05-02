@@ -29,4 +29,8 @@ describe('ViewBox', function(){
   it('should give a dY value', function(){
     expect(viewbox.dY()).toEqual(6);
   });
+
+  it('should return a viewBox string', function(){
+    expect(viewbox.toString()).toEqual('0 1 8 6');
+  });
 });
