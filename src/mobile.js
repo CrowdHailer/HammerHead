@@ -22,7 +22,7 @@ var MobileSVG;
 
     this.drag = function(screenDelta){
       var delta = screenDelta.scaleTransform(inverseScreenCTM);
-      this.translate(delta);
+      return this.translate(delta);
     };
 
     this.scale = function(center, magnfication){

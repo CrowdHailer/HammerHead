@@ -25,11 +25,6 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '-1 0 8 6');
   });
 
-  it('should drag in Screen units', function(){
-    mobileSVG.drag(delta);
-    expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '-2 -1 8 6');
-  });
-
   it('should translate from the same start point', function(){
     mobileSVG.translate(delta).translate(delta);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-1 0 8 6');
@@ -53,6 +48,16 @@ describe('Mobile SVG', function(){
   it('should fix a scaling', function(){
     mobileSVG.scale(center, 2).fix().scale(center, 2);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 2 1.5');
+  });
+
+  it('should drag in Screen units', function(){
+    mobileSVG.drag(delta);
+    expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '-2 -1 8 6');
+  });
+
+  it('should drag from the same start point', function(){
+    mobileSVG.drag(delta).drag(delta);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-2 -1 8 6');
   });
 
   it('should home to its initial settings', function(){
