@@ -20,6 +20,7 @@ var MobileSVG;
 
     this.fix = function(){
       viewBox = temporaryViewBox;
+      return this;
     };
 
     this.home = function(){
