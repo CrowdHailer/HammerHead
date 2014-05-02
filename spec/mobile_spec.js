@@ -27,4 +27,11 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-1 0 8 6');
   });
 
+  it('should fix a translation', function(){
+    delta = new Point(1, 1);
+    mobileSVG.translate(delta).fix();
+    mobileSVG.translate(delta);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-2 -1 8 6');
+  });
+
 });

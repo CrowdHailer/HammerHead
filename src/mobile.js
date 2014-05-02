@@ -8,6 +8,11 @@ var MobileSVG;
     this.translate = function(delta){
       temporaryViewBox = viewBox.translate(delta);
       element.setAttribute('viewBox', temporaryViewBox.toString());
+      return this;
+    };
+
+    this.fix = function(){
+      viewBox = temporaryViewBox;
     };
 
     this._test = {
