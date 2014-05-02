@@ -71,6 +71,16 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '0 1 4 3');
   });
 
+  it('should zoom from the same start point', function(){
+    mobileSVG.zoom(screenCenter, 2).zoom(screenCenter, 2);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 4 3');
+  });
+
+  it('should fix a zooming', function(){
+    mobileSVG.zoom(screenCenter, 2).fix().zoom(screenCenter, 2);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 2 1.5');
+  });
+
   it('should home to its initial settings', function(){
     mobileSVG.translate(delta).fix().home();
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
