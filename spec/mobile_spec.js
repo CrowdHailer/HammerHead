@@ -60,6 +60,11 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-2 -1 8 6');
   });
 
+  it('should fix a drag', function(){
+    mobileSVG.drag(delta).fix().drag(delta);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-4 -3 8 6');
+  });
+
   it('should home to its initial settings', function(){
     mobileSVG.translate(delta).fix().home();
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
