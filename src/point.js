@@ -1,6 +1,6 @@
 function Point (x, y) {
-  this.x = x.x || x.pageX || x;
-  this.y = x.y || x.pageY || y;
+  this.x = x.x || x.pageX || x.deltaX || x;
+  this.y = x.y || x.pageY || x.deltaY || y;
 }
 
 Point.prototype = {
