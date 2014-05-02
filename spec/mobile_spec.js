@@ -34,6 +34,12 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-2 -1 8 6');
   });
 
+  it('should scale in SVG units', function(){
+    center = new Point(0, 1);
+    mobileSVG.scale(center, 2);
+    expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '0 1 4 3');
+  });
+
   it('should home to its initial settings', function(){
     delta = new Point(1, 1);
     mobileSVG.translate(delta).fix();

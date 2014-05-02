@@ -12,6 +12,11 @@ var MobileSVG;
       return this;
     };
 
+    this.scale = function(center, magnfication){
+      temporaryViewBox = viewBox.scale(center, magnfication);
+      element.setAttribute('viewBox', temporaryViewBox.toString());
+    };
+
     this.fix = function(){
       viewBox = temporaryViewBox;
     };
