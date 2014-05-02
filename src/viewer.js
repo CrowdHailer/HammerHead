@@ -17,10 +17,24 @@ var Hammerhead;
     var viewFrame = new ViewFrame(element);
     var hammertime = Hammer(document, {preventDefault: true}).on('touch', touchHandler);
 
-    dragHandler = function (event) {
-      event.gesture.preventDefault();
-      viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY));
+    var handlers = {
+      drag: function(gesture){
+        viewFrame.drag(new Point(gesture.deltaX, gesture.deltaY));
+      }
     };
+
+    var gestureHandler = function(event){
+      var gesture = event.gesture;
+      gesture.preventDefault();
+      //timecheck here
+      console.log(event.type);
+      handlers[event.type](gesture);
+    };
+
+    // dragHandler = function (event) {
+    //   event.gesture.preventDefault();
+    //   viewFrame.drag(new Point(event.gesture.deltaX, event.gesture.deltaY));
+    // };
 
     dragendHandler = function (event) {
       event.gesture.preventDefault();
@@ -44,7 +58,7 @@ var Hammerhead;
     };
 
     function activityOn(instance){
-      instance.on('drag', dragHandler);
+      instance.on('drag', gestureHandler);
       instance.on('dragstart', dragstartHandler);
       instance.on('dragend', dragendHandler);
       instance.on('pinch', pinchHandler);
@@ -52,7 +66,7 @@ var Hammerhead;
       instance.on('release', releaseHandler);
     }
     function activityOff(instance){
-      instance.off('drag', dragHandler);
+      instance.off('drag', gestureHandler);
       instance.off('dragstart', dragstartHandler);
       instance.off('dragend', dragendHandler);
       instance.off('pinch', pinchHandler);
