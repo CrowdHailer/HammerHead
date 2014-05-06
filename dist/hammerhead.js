@@ -82,14 +82,17 @@ var MobileSVG;
     viewBox = ViewBox.fromString(element.getAttribute('viewBox'));
     HOME = viewBox;
     temporaryViewBox = viewBox;
-    var getIverseScreenCTM = function(){
+    var getInverseScreenCTM = function(){
       var inverse = element.getScreenCTM().inverse();
       // Windows Phone hack
       if (!window.devicePixelRatio) { inverse = inverse.scale(2); }
       return inverse;
     };
 
-    inverseScreenCTM = getIverseScreenCTM();
+    this.updateCTM = function(){
+      inverseScreenCTM = getInverseScreenCTM();
+    };
+    this.updateCTM();
 
     this.translate = function(delta){
       temporaryViewBox = viewBox.translate(delta);
@@ -144,6 +147,7 @@ var Hammerhead;
   // }
 
   Hammerhead = function (id) {
+    var lastEvent;
     var element = getSVG(id);
     var mobileSVG = new MobileSVG(element);
     var hammertime = Hammer(document).on('touch', touchHandler);
@@ -163,10 +167,18 @@ var Hammerhead;
       }
     };
 
+    lastEvent = {gesture: {}};
     var gestureHandler = function(event){
       var gesture = event.gesture;
       gesture.preventDefault();
-      handlers[event.type](gesture);
+
+      var t1 = gesture.timeStamp || 1000;
+      var t0 = lastEvent.gesture.timeStamp || 0;
+
+      if (t1 - t0 > 300 || lastEvent.type !== event.type) {
+        handlers[event.type](gesture);
+      }
+      lastEvent = event;
     };
 
     function activityOn(instance){
@@ -183,11 +195,13 @@ var Hammerhead;
     }
     function releaseHandler (event) {
       mobileSVG.fix();
+      mobileSVG.updateCTM();
       activityOff(hammertime);
     }
     /* test-code */
     this._test = {
-      hammertime: hammertime
+      hammertime: hammertime,
+      handlers: handlers
     };
     /* end-test-code */
   };
