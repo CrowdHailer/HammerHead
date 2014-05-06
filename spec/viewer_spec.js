@@ -91,6 +91,15 @@ describe('Hammerhead', function(){
       hammerHandle.trigger('release', {});
     });
 
+    it('should not make repeated calls to change the viewbox', function(){
+      var hammerHandle = viewer._test.hammertime;
+      spyOn(viewer._test.handlers, "drag");
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
+      hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
+      expect(viewer._test.handlers.drag.calls.length).toEqual(1);
+    });
+
     afterEach(function(){
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);
