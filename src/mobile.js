@@ -12,7 +12,10 @@ var MobileSVG;
       return inverse;
     };
 
-    inverseScreenCTM = getInverseScreenCTM();
+    this.updateCTM = function(){
+      inverseScreenCTM = getInverseScreenCTM();
+    };
+    this.updateCTM();
 
     this.translate = function(delta){
       temporaryViewBox = viewBox.translate(delta);

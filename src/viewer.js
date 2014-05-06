@@ -57,6 +57,7 @@ var Hammerhead;
     }
     function releaseHandler (event) {
       mobileSVG.fix();
+      mobileSVG.updateCTM();
       activityOff(hammertime);
     }
     /* test-code */
