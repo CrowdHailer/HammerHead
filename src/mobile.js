@@ -5,14 +5,17 @@ var MobileSVG;
     viewBox = ViewBox.fromString(element.getAttribute('viewBox'));
     HOME = viewBox;
     temporaryViewBox = viewBox;
-    var getIverseScreenCTM = function(){
+    var getInverseScreenCTM = function(){
       var inverse = element.getScreenCTM().inverse();
       // Windows Phone hack
       if (!window.devicePixelRatio) { inverse = inverse.scale(2); }
       return inverse;
     };
 
-    inverseScreenCTM = getIverseScreenCTM();
+    this.updateCTM = function(){
+      inverseScreenCTM = getInverseScreenCTM();
+    };
+    this.updateCTM();
 
     this.translate = function(delta){
       temporaryViewBox = viewBox.translate(delta);
