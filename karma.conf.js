@@ -5,9 +5,9 @@ module.exports = function(config) {
     files: [
       'bower_components/**/*.js',
       'src/point.js',
-      'src/viewbox.js',
-      'src/mobile.js',
-      'src/viewer.js',
+      // 'src/viewbox.js',
+      // 'src/mobile.js',
+      // 'src/viewer.js',
       'spec/point_spec.js',
       // 'spec/viewbox_spec.js',
       // 'spec/mobile_spec.js',

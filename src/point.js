@@ -1,3 +1,14 @@
+var Hammerhead = (function(parent){
+  // pointPrototype = {};
+  var point = function(x, y){
+    return {x: x, y: y};
+  };
+
+  parent.Point = point;
+
+  return parent;
+}(Hammerhead || {}));
+
 function Point (x, y) {
   this.x = x;
   this.y = y;
