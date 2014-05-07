@@ -1,14 +1,34 @@
 var Hammerhead = (function(parent){
-  var prototype = {};
+  var prototype = {
+  };
 
   var create = function(element){
-    var temporaryViewBox;
-    viewBox = parent.ViewBox.fromString(element.getAttribute('viewBox'));
+    var temporary, current, HOME;
+    HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
+
+    function translate (delta){
+      temporary = current.translate(delta);
+      element.setAttribute('viewBox', temporary.toString());
+      return this;
+    }
+
+    function scale (center, magnfication){
+      temporary = current.scale(center, magnfication);
+      element.setAttribute('viewBox', temporary.toString());
+      return this;
+    }
+
+    function fix (){
+      current = temporary;
+      return this;
+    }
+
     var instance = Object.create(prototype);
-    instance.translate = function(delta){
-      temporaryViewBox = viewBox.translate(delta);
-      element.setAttribute('viewBox', temporaryViewBox.toString());
-    };
+    [translate, fix, scale].forEach(function(privilaged){
+      instance[privilaged.name] = privilaged;
+    });
+    // instance.translate = translate;
+    // instance.fix = fix; 
     return instance;
   };
 

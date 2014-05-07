@@ -26,12 +26,12 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-1 0 8 6');
   });
 
-  xit('should fix a translation', function(){
+  it('should fix a translation', function(){
     mobileSVG.translate(delta).fix().translate(delta);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-2 -1 8 6');
   });
 
-  xit('should scale in SVG units', function(){
+  it('should scale in SVG units', function(){
     mobileSVG.scale(center, 2);
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '0 1 4 3');
   });
