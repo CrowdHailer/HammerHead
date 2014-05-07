@@ -16,7 +16,7 @@ var Hammerhead = (function(parent){
 
     function drag(screenDelta){
       var delta = screenDelta.scaleTransform(element.getScreenCTM().inverse());
-      return translate(delta);
+      return this.translate(delta);
     }
 
     function scale(center, magnfication){
@@ -25,13 +25,18 @@ var Hammerhead = (function(parent){
       return this;
     }
 
+    function zoom(screenCenter, magnfication){
+      var center = screenCenter.transform(element.getScreenCTM().inverse());
+      return this.scale(center, magnfication);
+    }
+
     function fix (){
       current = temporary;
       return this;
     }
 
     var instance = Object.create(prototype);
-    [translate, drag, scale, fix].forEach(function(privilaged){
+    [translate, drag, scale, zoom, fix].forEach(function(privilaged){
       instance[privilaged.name] = privilaged;
     });
     return instance;

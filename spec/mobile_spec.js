@@ -51,27 +51,27 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '-2 -1 8 6');
   });
 
-  xit('should drag from the same start point', function(){
+  it('should drag from the same start point', function(){
     mobileSVG.drag(delta).drag(delta);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-2 -1 8 6');
   });
 
-  xit('should fix a drag', function(){
+  it('should fix a drag', function(){
     mobileSVG.drag(delta).fix().drag(delta);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('-4 -3 8 6');
   });
 
-  xit('should zoom in SVG units', function(){
+  it('should zoom in SVG units', function(){
     mobileSVG.zoom(screenCenter, 2);
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '0 1 4 3');
   });
 
-  xit('should zoom from the same start point', function(){
+  it('should zoom from the same start point', function(){
     mobileSVG.zoom(screenCenter, 2).zoom(screenCenter, 2);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 4 3');
   });
 
-  xit('should fix a zooming', function(){
+  it('should fix a zooming', function(){
     mobileSVG.zoom(screenCenter, 2).fix().zoom(screenCenter, 2);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 2 1.5');
   });
