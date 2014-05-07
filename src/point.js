@@ -1,5 +1,10 @@
 var Hammerhead = (function(parent){
-  // pointPrototype = {};
+  pointPrototype = {
+    add: function(other){
+      return point(this.x + other.x, this.y + other.y);
+    }
+  };
+
   var point = function(first, orthogonal){
     var x, y;
     if (orthogonal === undefined ) {
@@ -17,7 +22,10 @@ var Hammerhead = (function(parent){
       x = first;
       y = orthogonal;
     }
-    return {x: x, y: y};
+    var instance = Object.create(pointPrototype);
+    instance.x = x;
+    instance.y = y;
+    return instance;
   };
 
   parent.Point = point;
