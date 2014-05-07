@@ -1,8 +1,13 @@
 var Hammerhead = (function(parent){
   // pointPrototype = {};
-  var point = function(x, y){
-    if (y === undefined ) {
-      return x;
+  var point = function(first, orthogonal){
+    var x, y;
+    if (orthogonal === undefined ) {
+      y = first.y;
+      x = first.x;
+    } else {
+      x = first;
+      y = orthogonal;
     }
     return {x: x, y: y};
   };

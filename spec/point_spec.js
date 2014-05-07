@@ -1,16 +1,20 @@
 describe('Point', function(){
   var point;
-  it('should be initialised with 2 coordinates', function(){
-    point = Hammerhead.Point(2, 3);
-    expect(point.x).toBe(2);
-    expect(point.y).toBe(3);
-  });
+  describe('initialisation', function(){
+    it('from 2 coordinates', function(){
+      point = Hammerhead.Point(2, 3);
+      expect(point.x).toBe(2);
+      expect(point.y).toBe(3);
+    });
 
-  it('should be possible to initialize from another point', function(){
-    var pointInit = Hammerhead.Point(2, 3);
-    point = Hammerhead.Point(pointInit);
-    expect(point.x).toBe(2);
-    expect(point.y).toBe(3);
+    it('from another point', function(){
+      var pointInit = Hammerhead.Point(2, 3);
+      point = Hammerhead.Point(pointInit);
+      expect(point.x).toBe(2);
+      expect(point.y).toBe(3);
+      point.x = 4;
+      expect(pointInit).not.toEqual(point);
+    });
   });
 
   xit('should be possible to initialize from a screen point', function(){
