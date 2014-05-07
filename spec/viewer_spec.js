@@ -37,7 +37,7 @@ describe('Hammerhead', function(){
       hammerHandle.trigger('release', {});
     });
 
-    xit('should drag permanently on drag end events', function(){
+    it('should drag permanently on drag end events', function(){
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
@@ -51,7 +51,7 @@ describe('Hammerhead', function(){
       hammerHandle.trigger('release', {});
     });
 
-    xit('should zoom from the same reference for pinch events', function(){
+    it('should zoom from the same reference for pinch events', function(){
       var hammerHandle = viewer._test.hammertime;
       // console.log(1);
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
@@ -65,7 +65,7 @@ describe('Hammerhead', function(){
       hammerHandle.trigger('release', {});
     });
 
-    xit('should zoom permanently on release events', function(){
+    it('should zoom permanently on release events', function(){
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 2, preventDefault: preventDefault});
@@ -77,7 +77,7 @@ describe('Hammerhead', function(){
       hammerHandle.trigger('release', {});
     });
 
-    xit('should clean up temporary transform events', function(){
+    it('should clean up temporary transform events', function(){
       var hammerHandle = viewer._test.hammertime;
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('dragstart', {preventDefault: preventDefault});
@@ -91,7 +91,7 @@ describe('Hammerhead', function(){
       hammerHandle.trigger('release', {});
     });
 
-    xit('should not make repeated calls to change the viewbox', function(){
+    it('should not make repeated calls to change the viewbox', function(){
       var hammerHandle = viewer._test.hammertime;
       spyOn(viewer._test.handlers, "drag");
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
