@@ -6,6 +6,8 @@ var Hammerhead = (function(parent){
     var temporary, current, HOME;
     HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
 
+    update = _.partial(element.setAttribute, 'viewBox');
+
     function translate (delta){
       temporary = current.translate(delta);
       element.setAttribute('viewBox', temporary.toString());
@@ -14,7 +16,8 @@ var Hammerhead = (function(parent){
 
     function scale (center, magnfication){
       temporary = current.scale(center, magnfication);
-      element.setAttribute('viewBox', temporary.toString());
+      update(temporary.toString())
+      // element.setAttribute('viewBox', temporary.toString());
       return this;
     }
 
@@ -27,8 +30,6 @@ var Hammerhead = (function(parent){
     [translate, fix, scale].forEach(function(privilaged){
       instance[privilaged.name] = privilaged;
     });
-    // instance.translate = translate;
-    // instance.fix = fix; 
     return instance;
   };
 
