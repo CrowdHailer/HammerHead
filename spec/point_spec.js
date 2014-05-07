@@ -6,9 +6,9 @@ describe('Point', function(){
     expect(point.y).toBe(3);
   });
 
-  xit('should be possible to initialize from another point', function(){
-    var pointInit = new Point(2,3);
-    var point = new Point(pointInit);
+  it('should be possible to initialize from another point', function(){
+    var pointInit = Hammerhead.Point(2, 3);
+    point = Hammerhead.Point(pointInit);
     expect(point.x).toBe(2);
     expect(point.y).toBe(3);
   });

@@ -1,6 +1,9 @@
 var Hammerhead = (function(parent){
   // pointPrototype = {};
   var point = function(x, y){
+    if (y === undefined ) {
+      return x;
+    }
     return {x: x, y: y};
   };
 
