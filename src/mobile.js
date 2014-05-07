@@ -1,3 +1,21 @@
+var Hammerhead = (function(parent){
+  var prototype = {};
+
+  var create = function(element){
+    var temporaryViewBox;
+    viewBox = parent.ViewBox.fromString(element.getAttribute('viewBox'));
+    var instance = Object.create(prototype);
+    instance.translate = function(delta){
+      temporaryViewBox = viewBox.translate(delta);
+      element.setAttribute('viewBox', temporaryViewBox.toString());
+    };
+    return instance;
+  };
+
+  parent.MobileSVG = create;
+  return parent;
+}(Hammerhead || {}));
+
 var MobileSVG;
 (function(){
   MobileSVG = function(element){
