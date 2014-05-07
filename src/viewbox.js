@@ -24,6 +24,8 @@ var Hammerhead = (function(parent){
 
   var viewBox = function(minimal, maximal){
 
+    if (typeof minimal === 'string') { return fromString(minimal); }
+
     var instance = Object.create(viewBoxPrototype);
     instance.getMinimal = function(){ return minimal; };
     instance.getMaximal = function(){ return maximal; };
