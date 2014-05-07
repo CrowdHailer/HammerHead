@@ -1,4 +1,22 @@
-var Hammerhead;
+var Hammerhead = (function(parent){
+  function isSVG (element) {
+    return element && element.tagName.toLowerCase() == 'svg';
+  }
+
+  function getSVG (id) {
+    var element = document.getElementById(id);
+    if (isSVG(element)) { return element; }  
+    throw 'Id: ' + id + ' is not a SVG element';
+  }
+
+  function create(id){
+    var element = getSVG(id);
+  }
+
+  return _.extend(create, parent);
+}(Hammerhead || {}));
+
+var old;
 (function (){
 
   function isSVG (element) {
@@ -17,7 +35,7 @@ var Hammerhead;
   //   return {delta: delta, center: center, magnification: gesture.scale};
   // }
 
-  Hammerhead = function (id) {
+  old = function (id) {
     var lastEvent;
     var element = getSVG(id);
     var mobileSVG = new MobileSVG(element);
