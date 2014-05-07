@@ -46,7 +46,7 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 2 1.5');
   });
 
-  xit('should drag in Screen units', function(){
+  it('should drag in Screen units', function(){
     mobileSVG.drag(delta);
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '-2 -1 8 6');
   });

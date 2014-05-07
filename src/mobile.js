@@ -8,13 +8,18 @@ var Hammerhead = (function(parent){
 
     update = _.partial(element.setAttribute, 'viewBox');
 
-    function translate (delta){
+    function translate(delta){
       temporary = current.translate(delta);
       update(temporary.toString());
       return this;
     }
 
-    function scale (center, magnfication){
+    function drag(screenDelta){
+      var delta = screenDelta.scaleTransform(element.getScreenCTM().inverse());
+      return translate(delta);
+    }
+
+    function scale(center, magnfication){
       temporary = current.scale(center, magnfication);
       update(temporary.toString());
       return this;
@@ -26,7 +31,7 @@ var Hammerhead = (function(parent){
     }
 
     var instance = Object.create(prototype);
-    [translate, fix, scale].forEach(function(privilaged){
+    [translate, drag, scale, fix].forEach(function(privilaged){
       instance[privilaged.name] = privilaged;
     });
     return instance;
