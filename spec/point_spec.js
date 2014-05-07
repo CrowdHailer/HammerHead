@@ -15,19 +15,21 @@ describe('Point', function(){
       point.x = 4;
       expect(pointInit).not.toEqual(point);
     });
-    it(' from a screen point', function(){
+
+    it('from a screen point', function(){
       point = Hammerhead.Point({pageX: 2, pageY: 3});
+      expect(point.x).toBe(2);
+      expect(point.y).toBe(3);
+    });
+
+    it('should be possible to initialize from a displacement vector', function(){
+      point = Hammerhead.Point({deltaX: 2, deltaY: 3});
       expect(point.x).toBe(2);
       expect(point.y).toBe(3);
     });
   });
 
 
-  xit('should be possible to initialize from a displacement vector', function(){
-    var point = new Point({deltaX: 2, deltaY: 3});
-    expect(point.x).toBe(2);
-    expect(point.y).toBe(3);
-  });
 
   xit('should be able to add points', function(){
     var point1 = new Point(2,3);

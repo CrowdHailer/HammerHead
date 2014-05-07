@@ -9,6 +9,9 @@ var Hammerhead = (function(parent){
       } else if (first.pageX !== undefined) {
         y = first.pageY;
         x = first.pageX;
+      } else if (first.deltaX) {
+        y = first.deltaY;
+        x = first.deltaX;
       }
     } else {
       x = first;
