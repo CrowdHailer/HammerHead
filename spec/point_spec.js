@@ -53,6 +53,16 @@ describe('Point', function(){
       expect(newPoint.x).toEqual(1);
       expect(newPoint.y).toEqual(1.5);
     });
+
+    it('transform by matrix', function(){
+      var matrix = {a:2, b:0, c:0, d:2, e:1, f:3};
+      expect(point1.transform(matrix)).toEqual(Hammerhead.Point(5, 9));
+    });
+
+    it('scale by matrix', function(){
+      var matrix = {a:2, b:0, c:0, d:2, e:1, f:3};
+      expect(point1.scaleTransform(matrix)).toEqual(Hammerhead.Point(4, 6));
+    });
   });
 
   xit('should be possible to map to a svg element', function(){
@@ -67,15 +77,4 @@ describe('Point', function(){
     fix.parentElement.removeChild(fix);
   });
 
-  xit('should be possible to transform by matrix', function(){
-    var screenPoint = new Point(2,3);
-    var matrix = {a:2, b:0, c:0, d:2, e:1, f:3};
-    expect(screenPoint.transform(matrix)).toEqual(new Point(5, 9));
-  });
-
-  xit('should be possible to scale by a matrix', function(){
-    var delta = new Point(2,3);
-    var matrix = {a:2, b:0, c:0, d:2, e:1, f:3};
-    expect(delta.scaleTransform(matrix)).toEqual(new Point(4, 6));
-  });
 });

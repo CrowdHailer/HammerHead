@@ -8,6 +8,12 @@ var Hammerhead = (function(parent){
     },
     multiply: function(scalar){
       return point(this.x * scalar, this.y * scalar);
+    },
+    transform: function (matrix) {
+      return point(this.x * matrix.a + matrix.e, this.y * matrix.d + matrix.f);
+    },
+    scaleTransform: function (matrix) {
+      return point(this.x * matrix.a, this.y * matrix.d);
     }
   };
 
