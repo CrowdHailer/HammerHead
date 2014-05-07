@@ -74,15 +74,8 @@ var Hammerhead = (function(parent){
 //     return this.scaleTransform(matrix);
 //   }
 // };
-var ViewBox;
-(function(){
-  ViewBox = function(minimal, maximal){
-    this.getMinimal = function(){ return minimal; };
-    this.getMaximal = function(){ return maximal; };
-  };
-
-  ViewBox.prototype = {
-    constructor: ViewBox,
+var Hammerhead = (function(parent){
+  viewBoxPrototype = {
     x0: function(){ return this.getMinimal().x; },
     y0: function(){ return this.getMinimal().y; },
     x1: function(){ return this.getMaximal().x; },
@@ -95,81 +88,179 @@ var ViewBox;
     translate: function(delta){
       var newMinimal = this.getMinimal().subtract(delta);
       var newMaximal = this.getMaximal().subtract(delta);
-      return new this.constructor(newMinimal, newMaximal);
+      return viewBox(newMinimal, newMaximal);
     },
     scale: function(center, scale){
       var boxScale = 1.0/scale;
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
-      return new this.constructor(newMinimal, newMaximal);
+      return viewBox(newMinimal, newMaximal);
     }
   };
 
-  ViewBox.fromString = function(viewBoxString){
-    
+  var viewBox = function(minimal, maximal){
+
+    if (typeof minimal === 'string') { return fromString(minimal); }
+
+    var instance = Object.create(viewBoxPrototype);
+    instance.getMinimal = function(){ return minimal; };
+    instance.getMaximal = function(){ return maximal; };
+    return instance;
+  };
+
+  var fromString = function(viewBoxString){
     var returnInt = function(string) {
       return parseInt(string, 10);
     };
 
     var limits = viewBoxString.split(' ').map(returnInt);
-    var minimal = new Point(limits[0], limits[1]);
-    var delta = new Point(limits[2], limits[3]);
+    var minimal = parent.Point(limits[0], limits[1]);
+    var delta = parent.Point(limits[2], limits[3]);
     var maximal = minimal.add(delta);
-    return new this(minimal, maximal);
+    return viewBox(minimal, maximal);
+
   };
-}());
-var MobileSVG;
-(function(){
-  MobileSVG = function(element){
-    var temporaryViewBox, inverseScreenCTM, viewBox, HOME;
-    viewBox = ViewBox.fromString(element.getAttribute('viewBox'));
-    HOME = viewBox;
-    temporaryViewBox = viewBox;
-    var getInverseScreenCTM = function(){
-      var inverse = element.getScreenCTM().inverse();
-      // Windows Phone hack
-      if (!window.devicePixelRatio) { inverse = inverse.scale(2); }
-      return inverse;
-    };
 
-    this.updateCTM = function(){
-      inverseScreenCTM = getInverseScreenCTM();
-    };
-    this.updateCTM();
+  parent.ViewBox = viewBox;
+  parent.ViewBox.fromString = fromString;
 
-    this.translate = function(delta){
-      temporaryViewBox = viewBox.translate(delta);
-      element.setAttribute('viewBox', temporaryViewBox.toString());
-      return this;
-    };
+  return parent;
+}(Hammerhead || {}));
 
-    this.drag = function(screenDelta){
-      var delta = screenDelta.scaleTransform(inverseScreenCTM);
-      return this.translate(delta);
-    };
+// var ViewBox;
+// (function(){
+//   ViewBox = function(minimal, maximal){
+//     this.getMinimal = function(){ return minimal; };
+//     this.getMaximal = function(){ return maximal; };
+//   };
 
-    this.scale = function(center, magnfication){
-      temporaryViewBox = viewBox.scale(center, magnfication);
-      element.setAttribute('viewBox', temporaryViewBox.toString());
-      return this;
-    };
+//   ViewBox.prototype = {
+//     constructor: ViewBox,
+//     x0: function(){ return this.getMinimal().x; },
+//     y0: function(){ return this.getMinimal().y; },
+//     x1: function(){ return this.getMaximal().x; },
+//     y1: function(){ return this.getMaximal().y; },
+//     dX: function(){ return this.x1() - this.x0(); },
+//     dY: function(){ return this.y1() - this.y0(); },
+//     toString: function(){
+//       return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
+//     },
+//     translate: function(delta){
+//       var newMinimal = this.getMinimal().subtract(delta);
+//       var newMaximal = this.getMaximal().subtract(delta);
+//       return new this.constructor(newMinimal, newMaximal);
+//     },
+//     scale: function(center, scale){
+//       var boxScale = 1.0/scale;
+//       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
+//       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
+//       return new this.constructor(newMinimal, newMaximal);
+//     }
+//   };
 
-    this.zoom = function(screenCenter, magnfication){
-      var center = screenCenter.transform(inverseScreenCTM);
-      return this.scale(center, magnfication);
-    };
+//   ViewBox.fromString = function(viewBoxString){
+    
+//     var returnInt = function(string) {
+//       return parseInt(string, 10);
+//     };
 
-    this.fix = function(){
-      viewBox = temporaryViewBox;
-      return this;
-    };
-
-    this.home = function(){
-      viewBox = HOME;
-      element.setAttribute('viewBox', viewBox.toString());
-    };
+//     var limits = viewBoxString.split(' ').map(returnInt);
+//     var minimal = new Point(limits[0], limits[1]);
+//     var delta = new Point(limits[2], limits[3]);
+//     var maximal = minimal.add(delta);
+//     return new this(minimal, maximal);
+//   };
+// }());
+var Hammerhead = (function(parent){
+  var prototype = {
   };
-}());
+
+  var create = function(element){
+    var temporary, current, HOME;
+    HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
+
+    update = _.partial(element.setAttribute, 'viewBox');
+
+    function translate (delta){
+      temporary = current.translate(delta);
+      update(temporary.toString());
+      return this;
+    }
+
+    function scale (center, magnfication){
+      temporary = current.scale(center, magnfication);
+      update(temporary.toString());
+      return this;
+    }
+
+    function fix (){
+      current = temporary;
+      return this;
+    }
+
+    var instance = Object.create(prototype);
+    [translate, fix, scale].forEach(function(privilaged){
+      instance[privilaged.name] = privilaged;
+    });
+    return instance;
+  };
+
+  parent.MobileSVG = create;
+  return parent;
+}(Hammerhead || {}));
+
+// var MobileSVG;
+// (function(){
+//   MobileSVG = function(element){
+//     var temporaryViewBox, inverseScreenCTM, viewBox, HOME;
+//     viewBox = ViewBox.fromString(element.getAttribute('viewBox'));
+//     HOME = viewBox;
+//     temporaryViewBox = viewBox;
+//     var getInverseScreenCTM = function(){
+//       var inverse = element.getScreenCTM().inverse();
+//       // Windows Phone hack
+//       if (!window.devicePixelRatio) { inverse = inverse.scale(2); }
+//       return inverse;
+//     };
+
+//     this.updateCTM = function(){
+//       inverseScreenCTM = getInverseScreenCTM();
+//     };
+//     this.updateCTM();
+
+//     this.translate = function(delta){
+//       temporaryViewBox = viewBox.translate(delta);
+//       element.setAttribute('viewBox', temporaryViewBox.toString());
+//       return this;
+//     };
+
+//     this.drag = function(screenDelta){
+//       var delta = screenDelta.scaleTransform(inverseScreenCTM);
+//       return this.translate(delta);
+//     };
+
+//     this.scale = function(center, magnfication){
+//       temporaryViewBox = viewBox.scale(center, magnfication);
+//       element.setAttribute('viewBox', temporaryViewBox.toString());
+//       return this;
+//     };
+
+//     this.zoom = function(screenCenter, magnfication){
+//       var center = screenCenter.transform(inverseScreenCTM);
+//       return this.scale(center, magnfication);
+//     };
+
+//     this.fix = function(){
+//       viewBox = temporaryViewBox;
+//       return this;
+//     };
+
+//     this.home = function(){
+//       viewBox = HOME;
+//       element.setAttribute('viewBox', viewBox.toString());
+//     };
+//   };
+// }());
 var Hammerhead;
 (function (){
 
