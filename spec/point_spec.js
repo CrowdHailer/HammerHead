@@ -47,22 +47,12 @@ describe('Point', function(){
       expect(newPoint.x).toEqual(-1);
       expect(newPoint.y).toEqual(4);
     });
-  });
 
-  xit('should be possible to scale a point', function(){
-    var point = new Point(2,3);
-    var scale = 2;
-    var newPoint = point.multiply(scale);
-    expect(newPoint.x).toEqual(4);
-    expect(newPoint.y).toEqual(6);
-  });
-
-  xit('should be possible to scale a point by a fraction', function(){
-    var point = new Point(2,3);
-    var scale = 0.5;
-    var newPoint = point.multiply(scale);
-    expect(newPoint.x).toEqual(1);
-    expect(newPoint.y).toEqual(1.5);
+    it('scalar multiplication', function(){
+      newPoint = point1.multiply(0.5);
+      expect(newPoint.x).toEqual(1);
+      expect(newPoint.y).toEqual(1.5);
+    });
   });
 
   xit('should be possible to map to a svg element', function(){

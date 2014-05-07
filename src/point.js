@@ -5,6 +5,9 @@ var Hammerhead = (function(parent){
     },
     subtract: function(other){
       return point(this.x - other.x, this.y - other.y);
+    },
+    multiply: function(scalar){
+      return point(this.x * scalar, this.y * scalar);
     }
   };
 
