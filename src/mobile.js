@@ -30,13 +30,19 @@ var Hammerhead = (function(parent){
       return this.scale(center, magnfication);
     }
 
-    function fix (){
+    function fix(){
       current = temporary;
       return this;
     }
 
+    function home(){
+      temporary = HOME;
+      update(temporary.toString());
+      return this;
+    }
+
     var instance = Object.create(prototype);
-    [translate, drag, scale, zoom, fix].forEach(function(privilaged){
+    [translate, drag, scale, zoom, fix, home].forEach(function(privilaged){
       instance[privilaged.name] = privilaged;
     });
     return instance;

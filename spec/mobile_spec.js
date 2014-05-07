@@ -76,7 +76,7 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 2 1.5');
   });
 
-  xit('should home to its initial settings', function(){
+  it('should home to its initial settings', function(){
     mobileSVG.translate(delta).fix().home();
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
   });
