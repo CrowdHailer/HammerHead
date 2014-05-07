@@ -6,7 +6,10 @@ var Hammerhead = (function(parent){
     var temporary, current, HOME;
     HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
 
-    update = _.partial(element.setAttribute, 'viewBox');
+    // update = _.partial(element.setAttribute, 'viewBox');
+    function update(viewBoxString){
+      element.setAttribute('viewBox', viewBoxString);
+    }
 
     function translate(delta){
       temporary = current.translate(delta);
