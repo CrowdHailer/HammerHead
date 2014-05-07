@@ -6,6 +6,20 @@ var Hammerhead = (function(parent){
     y1: function(){ return this.getMaximal().y; },
     dX: function(){ return this.x1() - this.x0(); },
     dY: function(){ return this.y1() - this.y0(); },
+    toString: function(){
+      return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
+    },
+    translate: function(delta){
+      var newMinimal = this.getMinimal().subtract(delta);
+      var newMaximal = this.getMaximal().subtract(delta);
+      return viewBox(newMinimal, newMaximal);
+    },
+    scale: function(center, scale){
+      var boxScale = 1.0/scale;
+      var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
+      var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
+      return viewBox(newMinimal, newMaximal);
+    }
   };
 
   var viewBox = function(minimal, maximal){

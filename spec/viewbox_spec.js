@@ -30,18 +30,18 @@ describe('ViewBox', function(){
     expect(viewBox.dY()).toEqual(6);
   });
 
-  xit('should return a viewBox string', function(){
+  it('should return a viewBox string', function(){
     expect(viewBox.toString()).toEqual('0 1 8 6');
   });
 
-  xit('should translate', function(){
-    delta = new Point(1, 1);
+  it('should translate', function(){
+    delta = Hammerhead.Point(1, 1);
     var newViewBox = viewBox.translate(delta);
     expect(newViewBox.toString()).toEqual('-1 0 8 6');
   });
 
-  xit('should scale to a centerpoint', function(){
-    center = new Point(0, 1);
+  it('should scale to a centerpoint', function(){
+    center = Hammerhead.Point(0, 1);
     var newViewBox = viewBox.scale(center, 2);
     expect(newViewBox.toString()).toEqual('0 1 4 3');
   });
