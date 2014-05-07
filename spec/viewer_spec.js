@@ -3,14 +3,14 @@ describe('Hammerhead', function(){
     it('should raise an exception if not given an element', function(){
       spyOn(document, "getElementById").andReturn(null);
       expect(function(){
-        new Hammerhead('invalid');
+        Hammerhead('invalid');
       }).toThrow(new Error('Id: invalid is not a SVG element'));
     });
 
     it('should raise an exception if not given an svg', function(){
       spyOn(document, "getElementById").andReturn({tagName: 'p'});
       expect(function(){
-        new Hammerhead ('not-svg');
+        Hammerhead('not-svg');
       }).toThrow(new Error('Id: not-svg is not a SVG element'));
     });
   });
@@ -23,7 +23,7 @@ describe('Hammerhead', function(){
       document.body.innerHTML += svgString;
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
-      viewer = new Hammerhead ('test');
+      viewer = Hammerhead('test');
     });
 
     it('should drag from the same origin for drag events', function(){

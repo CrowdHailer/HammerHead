@@ -1,45 +1,87 @@
-function Point (x, y) {
-  this.x = x;
-  this.y = y;
-}
-
-Point.prototype = {
-  constructor: Point,
-  add: function (point) {
-    return new Point(this.x + point.x, this.y + point.y);
-  },
-  subtract: function (point) {
-    return new Point(this.x - point.x, this.y - point.y);
-  },
-  multiply: function (scalar) {
-    return new Point(this.x * scalar, this.y * scalar);
-  },
-  mapTo: function(region){
-    var matrix = region.getScreenCTM().inverse();
-    return this.transform(matrix);
-  },
-  transform: function (matrix) {
-    var x = this.x;
-    var y = this.y;
-    return new Point(x*matrix.a + matrix.e, y*matrix.d + matrix.f);
-  },
-  scaleTransform: function (matrix) {
-    return new Point(this.x * matrix.a, this.y * matrix.d);
-  },
-  scaleTo: function (region) {
-    var matrix = region.getScreenCTM().inverse();
-    return this.scaleTransform(matrix);
-  }
-};
-var ViewBox;
-(function(){
-  ViewBox = function(minimal, maximal){
-    this.getMinimal = function(){ return minimal; };
-    this.getMaximal = function(){ return maximal; };
+var Hammerhead = (function(parent){
+  pointPrototype = {
+    add: function(other){
+      return point(this.x + other.x, this.y + other.y);
+    },
+    subtract: function(other){
+      return point(this.x - other.x, this.y - other.y);
+    },
+    multiply: function(scalar){
+      return point(this.x * scalar, this.y * scalar);
+    },
+    transform: function (matrix) {
+      return point(this.x * matrix.a + matrix.e, this.y * matrix.d + matrix.f);
+    },
+    scaleTransform: function (matrix) {
+      return point(this.x * matrix.a, this.y * matrix.d);
+    }
   };
 
-  ViewBox.prototype = {
-    constructor: ViewBox,
+  var point = function(first, orthogonal){
+    var x, y;
+
+    if (orthogonal === undefined ) {
+      if (first.x !== undefined) {
+        y = first.y;
+        x = first.x;
+      } else if (first.pageX !== undefined) {
+        y = first.pageY;
+        x = first.pageX;
+      } else if (first.deltaX !== undefined) {
+        y = first.deltaY;
+        x = first.deltaX;
+      }
+    } else {
+      x = first;
+      y = orthogonal;
+    }
+
+    var instance = Object.create(pointPrototype);
+    instance.x = x;
+    instance.y = y;
+    return instance;
+  };
+
+  parent.Point = point;
+
+  return parent;
+}(Hammerhead || {}));
+
+// function Point (x, y) {
+//   this.x = x;
+//   this.y = y;
+// }
+
+// Point.prototype = {
+//   constructor: Point,
+//   add: function (point) {
+//     return new Point(this.x + point.x, this.y + point.y);
+//   },
+//   subtract: function (point) {
+//     return new Point(this.x - point.x, this.y - point.y);
+//   },
+//   multiply: function (scalar) {
+//     return new Point(this.x * scalar, this.y * scalar);
+//   },
+//   mapTo: function(region){
+//     var matrix = region.getScreenCTM().inverse();
+//     return this.transform(matrix);
+//   },
+//   transform: function (matrix) {
+//     var x = this.x;
+//     var y = this.y;
+//     return new Point(x*matrix.a + matrix.e, y*matrix.d + matrix.f);
+//   },
+//   scaleTransform: function (matrix) {
+//     return new Point(this.x * matrix.a, this.y * matrix.d);
+//   },
+//   scaleTo: function (region) {
+//     var matrix = region.getScreenCTM().inverse();
+//     return this.scaleTransform(matrix);
+//   }
+// };
+var Hammerhead = (function(parent){
+  viewBoxPrototype = {
     x0: function(){ return this.getMinimal().x; },
     y0: function(){ return this.getMinimal().y; },
     x1: function(){ return this.getMaximal().x; },
@@ -52,84 +94,199 @@ var ViewBox;
     translate: function(delta){
       var newMinimal = this.getMinimal().subtract(delta);
       var newMaximal = this.getMaximal().subtract(delta);
-      return new this.constructor(newMinimal, newMaximal);
+      return viewBox(newMinimal, newMaximal);
     },
     scale: function(center, scale){
       var boxScale = 1.0/scale;
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
-      return new this.constructor(newMinimal, newMaximal);
+      return viewBox(newMinimal, newMaximal);
     }
   };
 
-  ViewBox.fromString = function(viewBoxString){
-    
+  var viewBox = function(minimal, maximal){
+
+    if (typeof minimal === 'string') { return fromString(minimal); }
+
+    var instance = Object.create(viewBoxPrototype);
+    instance.getMinimal = function(){ return minimal; };
+    instance.getMaximal = function(){ return maximal; };
+    return instance;
+  };
+
+  var fromString = function(viewBoxString){
     var returnInt = function(string) {
       return parseInt(string, 10);
     };
 
     var limits = viewBoxString.split(' ').map(returnInt);
-    var minimal = new Point(limits[0], limits[1]);
-    var delta = new Point(limits[2], limits[3]);
+    var minimal = parent.Point(limits[0], limits[1]);
+    var delta = parent.Point(limits[2], limits[3]);
     var maximal = minimal.add(delta);
-    return new this(minimal, maximal);
+    return viewBox(minimal, maximal);
+
   };
-}());
-var MobileSVG;
-(function(){
-  MobileSVG = function(element){
-    var temporaryViewBox, inverseScreenCTM, viewBox, HOME;
-    viewBox = ViewBox.fromString(element.getAttribute('viewBox'));
-    HOME = viewBox;
-    temporaryViewBox = viewBox;
-    var getInverseScreenCTM = function(){
-      var inverse = element.getScreenCTM().inverse();
-      // Windows Phone hack
-      if (!window.devicePixelRatio) { inverse = inverse.scale(2); }
-      return inverse;
-    };
 
-    this.updateCTM = function(){
-      inverseScreenCTM = getInverseScreenCTM();
-    };
-    this.updateCTM();
+  parent.ViewBox = viewBox;
+  parent.ViewBox.fromString = fromString;
 
-    this.translate = function(delta){
-      temporaryViewBox = viewBox.translate(delta);
-      element.setAttribute('viewBox', temporaryViewBox.toString());
+  return parent;
+}(Hammerhead || {}));
+
+// var ViewBox;
+// (function(){
+//   ViewBox = function(minimal, maximal){
+//     this.getMinimal = function(){ return minimal; };
+//     this.getMaximal = function(){ return maximal; };
+//   };
+
+//   ViewBox.prototype = {
+//     constructor: ViewBox,
+//     x0: function(){ return this.getMinimal().x; },
+//     y0: function(){ return this.getMinimal().y; },
+//     x1: function(){ return this.getMaximal().x; },
+//     y1: function(){ return this.getMaximal().y; },
+//     dX: function(){ return this.x1() - this.x0(); },
+//     dY: function(){ return this.y1() - this.y0(); },
+//     toString: function(){
+//       return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
+//     },
+//     translate: function(delta){
+//       var newMinimal = this.getMinimal().subtract(delta);
+//       var newMaximal = this.getMaximal().subtract(delta);
+//       return new this.constructor(newMinimal, newMaximal);
+//     },
+//     scale: function(center, scale){
+//       var boxScale = 1.0/scale;
+//       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
+//       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
+//       return new this.constructor(newMinimal, newMaximal);
+//     }
+//   };
+
+//   ViewBox.fromString = function(viewBoxString){
+    
+//     var returnInt = function(string) {
+//       return parseInt(string, 10);
+//     };
+
+//     var limits = viewBoxString.split(' ').map(returnInt);
+//     var minimal = new Point(limits[0], limits[1]);
+//     var delta = new Point(limits[2], limits[3]);
+//     var maximal = minimal.add(delta);
+//     return new this(minimal, maximal);
+//   };
+// }());
+var Hammerhead = (function(parent){
+  var prototype = {
+  };
+
+  var create = function(element){
+    var temporary, current, HOME;
+    HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
+
+    // update = _.partial(element.setAttribute, 'viewBox');
+    function update(viewBoxString){
+      element.setAttribute('viewBox', viewBoxString);
+    }
+
+    function translate(delta){
+      temporary = current.translate(delta);
+      update(temporary.toString());
       return this;
-    };
+    }
 
-    this.drag = function(screenDelta){
-      var delta = screenDelta.scaleTransform(inverseScreenCTM);
+    function drag(screenDelta){
+      var delta = screenDelta.scaleTransform(element.getScreenCTM().inverse());
       return this.translate(delta);
-    };
+    }
 
-    this.scale = function(center, magnfication){
-      temporaryViewBox = viewBox.scale(center, magnfication);
-      element.setAttribute('viewBox', temporaryViewBox.toString());
+    function scale(center, magnfication){
+      temporary = current.scale(center, magnfication);
+      update(temporary.toString());
       return this;
-    };
+    }
 
-    this.zoom = function(screenCenter, magnfication){
-      var center = screenCenter.transform(inverseScreenCTM);
+    function zoom(screenCenter, magnfication){
+      var center = screenCenter.transform(element.getScreenCTM().inverse());
       return this.scale(center, magnfication);
-    };
+    }
 
-    this.fix = function(){
-      viewBox = temporaryViewBox;
+    function fix(){
+      current = temporary;
       return this;
-    };
+    }
 
-    this.home = function(){
-      viewBox = HOME;
-      element.setAttribute('viewBox', viewBox.toString());
-    };
+    function home(){
+      temporary = HOME;
+      update(temporary.toString());
+      return this;
+    }
+
+    var instance = Object.create(prototype);
+    [translate, drag, scale, zoom, fix, home].forEach(function(privilaged){
+      instance[privilaged.name] = privilaged;
+    });
+    return instance;
   };
-}());
-var Hammerhead;
-(function (){
 
+  parent.MobileSVG = create;
+  return parent;
+}(Hammerhead || {}));
+
+// var MobileSVG;
+// (function(){
+//   MobileSVG = function(element){
+//     var temporaryViewBox, inverseScreenCTM, viewBox, HOME;
+//     viewBox = ViewBox.fromString(element.getAttribute('viewBox'));
+//     HOME = viewBox;
+//     temporaryViewBox = viewBox;
+//     var getInverseScreenCTM = function(){
+//       var inverse = element.getScreenCTM().inverse();
+//       // Windows Phone hack
+//       if (!window.devicePixelRatio) { inverse = inverse.scale(2); }
+//       return inverse;
+//     };
+
+//     this.updateCTM = function(){
+//       inverseScreenCTM = getInverseScreenCTM();
+//     };
+//     this.updateCTM();
+
+//     this.translate = function(delta){
+//       temporaryViewBox = viewBox.translate(delta);
+//       element.setAttribute('viewBox', temporaryViewBox.toString());
+//       return this;
+//     };
+
+//     this.drag = function(screenDelta){
+//       var delta = screenDelta.scaleTransform(inverseScreenCTM);
+//       return this.translate(delta);
+//     };
+
+//     this.scale = function(center, magnfication){
+//       temporaryViewBox = viewBox.scale(center, magnfication);
+//       element.setAttribute('viewBox', temporaryViewBox.toString());
+//       return this;
+//     };
+
+//     this.zoom = function(screenCenter, magnfication){
+//       var center = screenCenter.transform(inverseScreenCTM);
+//       return this.scale(center, magnfication);
+//     };
+
+//     this.fix = function(){
+//       viewBox = temporaryViewBox;
+//       return this;
+//     };
+
+//     this.home = function(){
+//       viewBox = HOME;
+//       element.setAttribute('viewBox', viewBox.toString());
+//     };
+//   };
+// }());
+var Hammerhead = (function(parent){
   function isSVG (element) {
     return element && element.tagName.toLowerCase() == 'svg';
   }
@@ -140,32 +297,34 @@ var Hammerhead;
     throw 'Id: ' + id + ' is not a SVG element';
   }
 
-  // function vectorizeGesture(gesture){
-  //   var delta = new Point(gesture.deltaX, gesture.deltaY);
-  //   var center = (gesture.center) ? (new Point(gesture.center.pageX, gesture.center.pageY)) : null;
-  //   return {delta: delta, center: center, magnification: gesture.scale};
-  // }
+  var prototype = {};
 
-  Hammerhead = function (id) {
+  function create(id){
     var lastEvent;
     var element = getSVG(id);
-    var mobileSVG = new MobileSVG(element);
+    var mobileSVG = Hammerhead.MobileSVG(element);
     var hammertime = Hammer(document).on('touch', touchHandler);
 
-    var handlers = {
-      dragstart: function(gesture){
-        mobileSVG.fix();
-      },
-      drag: function(gesture){
-        mobileSVG.drag(new Point(gesture.deltaX, gesture.deltaY));
-      },
-      transformstart: function(){
-        mobileSVG.fix();
-      },
-      pinch: function(gesture){
-        mobileSVG.zoom(new Point(gesture.center.pageX, gesture.center.pageY), gesture.scale);
-      }
-    };
+    function touchHandler (event) {
+      event.gesture.preventDefault();
+      if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
+    }
+
+    function releaseHandler (event) {
+      mobileSVG.fix();
+      // mobileSVG.updateCTM();
+      activityOff(hammertime);
+    }
+
+    function activityOn(instance){
+      instance.on('dragstart drag transformstart pinch', gestureHandler);
+      instance.on('release', releaseHandler);
+    }
+
+    function activityOff(instance){
+      instance.off('dragstart drag transformstart pinch', gestureHandler);
+      instance.off('release', releaseHandler);
+    }
 
     lastEvent = {gesture: {}};
     var gestureHandler = function(event){
@@ -181,40 +340,122 @@ var Hammerhead;
       lastEvent = event;
     };
 
-    function activityOn(instance){
-      instance.on('dragstart drag transformstart pinch', gestureHandler);
-      instance.on('release', releaseHandler);
-    }
-    function activityOff(instance){
-      instance.off('dragstart drag transformstart pinch', gestureHandler);
-      instance.off('release', releaseHandler);
-    }
-    function touchHandler (event) {
-      event.gesture.preventDefault();
-      if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
-    }
-    function releaseHandler (event) {
-      mobileSVG.fix();
-      mobileSVG.updateCTM();
-      activityOff(hammertime);
-    }
-    /* test-code */
-    this._test = {
+    var handlers = {
+      dragstart: function(gesture){
+        mobileSVG.fix();
+      },
+      drag: function(gesture){
+        mobileSVG.drag(Hammerhead.Point(gesture.deltaX, gesture.deltaY));
+      },
+      transformstart: function(){
+        mobileSVG.fix();
+      },
+      pinch: function(gesture){
+        mobileSVG.zoom(Hammerhead.Point(gesture.center.pageX, gesture.center.pageY), gesture.scale);
+      }
+    };
+
+    var instance = Object.create(prototype);
+    instance._test = {
       hammertime: hammertime,
       handlers: handlers
     };
-    /* end-test-code */
-  };
+    return instance;
+  }
 
-}());
+  // parent.create = create;
+  // return parent;
+  return _.extend(create, parent);
+}(Hammerhead || {}));
 
-  // Doesnt work if target is svg
-  // Give argument to expand hammer instance
-  // return function will kill and home methods
-  // possibly take config map for shortcut keys
-  // include keystroke zoom and pan
-  // keep mouse handlers private
-  // Added mouse wheel support in configuration
-  // mobilise method auto called
-  // freeze method for swish loader
-  // Need to clear hammer for testing
+// var old;
+// (function (){
+
+//   function isSVG (element) {
+//     return element && element.tagName.toLowerCase() == 'svg';
+//   }
+
+//   function getSVG (id) {
+//     var element = document.getElementById(id);
+//     if (isSVG(element)) { return element; }  
+//     throw 'Id: ' + id + ' is not a SVG element';
+//   }
+
+//   // function vectorizeGesture(gesture){
+//   //   var delta = new Point(gesture.deltaX, gesture.deltaY);
+//   //   var center = (gesture.center) ? (new Point(gesture.center.pageX, gesture.center.pageY)) : null;
+//   //   return {delta: delta, center: center, magnification: gesture.scale};
+//   // }
+
+//   old = function (id) {
+//     var lastEvent;
+//     var element = getSVG(id);
+//     var mobileSVG = new MobileSVG(element);
+//     var hammertime = Hammer(document).on('touch', touchHandler);
+
+//     var handlers = {
+//       dragstart: function(gesture){
+//         mobileSVG.fix();
+//       },
+//       drag: function(gesture){
+//         mobileSVG.drag(new Point(gesture.deltaX, gesture.deltaY));
+//       },
+//       transformstart: function(){
+//         mobileSVG.fix();
+//       },
+//       pinch: function(gesture){
+//         mobileSVG.zoom(new Point(gesture.center.pageX, gesture.center.pageY), gesture.scale);
+//       }
+//     };
+
+//     lastEvent = {gesture: {}};
+//     var gestureHandler = function(event){
+//       var gesture = event.gesture;
+//       gesture.preventDefault();
+
+//       var t1 = gesture.timeStamp || 1000;
+//       var t0 = lastEvent.gesture.timeStamp || 0;
+
+//       if (t1 - t0 > 300 || lastEvent.type !== event.type) {
+//         handlers[event.type](gesture);
+//       }
+//       lastEvent = event;
+//     };
+
+//     function activityOn(instance){
+//       instance.on('dragstart drag transformstart pinch', gestureHandler);
+//       instance.on('release', releaseHandler);
+//     }
+//     function activityOff(instance){
+//       instance.off('dragstart drag transformstart pinch', gestureHandler);
+//       instance.off('release', releaseHandler);
+//     }
+//     function touchHandler (event) {
+//       event.gesture.preventDefault();
+//       if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
+//     }
+//     function releaseHandler (event) {
+//       mobileSVG.fix();
+//       mobileSVG.updateCTM();
+//       activityOff(hammertime);
+//     }
+//     /* test-code */
+//     this._test = {
+//       hammertime: hammertime,
+//       handlers: handlers
+//     };
+//     /* end-test-code */
+//   };
+
+// }());
+
+//   // Doesnt work if target is svg
+//   // Give argument to expand hammer instance
+//   // return function will kill and home methods
+//   // possibly take config map for shortcut keys
+//   // include keystroke zoom and pan
+//   // keep mouse handlers private
+//   // Added mouse wheel support in configuration
+//   // mobilise method auto called
+//   // freeze method for swish loader
+//   // Need to clear hammer for testing

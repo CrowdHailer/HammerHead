@@ -10,10 +10,10 @@ describe('Mobile SVG', function(){
     spyOn(element, 'getAttribute').andReturn('0 1 8 6');
     spyOn(element, 'setAttribute');
     spyOn(element, 'getScreenCTM').andReturn({inverse: inverse});
-    mobileSVG = new MobileSVG(element);
-    delta = new Point(1, 1);
-    center = new Point(0, 1);
-    screenCenter = new Point(0, 0.5);
+    mobileSVG = Hammerhead.MobileSVG(element);
+    delta = Hammerhead.Point(1, 1);
+    center = Hammerhead.Point(0, 1);
+    screenCenter = Hammerhead.Point(0, 0.5);
   });
 
   it('should translate in SVG units', function(){
