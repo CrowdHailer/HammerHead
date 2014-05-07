@@ -46,8 +46,8 @@ describe('ViewBox', function(){
     expect(newViewBox.toString()).toEqual('0 1 4 3');
   });
 
-  xit('should build a viewbox from a string', function(){
-    var newViewBox = ViewBox.fromString('1 2 3 4');
+  it('should build a viewbox from a string', function(){
+    var newViewBox = Hammerhead.ViewBox.fromString('1 2 3 4');
     expect(newViewBox.x0()).toEqual(1);
     expect(newViewBox.y1()).toEqual(6);
   });
