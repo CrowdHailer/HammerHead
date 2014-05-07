@@ -1,32 +1,32 @@
 describe('ViewBox', function(){
   var minimal, maximal, viewBox;
   beforeEach(function(){
-    minimal = new Point(0, 1);
-    maximal = new Point(8, 7);
-    viewBox = new ViewBox(minimal, maximal);
+    minimal = Hammerhead.Point(0, 1);
+    maximal = Hammerhead.Point(8, 7);
+    viewBox = Hammerhead.ViewBox(minimal, maximal);
   });
 
-  xit('should give a x0 value', function(){
+  it('should give a x0 value', function(){
     expect(viewBox.x0()).toEqual(0);
   });
 
-  xit('should give a y0 value', function(){
+  it('should give a y0 value', function(){
     expect(viewBox.y0()).toEqual(1);
   });
 
-  xit('should give a x1 value', function(){
+  it('should give a x1 value', function(){
     expect(viewBox.x1()).toEqual(8);
   });
 
-  xit('should give a y1 value', function(){
+  it('should give a y1 value', function(){
     expect(viewBox.y1()).toEqual(7);
   });
 
-  xit('should give a dX value', function(){
+  it('should give a dX value', function(){
     expect(viewBox.dX()).toEqual(8);
   });
 
-  xit('should give a dY value', function(){
+  it('should give a dY value', function(){
     expect(viewBox.dY()).toEqual(6);
   });
 

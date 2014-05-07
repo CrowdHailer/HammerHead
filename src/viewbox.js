@@ -1,3 +1,26 @@
+var Hammerhead = (function(parent){
+  viewBoxPrototype = {
+    x0: function(){ return this.getMinimal().x; },
+    y0: function(){ return this.getMinimal().y; },
+    x1: function(){ return this.getMaximal().x; },
+    y1: function(){ return this.getMaximal().y; },
+    dX: function(){ return this.x1() - this.x0(); },
+    dY: function(){ return this.y1() - this.y0(); },
+  };
+
+  var viewBox = function(minimal, maximal){
+
+    var instance = Object.create(viewBoxPrototype);
+    instance.getMinimal = function(){ return minimal; };
+    instance.getMaximal = function(){ return maximal; };
+    return instance;
+  };
+
+  parent.ViewBox = viewBox;
+
+  return parent;
+}(Hammerhead || {}));
+
 var ViewBox;
 (function(){
   ViewBox = function(minimal, maximal){
