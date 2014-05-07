@@ -2,11 +2,15 @@ var Hammerhead = (function(parent){
   pointPrototype = {
     add: function(other){
       return point(this.x + other.x, this.y + other.y);
+    },
+    subtract: function(other){
+      return point(this.x - other.x, this.y - other.y);
     }
   };
 
   var point = function(first, orthogonal){
     var x, y;
+
     if (orthogonal === undefined ) {
       if (first.x !== undefined) {
         y = first.y;
@@ -14,7 +18,7 @@ var Hammerhead = (function(parent){
       } else if (first.pageX !== undefined) {
         y = first.pageY;
         x = first.pageX;
-      } else if (first.deltaX) {
+      } else if (first.deltaX !== undefined) {
         y = first.deltaY;
         x = first.deltaX;
       }
@@ -22,6 +26,7 @@ var Hammerhead = (function(parent){
       x = first;
       y = orthogonal;
     }
+
     var instance = Object.create(pointPrototype);
     instance.x = x;
     instance.y = y;

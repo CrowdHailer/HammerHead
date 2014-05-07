@@ -30,26 +30,23 @@ describe('Point', function(){
   });
 
   describe('geometric operations', function(){
-    var point1, point2;
+    var point1, point2, newPoint;
     beforeEach(function(){
       point1 = Hammerhead.Point(2, 3);
       point2 = Hammerhead.Point(3, -1);
     });
 
     it('adding points', function(){
-      var newPoint = point1.add(point2);
+      newPoint = point1.add(point2);
       expect(newPoint.x).toEqual(5);
       expect(newPoint.y).toEqual(2);
     });
-  });
 
-
-  xit('should be able to subtract points', function(){
-    var point1 = new Point(2,3);
-    var point2 = new Point(3,-1);
-    var newPoint = point1.subtract(point2);
-    expect(newPoint.x).toEqual(-1);
-    expect(newPoint.y).toEqual(4);
+    it('subtracting points', function(){
+      newPoint = point1.subtract(point2);
+      expect(newPoint.x).toEqual(-1);
+      expect(newPoint.y).toEqual(4);
+    });
   });
 
   xit('should be possible to scale a point', function(){
