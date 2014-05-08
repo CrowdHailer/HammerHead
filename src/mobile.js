@@ -10,6 +10,7 @@ var Hammerhead = (function(parent){
     function update(viewBoxString){
       element.setAttribute('viewBox', viewBoxString);
     }
+    update = _.throttle(update, 0)
 
     function translate(delta){
       temporary = current.translate(delta);

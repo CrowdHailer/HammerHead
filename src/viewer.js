@@ -42,16 +42,7 @@ var Hammerhead = (function(parent){
     var gestureHandler = function(event){
       var gesture = event.gesture;
       gesture.preventDefault();
-
-      var t1 = gesture.timeStamp || 1000;
-      var t0 = lastEvent.gesture.timeStamp || 0;
-
-      if (t1 - t0 > 300 || lastEvent.type !== event.type) {
-        handlers[event.type](gesture);
-      } else {
-        console.log(t1 - t0)
-      }
-      lastEvent = event;
+      handlers[event.type](gesture);
     };
 
     var handlers = {
