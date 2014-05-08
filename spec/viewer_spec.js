@@ -91,6 +91,22 @@ describe('Hammerhead', function(){
       hammerHandle.trigger('release', {});
     });
 
+    afterEach(function(){
+      var fix = document.getElementById('test');
+      fix.parentElement.removeChild(fix);
+    });
+  });
+  describe('valid properties' ,function(){
+    var viewer, testSVG, preventDefault;
+    beforeEach(function(){
+      preventDefault = function(){};
+      svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"><path id="test-path"></path></svg>';
+      document.body.innerHTML += svgString;
+      testSVG = document.getElementById('test');
+      testPath = document.getElementById('test-path');
+      viewer = Hammerhead('test');
+    });
+
     it('should not make repeated calls to change the viewbox', function(){
       var hammerHandle = viewer._test.hammertime;
       spyOn(viewer._test.handlers, "drag");
@@ -104,5 +120,4 @@ describe('Hammerhead', function(){
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);
     });
-  });
 });
