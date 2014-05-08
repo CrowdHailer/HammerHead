@@ -181,15 +181,20 @@ var Hammerhead = (function(parent){
   var prototype = {
   };
 
-  var create = function(element){
+  var DEFAULTS = {
+    "throttleDelay": 300
+  };
+
+  var create = function(element, options){
     var temporary, current, HOME;
+    options = _.extend({}, DEFAULTS, options)
     HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
 
     // update = _.partial(element.setAttribute, 'viewBox');
     function update(viewBoxString){
       element.setAttribute('viewBox', viewBoxString);
     }
-    update = _.throttle(update, 0)
+    update = _.throttle(update, options.throttleDelay)
 
     function translate(delta){
       temporary = current.translate(delta);
@@ -288,23 +293,22 @@ var Hammerhead = (function(parent){
 //   };
 // }());
 var Hammerhead = (function(parent){
-  function isSVG (element) {
-    return element && element.tagName.toLowerCase() == 'svg';
-  }
 
   function getSVG (id) {
     var element = document.getElementById(id);
-    if (isSVG(element)) { return element; }  
+    if (element && element.tagName.toLowerCase() == 'svg') { return element; }
     throw 'Id: ' + id + ' is not a SVG element';
   }
 
   var prototype = {};
+  var DEFAULTS = {};
 
-  function create(id){
-    var lastEvent;
+  function create(id, options){
+    options = _.extend({}, DEFAULTS, options);
     var element = getSVG(id);
-    var mobileSVG = Hammerhead.MobileSVG(element);
+    var mobileSVG = Hammerhead.MobileSVG(element, options);
     var hammertime = Hammer(document).on('touch', touchHandler);
+    
 
     function touchHandler (event) {
       event.gesture.preventDefault();
@@ -327,7 +331,6 @@ var Hammerhead = (function(parent){
       instance.off('release', releaseHandler);
     }
 
-    lastEvent = {gesture: {}};
     var gestureHandler = function(event){
       var gesture = event.gesture;
       gesture.preventDefault();
@@ -357,8 +360,6 @@ var Hammerhead = (function(parent){
     return instance;
   }
 
-  // parent.create = create;
-  // return parent;
   return _.extend(create, parent);
 }(Hammerhead || {}));
 
