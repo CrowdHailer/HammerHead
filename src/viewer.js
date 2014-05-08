@@ -48,6 +48,8 @@ var Hammerhead = (function(parent){
 
       if (t1 - t0 > 300 || lastEvent.type !== event.type) {
         handlers[event.type](gesture);
+      } else {
+        console.log(t1 - t0)
       }
       lastEvent = event;
     };
