@@ -10,7 +10,7 @@ describe('Mobile SVG', function(){
     spyOn(element, 'getAttribute').andReturn('0 1 8 6');
     spyOn(element, 'setAttribute');
     spyOn(element, 'getScreenCTM').andReturn({inverse: inverse});
-    mobileSVG = Hammerhead.MobileSVG(element);
+    mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0});
     delta = Hammerhead.Point(1, 1);
     center = Hammerhead.Point(0, 1);
     screenCenter = Hammerhead.Point(0, 0.5);

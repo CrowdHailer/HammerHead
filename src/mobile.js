@@ -2,15 +2,20 @@ var Hammerhead = (function(parent){
   var prototype = {
   };
 
-  var create = function(element){
+  var DEFAULTS = {
+    "throttleDelay": 300
+  };
+
+  var create = function(element, options){
     var temporary, current, HOME;
+    options = _.extend({}, DEFAULTS, options)
     HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
 
     // update = _.partial(element.setAttribute, 'viewBox');
     function update(viewBoxString){
       element.setAttribute('viewBox', viewBoxString);
     }
-    update = _.throttle(update, 0)
+    update = _.throttle(update, options.throttleDelay)
 
     function translate(delta){
       temporary = current.translate(delta);

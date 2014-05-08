@@ -7,11 +7,14 @@ var Hammerhead = (function(parent){
   }
 
   var prototype = {};
+  var DEFAULTS = {};
 
-  function create(id){
+  function create(id, options){
+    options = _.extend({}, DEFAULTS, options);
     var element = getSVG(id);
-    var mobileSVG = Hammerhead.MobileSVG(element);
+    var mobileSVG = Hammerhead.MobileSVG(element, options);
     var hammertime = Hammer(document).on('touch', touchHandler);
+    
 
     function touchHandler (event) {
       event.gesture.preventDefault();

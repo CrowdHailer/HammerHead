@@ -23,7 +23,7 @@ describe('Hammerhead', function(){
       document.body.innerHTML += svgString;
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
-      viewer = Hammerhead('test');
+      viewer = Hammerhead('test', {throttleDelay: 0});
     });
 
     it('should drag from the same origin for drag events', function(){
@@ -96,7 +96,7 @@ describe('Hammerhead', function(){
       fix.parentElement.removeChild(fix);
     });
   });
-  describe('valid properties' ,function(){
+  describe('Initialisation options' ,function(){
     var viewer, testSVG, preventDefault;
     beforeEach(function(){
       preventDefault = function(){};
@@ -104,20 +104,22 @@ describe('Hammerhead', function(){
       document.body.innerHTML += svgString;
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
-      viewer = Hammerhead('test');
+      
     });
 
-    it('should not make repeated calls to change the viewbox', function(){
+    it('should not make repeated calls to change the viewbox with a throttle limit', function(){
+      viewer = Hammerhead('test', {throttleDelay: 20});
       var hammerHandle = viewer._test.hammertime;
-      spyOn(viewer._test.handlers, "drag");
+      spyOn(testSVG, "setAttribute");
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
-      expect(viewer._test.handlers.drag.calls.length).toEqual(1);
+      expect(testSVG.setAttribute.calls.length).toEqual(1);
     });
 
     afterEach(function(){
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);
     });
+  });
 });
