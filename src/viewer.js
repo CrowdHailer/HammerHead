@@ -1,18 +1,14 @@
 var Hammerhead = (function(parent){
-  function isSVG (element) {
-    return element && element.tagName.toLowerCase() == 'svg';
-  }
 
   function getSVG (id) {
     var element = document.getElementById(id);
-    if (isSVG(element)) { return element; }  
+    if (element && element.tagName.toLowerCase() == 'svg') { return element; }
     throw 'Id: ' + id + ' is not a SVG element';
   }
 
   var prototype = {};
 
   function create(id){
-    var lastEvent;
     var element = getSVG(id);
     var mobileSVG = Hammerhead.MobileSVG(element);
     var hammertime = Hammer(document).on('touch', touchHandler);
@@ -38,7 +34,6 @@ var Hammerhead = (function(parent){
       instance.off('release', releaseHandler);
     }
 
-    lastEvent = {gesture: {}};
     var gestureHandler = function(event){
       var gesture = event.gesture;
       gesture.preventDefault();
@@ -68,8 +63,6 @@ var Hammerhead = (function(parent){
     return instance;
   }
 
-  // parent.create = create;
-  // return parent;
   return _.extend(create, parent);
 }(Hammerhead || {}));
 
