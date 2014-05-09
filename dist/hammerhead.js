@@ -328,7 +328,9 @@ var Hammerhead = (function(parent){
     dragX: 100,
     dragY: 100,
     zoomIn: 1.25,
-    zoomOut: 0.8
+    zoomOut: 0.8,
+    prefix: function(){},
+    postfix: function(){},
   };
 
   function create(id, options){
@@ -341,6 +343,7 @@ var Hammerhead = (function(parent){
 
     function touchHandler (event) {
       event.gesture.preventDefault();
+      options.prefix();
       if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
     }
 
@@ -348,6 +351,7 @@ var Hammerhead = (function(parent){
       mobileSVG.fix();
       // mobileSVG.updateCTM();
       activityOff(hammertime);
+      options.postfix();
     }
 
     function activityOn(instance){
