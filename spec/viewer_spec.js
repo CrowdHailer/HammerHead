@@ -180,6 +180,18 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
     });
 
+    it('should be possible to overide the default Zoom in scale', function(){
+      viewer = Hammerhead('test', {throttleDelay: 0, zoomIn: 2});
+      viewer.zoomIn();
+      expect(testSVG.getAttribute('viewBox')).toEqual('500 250 1000 500');
+    });
+
+    it('should be possible to overide the default Zoom out scale', function(){
+      viewer = Hammerhead('test', {throttleDelay: 0, zoomOut: 0.5});
+      viewer.zoomOut();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-1000 -500 4000 2000');
+    });
+
     afterEach(function(){
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);
