@@ -81,4 +81,11 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
   });
 
+  it('should home to a given set of points', function(){
+    var min = Hammerhead.Point(1, 1);
+    var max = Hammerhead.Point(2, 2);
+    mobileSVG.home(min, max);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('1 1 1 1');
+  });
+
 });

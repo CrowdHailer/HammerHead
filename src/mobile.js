@@ -44,8 +44,12 @@ var Hammerhead = (function(parent){
       return this;
     }
 
-    function home(){
-      temporary = HOME;
+    function home(min, max){
+      if (min && max) {
+        temporary = Hammerhead.ViewBox(min, max);
+      } else{
+        temporary = HOME;
+      }
       update(temporary.toString());
       return this;
     }
