@@ -46,7 +46,8 @@ var Hammerhead = (function(parent){
 
     function home(min, max){
       if (min && max) {
-        temporary = Hammerhead.ViewBox(min, max);
+        temporary.setMinimal(min);
+        temporary.setMaximal(max);
       } else {
         temporary = HOME;
       }
@@ -54,8 +55,17 @@ var Hammerhead = (function(parent){
       return this;
     }
 
+    function goTo(target, magnfication){
+      magnfication = magnfication || 4;
+      var spacing = HOME.extent().multiply(1.0/(2*magnfication));
+      temporary.setMinimal(target.subtract(spacing));
+      temporary.setMaximal(target.add(spacing));
+      update(temporary.toString());
+      return this; 
+    }
+
     var instance = Object.create(prototype);
-    [translate, drag, scale, zoom, fix, home].forEach(function(privilaged){
+    [translate, drag, scale, zoom, fix, home, goTo].forEach(function(privilaged){
       instance[privilaged.name] = privilaged;
     });
     return instance;

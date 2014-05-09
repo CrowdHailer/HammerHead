@@ -88,4 +88,15 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('1 1 1 1');
   });
 
+  it('should center to a given point at default magnification x4', function(){
+    var target = Hammerhead.Point(5, 5);
+    mobileSVG.goTo(target);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('4 4.25 2 1.5');
+  });
+
+  it('should center to a given point at given magnification', function(){
+    var target = Hammerhead.Point(5, 5);
+    mobileSVG.goTo(target, 2);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('3 3.5 4 3');
+  });
 });
