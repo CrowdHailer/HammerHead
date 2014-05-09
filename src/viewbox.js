@@ -16,18 +16,18 @@ var Hammerhead = (function(parent){
     translate: function(delta){
       var newMinimal = this.getMinimal().subtract(delta);
       var newMaximal = this.getMaximal().subtract(delta);
-      return viewBox(newMinimal, newMaximal);
+      return viewBox(newMinimal, newMaximal, this.getValidator());
     },
     scale: function(scale, center){
       var boxScale = 1.0/scale;
       center = center || this.center();
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
-      return viewBox(newMinimal, newMaximal);
+      return viewBox(newMinimal, newMaximal, this.getValidator());
     }
   };
 
-  var viewBox = function(minimal, maximal){
+  var viewBox = function(minimal, maximal, validator){
     if (typeof minimal === 'string') { return fromString(minimal); }
 
     var instance = Object.create(viewBoxPrototype);
@@ -35,6 +35,10 @@ var Hammerhead = (function(parent){
     instance.getMaximal = function(){ return maximal; };
     instance.setMinimal = function(min){ minimal = min; };
     instance.setMaximal = function(max){ maximal = max; };
+    instance.getValidator = function(){ return validator; };
+    instance.valid = function(){
+      return validator.call(instance);
+    };
     return instance;
   };
 

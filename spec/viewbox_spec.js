@@ -1,5 +1,5 @@
 describe('ViewBox', function(){
-  var minimal, maximal, viewBox;
+  var minimal, maximal, viewBox, newViewBox;
   beforeEach(function(){
     minimal = Hammerhead.Point(0, 1);
     maximal = Hammerhead.Point(8, 7);
@@ -58,23 +58,47 @@ describe('ViewBox', function(){
 
   it('should translate', function(){
     delta = Hammerhead.Point(1, 1);
-    var newViewBox = viewBox.translate(delta);
+    newViewBox = viewBox.translate(delta);
     expect(newViewBox.toString()).toEqual('-1 0 8 6');
   });
 
   it('should scale to a given centerpoint', function(){
     center = Hammerhead.Point(0, 1);
-    var newViewBox = viewBox.scale(2, center);
+    newViewBox = viewBox.scale(2, center);
     expect(newViewBox.toString()).toEqual('0 1 4 3');
   });
 
+  it('should accept an optional validation arguemt', function(){
+    delta = Hammerhead.Point(1, 1);
+    function check(){
+      return (this.x0() === 0);
+    };
+    console.log('here', check.prototype.call);
+    console.log(typeof check);
+    viewBox = Hammerhead.ViewBox(minimal, maximal, check);
+    newViewBox = viewBox.translate(delta);
+    expect(viewBox.valid()).toEqual(true);
+    expect(newViewBox.valid()).toEqual(false);
+  });
+
+  xit('should accept an optional validation arguemt to limit viewbox manipulations', function(){
+    delta = Hammerhead.Point(1, 1);
+    var check = function(){
+      return (this.x0() === 0);
+    };
+    viewBox = Hammerhead.ViewBox(minimal, maximal, check);
+    newViewBox = viewBox.translate(delta);
+    expect(viewBox.toString()).toEqual('0 1 8 6');
+    expect(newViewBox.toString()).toEqual('0 1 8 6');
+  });
+
   it('should scale to viewbox center given no center argument', function(){
-    var newViewBox = viewBox.scale(2);
+    newViewBox = viewBox.scale(2);
     expect(newViewBox.toString()).toEqual('2 2.5 4 3');
   });
 
   it('should build a viewbox from a string', function(){
-    var newViewBox = Hammerhead.ViewBox('1 2 3 4');
+    newViewBox = Hammerhead.ViewBox('1 2 3 4');
     expect(newViewBox.x0()).toEqual(1);
     expect(newViewBox.y1()).toEqual(6);
   });
