@@ -126,6 +126,18 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
     });
 
+    it('should orthogonal drag handlers, default 100px', function(){
+      viewer.dragX().fix();
+      viewer.dragY();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-400 -400 2000 1000');
+    });
+
+    it('should orthogonal drag handlers, accept pixel distance', function(){
+      viewer.dragX(200).fix();
+      viewer.dragY(200);
+      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
+    });
+
     afterEach(function(){
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);

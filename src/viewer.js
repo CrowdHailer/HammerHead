@@ -60,8 +60,16 @@ var Hammerhead = (function(parent){
     };
 
     var instance = Object.create(prototype);
-    instance.drag =function(x, y){ 
+    instance.drag = function(x, y){ 
       mobileSVG.drag(Pt(x, y));
+      return this;
+    };
+    instance.dragX = function(x){
+      mobileSVG.drag(Pt(x || 100, 0));
+      return this;
+    };
+    instance.dragY = function(y){
+      mobileSVG.drag(Pt(0, y || 100));
       return this;
     };
     instance.zoom = function(x, y, m){
