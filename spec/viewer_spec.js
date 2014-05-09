@@ -23,7 +23,7 @@ describe('Hammerhead', function(){
       document.body.innerHTML += svgString;
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
-      viewer = Hammerhead('test', {throttleDelay: 0});
+      viewer = Hammerhead('test', {throttleDelay: 0, conditions: function(){ return true; }});
     });
 
     it('should drag from the same origin for drag events', function(){
@@ -102,7 +102,7 @@ describe('api handle' ,function(){
       document.body.innerHTML += svgString;
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
-      viewer = Hammerhead('test', {throttleDelay: 0});
+      viewer = Hammerhead('test', {throttleDelay: 0, conditions: function(){ return true; }});
     });
 
     it('should drag from the same origin for drag calls', function(){
@@ -175,10 +175,10 @@ describe('api handle' ,function(){
     });
 
     it('should be possible to overide the default drag functions', function(){
-      viewer = Hammerhead('test', {throttleDelay: 0, dragX: 200, dragY: 200});
+      viewer = Hammerhead('test', {throttleDelay: 0, dragX: 10, dragY: 10});
       viewer.dragX().fix();
       viewer.dragY();
-      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
+      expect(testSVG.getAttribute('viewBox')).toEqual('-40 -40 2000 1000');
     });
 
     it('should be possible to overide the default Zoom in scale', function(){
