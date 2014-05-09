@@ -8,14 +8,14 @@ var Hammerhead = (function(parent){
 
   var create = function(element, options){
     var temporary, current, HOME;
-    options = _.extend({}, DEFAULTS, options)
+    options = _.extend({}, DEFAULTS, options);
     HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
 
     // update = _.partial(element.setAttribute, 'viewBox');
     function update(viewBoxString){
       element.setAttribute('viewBox', viewBoxString);
     }
-    update = _.throttle(update, options.throttleDelay)
+    update = _.throttle(update, options.throttleDelay);
 
     function translate(delta){
       temporary = current.translate(delta);
@@ -24,6 +24,7 @@ var Hammerhead = (function(parent){
     }
 
     function drag(screenDelta){
+      console.log(element.getScreenCTM().inverse());
       var delta = screenDelta.scaleTransform(element.getScreenCTM().inverse());
       return this.translate(delta);
     }

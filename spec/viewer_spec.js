@@ -96,6 +96,30 @@ describe('Hammerhead', function(){
       fix.parentElement.removeChild(fix);
     });
   });
+
+describe('api handle' ,function(){
+    var viewer, testSVG, preventDefault;
+    beforeEach(function(){
+      preventDefault = function(){};
+      svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"><path id="test-path"></path></svg>';
+      document.body.innerHTML += svgString;
+      testSVG = document.getElementById('test');
+      testPath = document.getElementById('test-path');
+      viewer = Hammerhead('test', {throttleDelay: 0});
+    });
+
+    it('should drag from the same origin for drag events', function(){
+      viewer.drag(500, 250);
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+      viewer.drag({x: 200, y: 100});
+      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
+    });
+
+    afterEach(function(){
+      var fix = document.getElementById('test');
+      fix.parentElement.removeChild(fix);
+    });
+  });
   describe('Initialisation options' ,function(){
     var viewer, testSVG, preventDefault;
     beforeEach(function(){
