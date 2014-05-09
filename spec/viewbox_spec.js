@@ -76,7 +76,7 @@ describe('ViewBox', function(){
     viewBox = Hammerhead.ViewBox('0 1 8 6', check);
     newViewBox = viewBox.translate(delta);
     expect(viewBox.toString()).toEqual('0 1 8 6');
-    expect(newViewBox.toString()).toEqual('0 1 8 6');
+    expect(newViewBox).toEqual(null);
   });
 
   it('should accept an optional validation arguemt to limit viewbox zooming', function(){
@@ -86,7 +86,7 @@ describe('ViewBox', function(){
     viewBox = Hammerhead.ViewBox(minimal, maximal, check);
     newViewBox = viewBox.scale(2);
     expect(viewBox.toString()).toEqual('0 1 8 6');
-    expect(newViewBox.toString()).toEqual('0 1 8 6');
+    expect(newViewBox).toEqual(null);
   });
 
   it('should accept an optional validation arguemt when built from string', function(){
@@ -96,7 +96,7 @@ describe('ViewBox', function(){
     viewBox = Hammerhead.ViewBox(minimal, maximal, check);
     newViewBox = viewBox.scale(2);
     expect(viewBox.toString()).toEqual('0 1 8 6');
-    expect(newViewBox.toString()).toEqual('0 1 8 6');
+    expect(newViewBox).toEqual(null);
   });
 
   it('should scale to viewbox center given no center argument', function(){

@@ -28,7 +28,7 @@ var Hammerhead = (function(parent){
 
     function translate(delta){
       temporary = current.translate(delta);
-      update(temporary.toString());
+      if (temporary) { update(temporary.toString()); }
       return this;
     }
 
@@ -39,7 +39,7 @@ var Hammerhead = (function(parent){
 
     function scale(magnfication, center){
       temporary = current.scale(magnfication, center);
-      update(temporary.toString());
+      if (temporary) { update(temporary.toString()); }
       return this;
     }
 

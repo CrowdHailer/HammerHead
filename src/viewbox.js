@@ -17,7 +17,7 @@ var Hammerhead = (function(parent){
       var newMinimal = this.getMinimal().subtract(delta);
       var newMaximal = this.getMaximal().subtract(delta);
       var newViewBox = viewBox(newMinimal, newMaximal, this.getValidator());
-      return newViewBox.valid()? newViewBox : this;
+      return newViewBox.valid()? newViewBox : null;
     },
     scale: function(scale, center){
       var boxScale = 1.0/scale;
@@ -25,7 +25,7 @@ var Hammerhead = (function(parent){
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
       var newViewBox = viewBox(newMinimal, newMaximal, this.getValidator());
-      return newViewBox.valid()? newViewBox : this;
+      return newViewBox.valid()? newViewBox : null;
     }
   };
 
