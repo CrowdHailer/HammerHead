@@ -16,18 +16,21 @@ var Hammerhead = (function(parent){
     translate: function(delta){
       var newMinimal = this.getMinimal().subtract(delta);
       var newMaximal = this.getMaximal().subtract(delta);
-      return viewBox(newMinimal, newMaximal, this.getValidator());
+      var newViewBox = viewBox(newMinimal, newMaximal, this.getValidator());
+      return newViewBox.valid()? newViewBox : this;
     },
     scale: function(scale, center){
       var boxScale = 1.0/scale;
       center = center || this.center();
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
-      return viewBox(newMinimal, newMaximal, this.getValidator());
+      var newViewBox = viewBox(newMinimal, newMaximal, this.getValidator());
+      return newViewBox.valid()? newViewBox : this;
     }
   };
 
   var viewBox = function(minimal, maximal, validator){
+    validator = validator || function(){ return true; };
     if (typeof minimal === 'string') { return fromString(minimal); }
 
     var instance = Object.create(viewBoxPrototype);

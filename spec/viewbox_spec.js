@@ -68,26 +68,23 @@ describe('ViewBox', function(){
     expect(newViewBox.toString()).toEqual('0 1 4 3');
   });
 
-  it('should accept an optional validation arguemt', function(){
-    delta = Hammerhead.Point(1, 1);
-    function check(){
-      return (this.x0() === 0);
-    };
-    console.log('here', check.prototype.call);
-    console.log(typeof check);
-    viewBox = Hammerhead.ViewBox(minimal, maximal, check);
-    newViewBox = viewBox.translate(delta);
-    expect(viewBox.valid()).toEqual(true);
-    expect(newViewBox.valid()).toEqual(false);
-  });
-
-  xit('should accept an optional validation arguemt to limit viewbox manipulations', function(){
+  it('should accept an optional validation arguemt to limit viewbox dragging', function(){
     delta = Hammerhead.Point(1, 1);
     var check = function(){
       return (this.x0() === 0);
     };
     viewBox = Hammerhead.ViewBox(minimal, maximal, check);
     newViewBox = viewBox.translate(delta);
+    expect(viewBox.toString()).toEqual('0 1 8 6');
+    expect(newViewBox.toString()).toEqual('0 1 8 6');
+  });
+
+  it('should accept an optional validation arguemt to limit viewbox zooming', function(){
+    var check = function(){
+      return (this.y0() === 1);
+    };
+    viewBox = Hammerhead.ViewBox(minimal, maximal, check);
+    newViewBox = viewBox.scale(2);
     expect(viewBox.toString()).toEqual('0 1 8 6');
     expect(newViewBox.toString()).toEqual('0 1 8 6');
   });
