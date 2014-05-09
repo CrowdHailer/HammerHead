@@ -126,28 +126,28 @@ describe('Mobile SVG', function(){
       mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0});
       var pt = Hammerhead.Point(8, 0);
       mobileSVG.translate(pt);
-      expect(element.setAttribute).not.toHaveBeenCalled();
+      expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
     });
 
     it('should limit x- drag', function(){
       mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0});
       var pt = Hammerhead.Point(-8, 0);
       mobileSVG.translate(pt);
-      expect(element.setAttribute).not.toHaveBeenCalled();
+      expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
     });
 
     it('should limit y+ drag', function(){
       mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0});
       var pt = Hammerhead.Point(0, 8);
       mobileSVG.translate(pt);
-      expect(element.setAttribute).not.toHaveBeenCalled();
+      expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
     });
 
     it('should limit y- drag', function(){
       mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0});
       var pt = Hammerhead.Point(0, -8);
       mobileSVG.translate(pt);
-      expect(element.setAttribute).not.toHaveBeenCalled();
+      expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
     });
   });
 });
