@@ -13,7 +13,8 @@ var Hammerhead = (function(parent){
       homeCenter = HOME.getMinimal().add(HOME.getMaximal()).multiply(0.5);
       var scaleLimit = (this.dX() >= HOME.dX()/4);
       var xLimit = (this.x0() <= homeCenter.x) && (this.x1() >= homeCenter.x);
-      return scaleLimit && xLimit;
+      var yLimit = (this.y0() <= homeCenter.y) && (this.y1() >= homeCenter.y);
+      return scaleLimit && xLimit && yLimit;
     }; 
     options = _.extend({}, DEFAULTS, options);
 
