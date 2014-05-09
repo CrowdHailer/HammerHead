@@ -49,12 +49,9 @@ var Hammerhead = (function(parent){
     var delta = parent.Point(limits[2], limits[3]);
     var maximal = minimal.add(delta);
     return viewBox(minimal, maximal);
-
   };
 
   parent.ViewBox = viewBox;
-  parent.ViewBox.fromString = fromString;
-
   return parent;
 }(Hammerhead || {}));
 
