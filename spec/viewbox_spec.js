@@ -30,6 +30,14 @@ describe('ViewBox', function(){
     expect(viewBox.dY()).toEqual(6);
   });
 
+  it('should give a xMid value', function(){
+    expect(viewBox.xMid()).toEqual(4);
+  });
+
+  it('should give a yMid value', function(){
+    expect(viewBox.yMid()).toEqual(4);
+  });
+
   it('should return a viewBox string', function(){
     expect(viewBox.toString()).toEqual('0 1 8 6');
   });

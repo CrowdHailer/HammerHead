@@ -79,6 +79,9 @@ var Hammerhead = (function(parent){
     instance.zoom = function(x, y, m){
       mobileSVG.zoom(Pt(x, y), m);
     };
+    instance.zoomIn = function(){
+      mobileSVG.zoom();
+    };
     instance.fix = function(){ mobileSVG.fix(); };
     instance._test = {
       hammertime: hammertime,

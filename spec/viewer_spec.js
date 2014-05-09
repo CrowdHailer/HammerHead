@@ -138,6 +138,11 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
     });
 
+    xit('should have a zoom in hander, default 1.25', function(){
+      viewer.zoomIn();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-250 -125 2500 1250');
+    });
+
     afterEach(function(){
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);
