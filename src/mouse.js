@@ -11,9 +11,12 @@ var Hammerhead = (function(parent){
   function init(hammerhead){
     function handleMouseWheel(event){
       if (event.target.ownerSVGElement) {
-        var delta = self.EventUtil.getWheelDelta(evt);
+        console.log(event);
+        var delta = getWheelDelta(event);
         var scale = Math.pow(2,delta/720);
-        hammerhead.zoom(scale);
+        console.log(scale);
+        hammerhead.zoomIn(scale);
+        hammerhead.fix();
       }
     }
 
