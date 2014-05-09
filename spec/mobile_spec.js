@@ -10,7 +10,7 @@ describe('Mobile SVG', function(){
     spyOn(element, 'getAttribute').andReturn('0 1 8 6');
     spyOn(element, 'setAttribute');
     spyOn(element, 'getScreenCTM').andReturn({inverse: inverse});
-    mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0});
+    mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0, conditions: function(){ return true; }});
     delta = Hammerhead.Point(1, 1);
     center = Hammerhead.Point(0, 1);
     screenCenter = Hammerhead.Point(0, 0.5);
@@ -113,6 +113,7 @@ describe('Mobile SVG', function(){
 
   describe('limited zoom and pan', function(){
     it('should limit zoom in', function(){
+      mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0});
       mobileSVG.scale(2).fix();
       expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '2 2.5 4 3');
       mobileSVG.scale(2).fix();
@@ -122,7 +123,10 @@ describe('Mobile SVG', function(){
     });
 
     it('should limit x+ drag', function(){
-
+      mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0});
+      var pt = Hammerhead.Point(-8, 0);
+      mobileSVG.translate(pt);
+      expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
     });
   });
 });

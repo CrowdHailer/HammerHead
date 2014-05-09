@@ -11,7 +11,7 @@ module.exports = function(config) {
       'spec/point_spec.js',
       'spec/viewbox_spec.js',
       'spec/mobile_spec.js',
-      'spec/viewer_spec.js'
+      // 'spec/viewer_spec.js'
     ],
     exclude: [
       'bower_components/jasmine-jquery.js',

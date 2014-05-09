@@ -9,11 +9,15 @@ var Hammerhead = (function(parent){
 
   var create = function(element, options){
     var temporary, current, HOME;
+    DEFAULTS.conditions =  function(){
+      homeCenter = HOME.getMinimal().add(HOME.getMaximal()).multiply(0.5);
+      var scaleLimit = (this.dX() >= HOME.dX()/4);
+      var xLimit = (this.x0() <= homeCenter.x) && (this.x1() >= homeCenter.x);
+      return scaleLimit && xLimit;
+    }; 
     options = _.extend({}, DEFAULTS, options);
-    function conditions(){
-      return (this.dX() >= HOME.dX()/4);
-    }
-    HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'), conditions);
+
+    HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'), options.conditions);
 
     // update = _.partial(element.setAttribute, 'viewBox');
     function update(viewBoxString){
