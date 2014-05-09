@@ -171,6 +171,7 @@ describe('api handle' ,function(){
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
       expect(testSVG.setAttribute.calls.length).toEqual(1);
+      hammerHandle.trigger('release', {});
     });
 
     it('should be possible to overide the default drag functions', function(){
@@ -190,6 +191,28 @@ describe('api handle' ,function(){
       viewer = Hammerhead('test', {throttleDelay: 0, zoomOut: 0.5});
       viewer.zoomOut();
       expect(testSVG.getAttribute('viewBox')).toEqual('-1000 -500 4000 2000');
+    });
+
+    it('should be able to execute given prefix function', function(){
+      var dummy = {test: function(){}};
+      spyOn(dummy, 'test');
+      viewer = Hammerhead('test', {throttleDelay: 0, prefix: dummy.test});
+      var hammerHandle = viewer._test.hammertime;
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      expect(dummy.test.calls.length).toEqual(1);
+      hammerHandle.trigger('release', {});
+      expect(dummy.test.calls.length).toEqual(1);
+    });
+
+    it('should be able to execute given postfix function', function(){
+      var dummy = {test: function(){}};
+      spyOn(dummy, 'test');
+      viewer = Hammerhead('test', {throttleDelay: 0, postfix: dummy.test});
+      var hammerHandle = viewer._test.hammertime;
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      expect(dummy.test.calls.length).toEqual(0);
+      hammerHandle.trigger('release', {});
+      expect(dummy.test.calls.length).toEqual(1);
     });
 
     afterEach(function(){
