@@ -59,7 +59,7 @@ var Hammerhead = (function(parent){
         mobileSVG.fix();
       },
       pinch: function(gesture){
-        mobileSVG.zoom(Pt(gesture.center.pageX, gesture.center.pageY), gesture.scale);
+        mobileSVG.zoom(gesture.scale, Pt(gesture.center.pageX, gesture.center.pageY));
       }
     };
 
@@ -77,7 +77,7 @@ var Hammerhead = (function(parent){
       return this;
     };
     instance.zoom = function(x, y, m){
-      mobileSVG.zoom(Pt(x, y), m);
+      mobileSVG.zoom(m, Pt(x, y));
     };
     instance.zoomIn = function(){
       mobileSVG.zoom();
