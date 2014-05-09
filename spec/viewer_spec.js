@@ -168,8 +168,8 @@ describe('api handle' ,function(){
       var hammerHandle = viewer._test.hammertime;
       spyOn(testSVG, "setAttribute");
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
-      hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
-      hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
+      hammerHandle.trigger('drag', {deltaX: 50, deltaY: 25, preventDefault: preventDefault, timeStamp: 1});
+      hammerHandle.trigger('drag', {deltaX: 50, deltaY: 25, preventDefault: preventDefault, timeStamp: 1});
       expect(testSVG.setAttribute.calls.length).toEqual(1);
       hammerHandle.trigger('release', {});
     });
