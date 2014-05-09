@@ -10,7 +10,10 @@ var Hammerhead = (function(parent){
   var create = function(element, options){
     var temporary, current, HOME;
     options = _.extend({}, DEFAULTS, options);
-    HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
+    function conditions(){
+      return (this.dX() >= HOME.dX()/4);
+    }
+    HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'), conditions);
 
     // update = _.partial(element.setAttribute, 'viewBox');
     function update(viewBoxString){

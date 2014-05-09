@@ -110,4 +110,19 @@ describe('Mobile SVG', function(){
       expect(element.setAttribute.mostRecentCall.args[1]).toEqual('3 3.5 4 3');
     });
   });
+
+  describe('limited zoom and pan', function(){
+    it('should limit zoom in', function(){
+      mobileSVG.scale(2).fix();
+      expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '2 2.5 4 3');
+      mobileSVG.scale(2).fix();
+      expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '3 3.25 2 1.5');
+      mobileSVG.scale(2);
+      expect(element.setAttribute.mostRecentCall.args[1]).toEqual('3 3.25 2 1.5');
+    });
+
+    it('should limit x+ drag', function(){
+
+    });
+  });
 });
