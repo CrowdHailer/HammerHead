@@ -53,11 +53,8 @@ describe('Hammerhead', function(){
 
     it('should zoom from the same reference for pinch events', function(){
       var hammerHandle = viewer._test.hammertime;
-      // console.log(1);
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
-      // console.log(2);
       hammerHandle.trigger('transformstart', {preventDefault: preventDefault});
-      // console.log(3);
       hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 2, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
       hammerHandle.trigger('pinch', {center:{pageX:500,  pageY: 0}, scale: 2, preventDefault: preventDefault});
@@ -113,6 +110,13 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
       viewer.drag({x: 200, y: 100});
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
+    });
+
+    it('should fix transformations', function(){
+      viewer.drag(500, 250).fix();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+      viewer.drag({x: 200, y: 100});
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
     });
 
     afterEach(function(){

@@ -60,7 +60,11 @@ var Hammerhead = (function(parent){
     };
 
     var instance = Object.create(prototype);
-    instance.drag =function(x, y){ mobileSVG.drag(Pt(x, y)); };
+    instance.drag =function(x, y){ 
+      mobileSVG.drag(Pt(x, y));
+      return this;
+    };
+    instance.fix = function(){ mobileSVG.fix(); };
     instance._test = {
       hammertime: hammertime,
       handlers: handlers
