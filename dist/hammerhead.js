@@ -43,43 +43,9 @@ var Hammerhead = (function(parent){
   };
 
   parent.Point = point;
-
   return parent;
 }(Hammerhead || {}));
 
-// function Point (x, y) {
-//   this.x = x;
-//   this.y = y;
-// }
-
-// Point.prototype = {
-//   constructor: Point,
-//   add: function (point) {
-//     return new Point(this.x + point.x, this.y + point.y);
-//   },
-//   subtract: function (point) {
-//     return new Point(this.x - point.x, this.y - point.y);
-//   },
-//   multiply: function (scalar) {
-//     return new Point(this.x * scalar, this.y * scalar);
-//   },
-//   mapTo: function(region){
-//     var matrix = region.getScreenCTM().inverse();
-//     return this.transform(matrix);
-//   },
-//   transform: function (matrix) {
-//     var x = this.x;
-//     var y = this.y;
-//     return new Point(x*matrix.a + matrix.e, y*matrix.d + matrix.f);
-//   },
-//   scaleTransform: function (matrix) {
-//     return new Point(this.x * matrix.a, this.y * matrix.d);
-//   },
-//   scaleTo: function (region) {
-//     var matrix = region.getScreenCTM().inverse();
-//     return this.scaleTransform(matrix);
-//   }
-// };
 var Hammerhead = (function(parent){
   viewBoxPrototype = {
     x0: function(){ return this.getMinimal().x; },
@@ -98,92 +64,49 @@ var Hammerhead = (function(parent){
     translate: function(delta){
       var newMinimal = this.getMinimal().subtract(delta);
       var newMaximal = this.getMaximal().subtract(delta);
-      return viewBox(newMinimal, newMaximal);
+      var newViewBox = viewBox(newMinimal, newMaximal, this.getValidator());
+      return newViewBox.valid()? newViewBox : this;
     },
     scale: function(scale, center){
       var boxScale = 1.0/scale;
       center = center || this.center();
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
-      return viewBox(newMinimal, newMaximal);
+      var newViewBox = viewBox(newMinimal, newMaximal, this.getValidator());
+      return newViewBox.valid()? newViewBox : this;
     }
   };
 
-  var viewBox = function(minimal, maximal){
-
-    if (typeof minimal === 'string') { return fromString(minimal); }
+  var viewBox = function(minimal, maximal, validator){
+    validator = validator || function(){ return true; };
+    if (typeof minimal === 'string') { return fromString(minimal, maximal); }
 
     var instance = Object.create(viewBoxPrototype);
     instance.getMinimal = function(){ return minimal; };
     instance.getMaximal = function(){ return maximal; };
     instance.setMinimal = function(min){ minimal = min; };
     instance.setMaximal = function(max){ maximal = max; };
+    instance.getValidator = function(){ return validator; };
+    instance.valid = function(){
+      return validator.call(instance);
+    };
     return instance;
   };
 
-  var fromString = function(viewBoxString){
-    var returnInt = function(string) {
-      return parseInt(string, 10);
-    };
+  var fromString = function(viewBoxString, validator){
+    var returnInt = function(string) { return parseInt(string, 10); };
 
-    var limits = viewBoxString.split(' ').map(returnInt);
-    var minimal = parent.Point(limits[0], limits[1]);
-    var delta = parent.Point(limits[2], limits[3]);
-    var maximal = minimal.add(delta);
-    return viewBox(minimal, maximal);
-
+    var limits  = viewBoxString.split(' ').map(returnInt),
+        minimal = parent.Point(limits[0], limits[1]),
+        delta   = parent.Point(limits[2], limits[3]),
+        maximal = minimal.add(delta);
+    return viewBox(minimal, maximal, validator);
   };
 
   parent.ViewBox = viewBox;
-  parent.ViewBox.fromString = fromString;
-
   return parent;
 }(Hammerhead || {}));
 
-// var ViewBox;
-// (function(){
-//   ViewBox = function(minimal, maximal){
-//     this.getMinimal = function(){ return minimal; };
-//     this.getMaximal = function(){ return maximal; };
-//   };
-
-//   ViewBox.prototype = {
-//     constructor: ViewBox,
-//     x0: function(){ return this.getMinimal().x; },
-//     y0: function(){ return this.getMinimal().y; },
-//     x1: function(){ return this.getMaximal().x; },
-//     y1: function(){ return this.getMaximal().y; },
-//     dX: function(){ return this.x1() - this.x0(); },
-//     dY: function(){ return this.y1() - this.y0(); },
-//     toString: function(){
-//       return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
-//     },
-//     translate: function(delta){
-//       var newMinimal = this.getMinimal().subtract(delta);
-//       var newMaximal = this.getMaximal().subtract(delta);
-//       return new this.constructor(newMinimal, newMaximal);
-//     },
-//     scale: function(center, scale){
-//       var boxScale = 1.0/scale;
-//       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
-//       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
-//       return new this.constructor(newMinimal, newMaximal);
-//     }
-//   };
-
-//   ViewBox.fromString = function(viewBoxString){
-    
-//     var returnInt = function(string) {
-//       return parseInt(string, 10);
-//     };
-
-//     var limits = viewBoxString.split(' ').map(returnInt);
-//     var minimal = new Point(limits[0], limits[1]);
-//     var delta = new Point(limits[2], limits[3]);
-//     var maximal = minimal.add(delta);
-//     return new this(minimal, maximal);
-//   };
-// }());
 var Hammerhead = (function(parent){
   var prototype = {
   };
@@ -195,8 +118,16 @@ var Hammerhead = (function(parent){
 
   var create = function(element, options){
     var temporary, current, HOME;
+    DEFAULTS.conditions =  function(){
+      homeCenter = HOME.getMinimal().add(HOME.getMaximal()).multiply(0.5);
+      var scaleLimit = (this.dX() >= HOME.dX()/4);
+      var xLimit = (this.x0() <= homeCenter.x) && (this.x1() >= homeCenter.x);
+      var yLimit = (this.y0() <= homeCenter.y) && (this.y1() >= homeCenter.y);
+      return scaleLimit && xLimit && yLimit;
+    }; 
     options = _.extend({}, DEFAULTS, options);
-    HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
+
+    HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'), options.conditions);
 
     // update = _.partial(element.setAttribute, 'viewBox');
     function update(viewBoxString){
