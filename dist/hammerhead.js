@@ -187,14 +187,14 @@ var Hammerhead = (function(parent){
 
   var create = function(element, options){
     var temporary, current, HOME;
-    options = _.extend({}, DEFAULTS, options)
+    options = _.extend({}, DEFAULTS, options);
     HOME = temporary = current = parent.ViewBox(element.getAttribute('viewBox'));
 
     // update = _.partial(element.setAttribute, 'viewBox');
     function update(viewBoxString){
       element.setAttribute('viewBox', viewBoxString);
     }
-    update = _.throttle(update, options.throttleDelay)
+    update = _.throttle(update, options.throttleDelay);
 
     function translate(delta){
       temporary = current.translate(delta);
@@ -293,6 +293,7 @@ var Hammerhead = (function(parent){
 //   };
 // }());
 var Hammerhead = (function(parent){
+  var Pt = Hammerhead.Point;
 
   function getSVG (id) {
     var element = document.getElementById(id);
@@ -342,17 +343,25 @@ var Hammerhead = (function(parent){
         mobileSVG.fix();
       },
       drag: function(gesture){
-        mobileSVG.drag(Hammerhead.Point(gesture.deltaX, gesture.deltaY));
+        mobileSVG.drag(Pt(gesture.deltaX, gesture.deltaY));
       },
       transformstart: function(){
         mobileSVG.fix();
       },
       pinch: function(gesture){
-        mobileSVG.zoom(Hammerhead.Point(gesture.center.pageX, gesture.center.pageY), gesture.scale);
+        mobileSVG.zoom(Pt(gesture.center.pageX, gesture.center.pageY), gesture.scale);
       }
     };
 
     var instance = Object.create(prototype);
+    instance.drag =function(x, y){ 
+      mobileSVG.drag(Pt(x, y));
+      return this;
+    };
+    instance.zoom = function(x, y, m){
+      mobileSVG.zoom(Pt(x, y), m);
+    };
+    instance.fix = function(){ mobileSVG.fix(); };
     instance._test = {
       hammertime: hammertime,
       handlers: handlers
