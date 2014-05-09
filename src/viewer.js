@@ -80,7 +80,10 @@ var Hammerhead = (function(parent){
       mobileSVG.zoom(m, Pt(x, y));
     };
     instance.zoomIn = function(){
-      mobileSVG.zoom();
+      mobileSVG.scale(1.25);
+    };
+    instance.zoomOut = function(){
+      mobileSVG.scale(0.8);
     };
     instance.fix = function(){ mobileSVG.fix(); };
     instance._test = {

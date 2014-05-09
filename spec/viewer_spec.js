@@ -105,7 +105,7 @@ describe('api handle' ,function(){
       viewer = Hammerhead('test', {throttleDelay: 0});
     });
 
-    it('should drag from the same origin for drag events', function(){
+    it('should drag from the same origin for drag calls', function(){
       viewer.drag(500, 250);
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
       viewer.drag({x: 200, y: 100});
@@ -119,7 +119,7 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
     });
 
-    it('should zoom from the same reference for pinch events', function(){
+    it('should zoom from the same reference forzoom calls', function(){
       viewer.zoom(0, 0, 2);
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
       viewer.zoom(0, 0, 2);
@@ -138,8 +138,13 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
     });
 
-    xit('should have a zoom in hander, default 1.25', function(){
+    it('should have a zoom in hander, default 1.25', function(){
       viewer.zoomIn();
+      expect(testSVG.getAttribute('viewBox')).toEqual('200 100 1600 800');
+    });
+
+    it('should have a zoom out hander, default 0.8', function(){
+      viewer.zoomOut();
       expect(testSVG.getAttribute('viewBox')).toEqual('-250 -125 2500 1250');
     });
 
