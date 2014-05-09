@@ -81,4 +81,29 @@ describe('Mobile SVG', function(){
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 8 6');
   });
 
+  it('should home to a given set of points', function(){
+    var min = Hammerhead.Point(1, 1);
+    var max = Hammerhead.Point(2, 2);
+    mobileSVG.home(min, max);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('1 1 1 1');
+  });
+
+  it('should center to a given point at default magnification x4', function(){
+    var target = Hammerhead.Point(5, 5);
+    mobileSVG.goTo(target);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('4 4.25 2 1.5');
+  });
+
+  it('should center to a given point at given magnification', function(){
+    var target = Hammerhead.Point(5, 5);
+    mobileSVG.goTo(target, 2);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('3 3.5 4 3');
+  });
+
+  it('should allow overwrite of default magnification', function(){
+    var target = Hammerhead.Point(5, 5);
+    mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0, centerScale: 2});
+    mobileSVG.goTo(target);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('3 3.5 4 3');
+  });
 });

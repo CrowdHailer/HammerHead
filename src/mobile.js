@@ -3,7 +3,8 @@ var Hammerhead = (function(parent){
   };
 
   var DEFAULTS = {
-    "throttleDelay": 300
+    throttleDelay: 300,
+    centerScale: 4
   };
 
   var create = function(element, options){
@@ -44,14 +45,28 @@ var Hammerhead = (function(parent){
       return this;
     }
 
-    function home(){
-      temporary = HOME;
+    function home(min, max){
+      if (min && max) {
+        temporary.setMinimal(min);
+        temporary.setMaximal(max);
+      } else {
+        temporary = HOME;
+      }
       update(temporary.toString());
       return this;
     }
 
+    function goTo(target, magnfication){
+      magnfication = magnfication || options.centerScale;
+      var spacing = HOME.extent().multiply(1.0/(2*magnfication));
+      temporary.setMinimal(target.subtract(spacing));
+      temporary.setMaximal(target.add(spacing));
+      update(temporary.toString());
+      return this; 
+    }
+
     var instance = Object.create(prototype);
-    [translate, drag, scale, zoom, fix, home].forEach(function(privilaged){
+    [translate, drag, scale, zoom, fix, home, goTo].forEach(function(privilaged){
       instance[privilaged.name] = privilaged;
     });
     return instance;

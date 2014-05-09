@@ -9,6 +9,7 @@ var Hammerhead = (function(parent){
     xMid: function(){ return 0.5 * (this.x0() + this.x1()); },
     yMid: function(){ return 0.5 * (this.y0() + this.y1()); },
     center: function(){ return this.getMinimal().add(this.getMaximal()).multiply(0.5); },
+    extent: function(){ return this.getMaximal().subtract(this.getMinimal()); },
     toString: function(){
       return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
     },
@@ -33,6 +34,8 @@ var Hammerhead = (function(parent){
     var instance = Object.create(viewBoxPrototype);
     instance.getMinimal = function(){ return minimal; };
     instance.getMaximal = function(){ return maximal; };
+    instance.setMinimal = function(min){ minimal = min; };
+    instance.setMaximal = function(max){ maximal = max; };
     return instance;
   };
 
