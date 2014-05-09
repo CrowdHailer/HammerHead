@@ -31,7 +31,7 @@ var Hammerhead = (function(parent){
 
   var viewBox = function(minimal, maximal, validator){
     validator = validator || function(){ return true; };
-    if (typeof minimal === 'string') { return fromString(minimal); }
+    if (typeof minimal === 'string') { return fromString(minimal, maximal); }
 
     var instance = Object.create(viewBoxPrototype);
     instance.getMinimal = function(){ return minimal; };
@@ -45,14 +45,14 @@ var Hammerhead = (function(parent){
     return instance;
   };
 
-  var fromString = function(viewBoxString){
+  var fromString = function(viewBoxString, validator){
     var returnInt = function(string) { return parseInt(string, 10); };
 
     var limits  = viewBoxString.split(' ').map(returnInt),
         minimal = parent.Point(limits[0], limits[1]),
         delta   = parent.Point(limits[2], limits[3]),
         maximal = minimal.add(delta);
-    return viewBox(minimal, maximal);
+    return viewBox(minimal, maximal, validator);
   };
 
   parent.ViewBox = viewBox;

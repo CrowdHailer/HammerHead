@@ -73,13 +73,23 @@ describe('ViewBox', function(){
     var check = function(){
       return (this.x0() === 0);
     };
-    viewBox = Hammerhead.ViewBox(minimal, maximal, check);
+    viewBox = Hammerhead.ViewBox('0 1 8 6', check);
     newViewBox = viewBox.translate(delta);
     expect(viewBox.toString()).toEqual('0 1 8 6');
     expect(newViewBox.toString()).toEqual('0 1 8 6');
   });
 
   it('should accept an optional validation arguemt to limit viewbox zooming', function(){
+    var check = function(){
+      return (this.y0() === 1);
+    };
+    viewBox = Hammerhead.ViewBox(minimal, maximal, check);
+    newViewBox = viewBox.scale(2);
+    expect(viewBox.toString()).toEqual('0 1 8 6');
+    expect(newViewBox.toString()).toEqual('0 1 8 6');
+  });
+
+  it('should accept an optional validation arguemt when built from string', function(){
     var check = function(){
       return (this.y0() === 1);
     };
