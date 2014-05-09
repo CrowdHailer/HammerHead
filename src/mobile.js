@@ -28,15 +28,15 @@ var Hammerhead = (function(parent){
       return this.translate(delta);
     }
 
-    function scale(center, magnfication){
-      temporary = current.scale(center, magnfication);
+    function scale(magnfication, center){
+      temporary = current.scale(magnfication, center);
       update(temporary.toString());
       return this;
     }
 
-    function zoom(screenCenter, magnfication){
+    function zoom(magnfication, screenCenter){
       var center = screenCenter.transform(element.getScreenCTM().inverse());
-      return this.scale(center, magnfication);
+      return this.scale(magnfication, center);
     }
 
     function fix(){

@@ -88,6 +88,9 @@ var Hammerhead = (function(parent){
     y1: function(){ return this.getMaximal().y; },
     dX: function(){ return this.x1() - this.x0(); },
     dY: function(){ return this.y1() - this.y0(); },
+    xMid: function(){ return 0.5 * (this.x0() + this.x1()); },
+    yMid: function(){ return 0.5 * (this.y0() + this.y1()); },
+    center: function(){ return this.getMinimal().add(this.getMaximal()).multiply(0.5); },
     toString: function(){
       return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
     },
@@ -96,8 +99,9 @@ var Hammerhead = (function(parent){
       var newMaximal = this.getMaximal().subtract(delta);
       return viewBox(newMinimal, newMaximal);
     },
-    scale: function(center, scale){
+    scale: function(scale, center){
       var boxScale = 1.0/scale;
+      center = center || this.center();
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
       return viewBox(newMinimal, newMaximal);
@@ -207,15 +211,15 @@ var Hammerhead = (function(parent){
       return this.translate(delta);
     }
 
-    function scale(center, magnfication){
-      temporary = current.scale(center, magnfication);
+    function scale(magnfication, center){
+      temporary = current.scale(magnfication, center);
       update(temporary.toString());
       return this;
     }
 
-    function zoom(screenCenter, magnfication){
+    function zoom(magnfication, screenCenter){
       var center = screenCenter.transform(element.getScreenCTM().inverse());
-      return this.scale(center, magnfication);
+      return this.scale(magnfication, center);
     }
 
     function fix(){
@@ -302,10 +306,16 @@ var Hammerhead = (function(parent){
   }
 
   var prototype = {};
-  var DEFAULTS = {};
+  var DEFAULTS = {
+    dragX: 100,
+    dragY: 100,
+    zoomIn: 1.25,
+    zoomOut: 0.8
+  };
 
   function create(id, options){
     options = _.extend({}, DEFAULTS, options);
+    // console.log(options);
     var element = getSVG(id);
     var mobileSVG = Hammerhead.MobileSVG(element, options);
     var hammertime = Hammer(document).on('touch', touchHandler);
@@ -349,17 +359,31 @@ var Hammerhead = (function(parent){
         mobileSVG.fix();
       },
       pinch: function(gesture){
-        mobileSVG.zoom(Pt(gesture.center.pageX, gesture.center.pageY), gesture.scale);
+        mobileSVG.zoom(gesture.scale, Pt(gesture.center.pageX, gesture.center.pageY));
       }
     };
 
     var instance = Object.create(prototype);
-    instance.drag =function(x, y){ 
+    instance.drag = function(x, y){ 
       mobileSVG.drag(Pt(x, y));
       return this;
     };
+    instance.dragX = function(x){
+      mobileSVG.drag(Pt(x || options.dragX, 0));
+      return this;
+    };
+    instance.dragY = function(y){
+      mobileSVG.drag(Pt(0, y || options.dragY));
+      return this;
+    };
     instance.zoom = function(x, y, m){
-      mobileSVG.zoom(Pt(x, y), m);
+      mobileSVG.zoom(m, Pt(x, y));
+    };
+    instance.zoomIn = function(){
+      mobileSVG.scale(options.zoomIn);
+    };
+    instance.zoomOut = function(){
+      mobileSVG.scale(options.zoomOut);
     };
     instance.fix = function(){ mobileSVG.fix(); };
     instance._test = {

@@ -38,6 +38,10 @@ describe('ViewBox', function(){
     expect(viewBox.yMid()).toEqual(4);
   });
 
+  it('should return a center point', function(){
+    expect(viewBox.center().x).toEqual(4);
+  });
+
   it('should return a viewBox string', function(){
     expect(viewBox.toString()).toEqual('0 1 8 6');
   });
@@ -48,10 +52,15 @@ describe('ViewBox', function(){
     expect(newViewBox.toString()).toEqual('-1 0 8 6');
   });
 
-  it('should scale to a centerpoint', function(){
+  it('should scale to a given centerpoint', function(){
     center = Hammerhead.Point(0, 1);
-    var newViewBox = viewBox.scale(center, 2);
+    var newViewBox = viewBox.scale(2, center);
     expect(newViewBox.toString()).toEqual('0 1 4 3');
+  });
+
+  it('should scale to viewbox center given no center argument', function(){
+    var newViewBox = viewBox.scale(2);
+    expect(newViewBox.toString()).toEqual('2 2.5 4 3');
   });
 
   it('should build a viewbox from a string', function(){

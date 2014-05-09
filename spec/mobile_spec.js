@@ -32,17 +32,17 @@ describe('Mobile SVG', function(){
   });
 
   it('should scale in SVG units', function(){
-    mobileSVG.scale(center, 2);
+    mobileSVG.scale(2, center);
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '0 1 4 3');
   });
 
   it('should scale from the same start point', function(){
-    mobileSVG.scale(center, 2).scale(center, 2);
+    mobileSVG.scale(2, center).scale(2, center);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 4 3');
   });
 
   it('should fix a scaling', function(){
-    mobileSVG.scale(center, 2).fix().scale(center, 2);
+    mobileSVG.scale(2, center).fix().scale(2, center);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 2 1.5');
   });
 
@@ -62,17 +62,17 @@ describe('Mobile SVG', function(){
   });
 
   it('should zoom in SVG units', function(){
-    mobileSVG.zoom(screenCenter, 2);
+    mobileSVG.zoom(2, screenCenter);
     expect(element.setAttribute).toHaveBeenCalledWith('viewBox', '0 1 4 3');
   });
 
   it('should zoom from the same start point', function(){
-    mobileSVG.zoom(screenCenter, 2).zoom(screenCenter, 2);
+    mobileSVG.zoom(2, screenCenter).zoom(2, screenCenter);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 4 3');
   });
 
   it('should fix a zooming', function(){
-    mobileSVG.zoom(screenCenter, 2).fix().zoom(screenCenter, 2);
+    mobileSVG.zoom(2, screenCenter).fix().zoom(2, screenCenter);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('0 1 2 1.5');
   });
 

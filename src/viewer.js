@@ -10,7 +10,9 @@ var Hammerhead = (function(parent){
   var prototype = {};
   var DEFAULTS = {
     dragX: 100,
-    dragY: 100
+    dragY: 100,
+    zoomIn: 1.25,
+    zoomOut: 0.8
   };
 
   function create(id, options){
@@ -59,7 +61,7 @@ var Hammerhead = (function(parent){
         mobileSVG.fix();
       },
       pinch: function(gesture){
-        mobileSVG.zoom(Pt(gesture.center.pageX, gesture.center.pageY), gesture.scale);
+        mobileSVG.zoom(gesture.scale, Pt(gesture.center.pageX, gesture.center.pageY));
       }
     };
 
@@ -77,10 +79,13 @@ var Hammerhead = (function(parent){
       return this;
     };
     instance.zoom = function(x, y, m){
-      mobileSVG.zoom(Pt(x, y), m);
+      mobileSVG.zoom(m, Pt(x, y));
     };
     instance.zoomIn = function(){
-      mobileSVG.zoom();
+      mobileSVG.scale(options.zoomIn);
+    };
+    instance.zoomOut = function(){
+      mobileSVG.scale(options.zoomOut);
     };
     instance.fix = function(){ mobileSVG.fix(); };
     instance._test = {

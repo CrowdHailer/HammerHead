@@ -8,6 +8,7 @@ var Hammerhead = (function(parent){
     dY: function(){ return this.y1() - this.y0(); },
     xMid: function(){ return 0.5 * (this.x0() + this.x1()); },
     yMid: function(){ return 0.5 * (this.y0() + this.y1()); },
+    center: function(){ return this.getMinimal().add(this.getMaximal()).multiply(0.5); },
     toString: function(){
       return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
     },
@@ -16,8 +17,9 @@ var Hammerhead = (function(parent){
       var newMaximal = this.getMaximal().subtract(delta);
       return viewBox(newMinimal, newMaximal);
     },
-    scale: function(center, scale){
+    scale: function(scale, center){
       var boxScale = 1.0/scale;
+      center = center || this.center();
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
       return viewBox(newMinimal, newMaximal);
