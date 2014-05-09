@@ -64,6 +64,9 @@ var Hammerhead = (function(parent){
       mobileSVG.drag(Pt(x, y));
       return this;
     };
+    instance.zoom = function(x, y, m){
+      mobileSVG.zoom(Pt(x, y), m);
+    };
     instance.fix = function(){ mobileSVG.fix(); };
     instance._test = {
       hammertime: hammertime,

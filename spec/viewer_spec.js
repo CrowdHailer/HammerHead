@@ -119,6 +119,13 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
     });
 
+    it('should zoom from the same reference for pinch events', function(){
+      viewer.zoom(0, 0, 2);
+      expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
+      viewer.zoom(0, 0, 2);
+      expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
+    });
+
     afterEach(function(){
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);
