@@ -24,7 +24,6 @@ var Hammerhead = (function(parent){
     }
 
     function drag(screenDelta){
-      console.log(element.getScreenCTM().inverse());
       var delta = screenDelta.scaleTransform(element.getScreenCTM().inverse());
       return this.translate(delta);
     }

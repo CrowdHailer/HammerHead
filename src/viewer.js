@@ -1,4 +1,5 @@
 var Hammerhead = (function(parent){
+  var Pt = Hammerhead.Point;
 
   function getSVG (id) {
     var element = document.getElementById(id);
@@ -48,18 +49,18 @@ var Hammerhead = (function(parent){
         mobileSVG.fix();
       },
       drag: function(gesture){
-        mobileSVG.drag(Hammerhead.Point(gesture.deltaX, gesture.deltaY));
+        mobileSVG.drag(Pt(gesture.deltaX, gesture.deltaY));
       },
       transformstart: function(){
         mobileSVG.fix();
       },
       pinch: function(gesture){
-        mobileSVG.zoom(Hammerhead.Point(gesture.center.pageX, gesture.center.pageY), gesture.scale);
+        mobileSVG.zoom(Pt(gesture.center.pageX, gesture.center.pageY), gesture.scale);
       }
     };
 
     var instance = Object.create(prototype);
-    instance.drag =function(x, y){ mobileSVG.drag(Hammerhead.Point(x, y)); };
+    instance.drag =function(x, y){ mobileSVG.drag(Pt(x, y)); };
     instance._test = {
       hammertime: hammertime,
       handlers: handlers
