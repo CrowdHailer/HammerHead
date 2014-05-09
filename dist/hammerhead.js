@@ -65,7 +65,7 @@ var Hammerhead = (function(parent){
       var newMinimal = this.getMinimal().subtract(delta);
       var newMaximal = this.getMaximal().subtract(delta);
       var newViewBox = viewBox(newMinimal, newMaximal, this.getValidator());
-      return newViewBox.valid()? newViewBox : this;
+      return newViewBox.valid()? newViewBox : null;
     },
     scale: function(scale, center){
       var boxScale = 1.0/scale;
@@ -73,7 +73,7 @@ var Hammerhead = (function(parent){
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
       var newViewBox = viewBox(newMinimal, newMaximal, this.getValidator());
-      return newViewBox.valid()? newViewBox : this;
+      return newViewBox.valid()? newViewBox : null;
     }
   };
 
@@ -120,7 +120,7 @@ var Hammerhead = (function(parent){
     var temporary, current, HOME;
     DEFAULTS.conditions =  function(){
       homeCenter = HOME.getMinimal().add(HOME.getMaximal()).multiply(0.5);
-      var scaleLimit = (this.dX() >= HOME.dX()/4);
+      var scaleLimit = (this.dX() >= HOME.dX()/4) && (this.dX() <= HOME.dX()*4);
       var xLimit = (this.x0() <= homeCenter.x) && (this.x1() >= homeCenter.x);
       var yLimit = (this.y0() <= homeCenter.y) && (this.y1() >= homeCenter.y);
       return scaleLimit && xLimit && yLimit;
@@ -136,7 +136,7 @@ var Hammerhead = (function(parent){
     update = _.throttle(update, options.throttleDelay);
 
     function translate(delta){
-      temporary = current.translate(delta);
+      temporary = current.translate(delta) || temporary;
       update(temporary.toString());
       return this;
     }
@@ -147,7 +147,7 @@ var Hammerhead = (function(parent){
     }
 
     function scale(magnfication, center){
-      temporary = current.scale(magnfication, center);
+      temporary = current.scale(magnfication, center) || temporary;
       update(temporary.toString());
       return this;
     }
