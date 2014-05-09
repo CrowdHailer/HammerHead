@@ -6,6 +6,12 @@ describe('ViewBox', function(){
     viewBox = Hammerhead.ViewBox(minimal, maximal);
   });
 
+  it('should be able to set minimum and maximum values', function(){
+    viewBox.setMinimal(Hammerhead.Point(-1, -1));
+    viewBox.setMaximal(Hammerhead.Point(6, 6));
+    expect(viewBox.toString()).toEqual('-1 -1 7 7');
+  });
+
   it('should give a x0 value', function(){
     expect(viewBox.x0()).toEqual(0);
   });

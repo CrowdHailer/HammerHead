@@ -33,6 +33,8 @@ var Hammerhead = (function(parent){
     var instance = Object.create(viewBoxPrototype);
     instance.getMinimal = function(){ return minimal; };
     instance.getMaximal = function(){ return maximal; };
+    instance.setMinimal = function(min){ minimal = min; };
+    instance.setMaximal = function(max){ maximal = max; };
     return instance;
   };
 
