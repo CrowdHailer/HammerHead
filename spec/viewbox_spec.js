@@ -58,6 +58,11 @@ describe('ViewBox', function(){
     expect(newViewBox.toString()).toEqual('0 1 4 3');
   });
 
+  it('should scale to viewbox center given no center argument', function(){
+    var newViewBox = viewBox.scale(2);
+    expect(newViewBox.toString()).toEqual('2 2.5 4 3');
+  });
+
   it('should build a viewbox from a string', function(){
     var newViewBox = Hammerhead.ViewBox.fromString('1 2 3 4');
     expect(newViewBox.x0()).toEqual(1);

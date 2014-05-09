@@ -19,6 +19,7 @@ var Hammerhead = (function(parent){
     },
     scale: function(scale, center){
       var boxScale = 1.0/scale;
+      center = center || this.center();
       var newMinimal = this.getMinimal().subtract(center).multiply(boxScale).add(center);
       var newMaximal = this.getMaximal().subtract(center).multiply(boxScale).add(center);
       return viewBox(newMinimal, newMaximal);
