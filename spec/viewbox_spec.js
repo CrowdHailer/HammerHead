@@ -38,6 +38,10 @@ describe('ViewBox', function(){
     expect(viewBox.yMid()).toEqual(4);
   });
 
+  it('should return a center point', function(){
+    expect(viewBox.center().x).toEqual(4);
+  });
+
   it('should return a viewBox string', function(){
     expect(viewBox.toString()).toEqual('0 1 8 6');
   });
