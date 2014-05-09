@@ -175,20 +175,20 @@ describe('api handle' ,function(){
     });
 
     it('should be possible to overide the default drag functions', function(){
-      viewer = Hammerhead('test', {throttleDelay: 0, dragX: 10, dragY: 10});
+      viewer = Hammerhead('test', {throttleDelay: 0, dragX: 10, dragY: 10, conditions: function(){ return true; }});
       viewer.dragX().fix();
       viewer.dragY();
       expect(testSVG.getAttribute('viewBox')).toEqual('-40 -40 2000 1000');
     });
 
     it('should be possible to overide the default Zoom in scale', function(){
-      viewer = Hammerhead('test', {throttleDelay: 0, zoomIn: 2});
+      viewer = Hammerhead('test', {throttleDelay: 0, zoomIn: 2, conditions: function(){ return true; }});
       viewer.zoomIn();
       expect(testSVG.getAttribute('viewBox')).toEqual('500 250 1000 500');
     });
 
     it('should be possible to overide the default Zoom out scale', function(){
-      viewer = Hammerhead('test', {throttleDelay: 0, zoomOut: 0.5});
+      viewer = Hammerhead('test', {throttleDelay: 0, zoomOut: 0.5, conditions: function(){ return true; }});
       viewer.zoomOut();
       expect(testSVG.getAttribute('viewBox')).toEqual('-1000 -500 4000 2000');
     });
