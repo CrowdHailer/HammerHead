@@ -10,7 +10,7 @@ module.exports = function(config) {
       'src/viewer.js',
       'spec/point_spec.js',
       'spec/viewbox_spec.js',
-      // 'spec/mobile_spec.js',
+      'spec/mobile_spec.js',
       // 'spec/viewer_spec.js'
     ],
     exclude: [
