@@ -126,13 +126,13 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
     });
 
-    it('should orthogonal drag handlers, default 100px', function(){
+    it('should have orthogonal drag handlers, default 100px', function(){
       viewer.dragX().fix();
       viewer.dragY();
       expect(testSVG.getAttribute('viewBox')).toEqual('-400 -400 2000 1000');
     });
 
-    it('should orthogonal drag handlers, accept pixel distance', function(){
+    it('should have orthogonal drag handlers, accept pixel distance', function(){
       viewer.dragX(200).fix();
       viewer.dragY(200);
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
@@ -151,7 +151,6 @@ describe('api handle' ,function(){
       document.body.innerHTML += svgString;
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
-      
     });
 
     it('should not make repeated calls to change the viewbox with a throttle limit', function(){
@@ -162,6 +161,13 @@ describe('api handle' ,function(){
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
       expect(testSVG.setAttribute.calls.length).toEqual(1);
+    });
+
+    it('should be possible to overide the default drag functions', function(){
+      viewer = Hammerhead('test', {throttleDelay: 0, dragX: 200, dragY: 200});
+      viewer.dragX().fix();
+      viewer.dragY();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
     });
 
     afterEach(function(){

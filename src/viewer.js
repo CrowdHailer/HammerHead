@@ -8,10 +8,14 @@ var Hammerhead = (function(parent){
   }
 
   var prototype = {};
-  var DEFAULTS = {};
+  var DEFAULTS = {
+    dragX: 100,
+    dragY: 100
+  };
 
   function create(id, options){
     options = _.extend({}, DEFAULTS, options);
+    // console.log(options);
     var element = getSVG(id);
     var mobileSVG = Hammerhead.MobileSVG(element, options);
     var hammertime = Hammer(document).on('touch', touchHandler);
@@ -65,11 +69,11 @@ var Hammerhead = (function(parent){
       return this;
     };
     instance.dragX = function(x){
-      mobileSVG.drag(Pt(x || 100, 0));
+      mobileSVG.drag(Pt(x || options.dragX, 0));
       return this;
     };
     instance.dragY = function(y){
-      mobileSVG.drag(Pt(0, y || 100));
+      mobileSVG.drag(Pt(0, y || options.dragY));
       return this;
     };
     instance.zoom = function(x, y, m){
