@@ -6,6 +6,8 @@ var Hammerhead = (function(parent){
     y1: function(){ return this.getMaximal().y; },
     dX: function(){ return this.x1() - this.x0(); },
     dY: function(){ return this.y1() - this.y0(); },
+    xMid: function(){ return 0.5 * (this.x0() + this.x1()); },
+    yMid: function(){ return 0.5 * (this.y0() + this.y1()); },
     toString: function(){
       return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
     },

@@ -53,11 +53,8 @@ describe('Hammerhead', function(){
 
     it('should zoom from the same reference for pinch events', function(){
       var hammerHandle = viewer._test.hammertime;
-      // console.log(1);
       hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
-      // console.log(2);
       hammerHandle.trigger('transformstart', {preventDefault: preventDefault});
-      // console.log(3);
       hammerHandle.trigger('pinch', {center:{pageX:0,  pageY: 0}, scale: 2, preventDefault: preventDefault});
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
       hammerHandle.trigger('pinch', {center:{pageX:500,  pageY: 0}, scale: 2, preventDefault: preventDefault});
@@ -96,6 +93,61 @@ describe('Hammerhead', function(){
       fix.parentElement.removeChild(fix);
     });
   });
+
+describe('api handle' ,function(){
+    var viewer, testSVG, preventDefault;
+    beforeEach(function(){
+      preventDefault = function(){};
+      svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"><path id="test-path"></path></svg>';
+      document.body.innerHTML += svgString;
+      testSVG = document.getElementById('test');
+      testPath = document.getElementById('test-path');
+      viewer = Hammerhead('test', {throttleDelay: 0});
+    });
+
+    it('should drag from the same origin for drag events', function(){
+      viewer.drag(500, 250);
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+      viewer.drag({x: 200, y: 100});
+      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
+    });
+
+    it('should fix transformations', function(){
+      viewer.drag(500, 250).fix();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+      viewer.drag({x: 200, y: 100});
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
+    });
+
+    it('should zoom from the same reference for pinch events', function(){
+      viewer.zoom(0, 0, 2);
+      expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
+      viewer.zoom(0, 0, 2);
+      expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
+    });
+
+    it('should have orthogonal drag handlers, default 100px', function(){
+      viewer.dragX().fix();
+      viewer.dragY();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-400 -400 2000 1000');
+    });
+
+    it('should have orthogonal drag handlers, accept pixel distance', function(){
+      viewer.dragX(200).fix();
+      viewer.dragY(200);
+      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
+    });
+
+    xit('should have a zoom in hander, default 1.25', function(){
+      viewer.zoomIn();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-250 -125 2500 1250');
+    });
+
+    afterEach(function(){
+      var fix = document.getElementById('test');
+      fix.parentElement.removeChild(fix);
+    });
+  });
   describe('Initialisation options' ,function(){
     var viewer, testSVG, preventDefault;
     beforeEach(function(){
@@ -104,7 +156,6 @@ describe('Hammerhead', function(){
       document.body.innerHTML += svgString;
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
-      
     });
 
     it('should not make repeated calls to change the viewbox with a throttle limit', function(){
@@ -115,6 +166,13 @@ describe('Hammerhead', function(){
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
       hammerHandle.trigger('drag', {deltaX: 500, deltaY: 250, preventDefault: preventDefault, timeStamp: 1});
       expect(testSVG.setAttribute.calls.length).toEqual(1);
+    });
+
+    it('should be possible to overide the default drag functions', function(){
+      viewer = Hammerhead('test', {throttleDelay: 0, dragX: 200, dragY: 200});
+      viewer.dragX().fix();
+      viewer.dragY();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
     });
 
     afterEach(function(){
