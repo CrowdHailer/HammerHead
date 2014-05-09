@@ -204,6 +204,17 @@ describe('api handle' ,function(){
       expect(dummy.test.calls.length).toEqual(1);
     });
 
+    it('should be able to execute given postfix function', function(){
+      var dummy = {test: function(){}};
+      spyOn(dummy, 'test');
+      viewer = Hammerhead('test', {throttleDelay: 0, postfix: dummy.test});
+      var hammerHandle = viewer._test.hammertime;
+      hammerHandle.trigger('touch', {target: testPath, preventDefault: preventDefault});
+      expect(dummy.test.calls.length).toEqual(0);
+      hammerHandle.trigger('release', {});
+      expect(dummy.test.calls.length).toEqual(1);
+    });
+
     afterEach(function(){
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);

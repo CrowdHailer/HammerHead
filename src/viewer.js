@@ -13,7 +13,8 @@ var Hammerhead = (function(parent){
     dragY: 100,
     zoomIn: 1.25,
     zoomOut: 0.8,
-    prefix: function(){}
+    prefix: function(){},
+    postfix: function(){},
   };
 
   function create(id, options){
@@ -34,6 +35,7 @@ var Hammerhead = (function(parent){
       mobileSVG.fix();
       // mobileSVG.updateCTM();
       activityOff(hammertime);
+      options.postfix();
     }
 
     function activityOn(instance){
