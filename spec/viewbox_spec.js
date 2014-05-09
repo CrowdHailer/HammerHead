@@ -48,9 +48,9 @@ describe('ViewBox', function(){
     expect(newViewBox.toString()).toEqual('-1 0 8 6');
   });
 
-  it('should scale to a centerpoint', function(){
+  it('should scale to a given centerpoint', function(){
     center = Hammerhead.Point(0, 1);
-    var newViewBox = viewBox.scale(center, 2);
+    var newViewBox = viewBox.scale(2, center);
     expect(newViewBox.toString()).toEqual('0 1 4 3');
   });
 
