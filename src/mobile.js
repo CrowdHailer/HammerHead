@@ -3,7 +3,8 @@ var Hammerhead = (function(parent){
   };
 
   var DEFAULTS = {
-    "throttleDelay": 300
+    throttleDelay: 300,
+    centerScale: 4
   };
 
   var create = function(element, options){
@@ -56,7 +57,7 @@ var Hammerhead = (function(parent){
     }
 
     function goTo(target, magnfication){
-      magnfication = magnfication || 4;
+      magnfication = magnfication || options.centerScale;
       var spacing = HOME.extent().multiply(1.0/(2*magnfication));
       temporary.setMinimal(target.subtract(spacing));
       temporary.setMaximal(target.add(spacing));

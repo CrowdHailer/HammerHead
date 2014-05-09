@@ -91,6 +91,7 @@ var Hammerhead = (function(parent){
     xMid: function(){ return 0.5 * (this.x0() + this.x1()); },
     yMid: function(){ return 0.5 * (this.y0() + this.y1()); },
     center: function(){ return this.getMinimal().add(this.getMaximal()).multiply(0.5); },
+    extent: function(){ return this.getMaximal().subtract(this.getMinimal()); },
     toString: function(){
       return [this.x0(), this.y0(), this.dX(), this.dY()].join(' ');
     },
@@ -115,6 +116,8 @@ var Hammerhead = (function(parent){
     var instance = Object.create(viewBoxPrototype);
     instance.getMinimal = function(){ return minimal; };
     instance.getMaximal = function(){ return maximal; };
+    instance.setMinimal = function(min){ minimal = min; };
+    instance.setMaximal = function(max){ maximal = max; };
     return instance;
   };
 
@@ -186,7 +189,8 @@ var Hammerhead = (function(parent){
   };
 
   var DEFAULTS = {
-    "throttleDelay": 300
+    throttleDelay: 300,
+    centerScale: 4
   };
 
   var create = function(element, options){
@@ -227,14 +231,28 @@ var Hammerhead = (function(parent){
       return this;
     }
 
-    function home(){
-      temporary = HOME;
+    function home(min, max){
+      if (min && max) {
+        temporary.setMinimal(min);
+        temporary.setMaximal(max);
+      } else {
+        temporary = HOME;
+      }
       update(temporary.toString());
       return this;
     }
 
+    function goTo(target, magnfication){
+      magnfication = magnfication || options.centerScale;
+      var spacing = HOME.extent().multiply(1.0/(2*magnfication));
+      temporary.setMinimal(target.subtract(spacing));
+      temporary.setMaximal(target.add(spacing));
+      update(temporary.toString());
+      return this; 
+    }
+
     var instance = Object.create(prototype);
-    [translate, drag, scale, zoom, fix, home].forEach(function(privilaged){
+    [translate, drag, scale, zoom, fix, home, goTo].forEach(function(privilaged){
       instance[privilaged.name] = privilaged;
     });
     return instance;

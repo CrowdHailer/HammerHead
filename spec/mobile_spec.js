@@ -99,4 +99,11 @@ describe('Mobile SVG', function(){
     mobileSVG.goTo(target, 2);
     expect(element.setAttribute.mostRecentCall.args[1]).toEqual('3 3.5 4 3');
   });
+
+  it('should allow overwrite of default magnification', function(){
+    var target = Hammerhead.Point(5, 5);
+    mobileSVG = Hammerhead.MobileSVG(element, {throttleDelay: 0, centerScale: 2});
+    mobileSVG.goTo(target);
+    expect(element.setAttribute.mostRecentCall.args[1]).toEqual('3 3.5 4 3');
+  });
 });
