@@ -29,11 +29,21 @@ var Hammerhead = (function(parent){
     this.element.scale(m);
   }
 
+  function zoomIn(){
+    this.zoom(this.options.zoomIn);
+  }
+
+  function zoomOut(){
+    this.zoom(this.options.zoomOut);
+  }
+
   var prototype = {
     drag: drag,
     dragX: dragX,
     dragY: dragY,
-    zoom: zoom
+    zoom: zoom,
+    zoomIn: zoomIn,
+    zoomOut: zoomOut
   };
 
   var DEFAULTS = {
@@ -102,12 +112,6 @@ var Hammerhead = (function(parent){
     var instance = Object.create(prototype);
     instance.element = mobileSVG;
 
-    instance.zoomIn = function(){
-      mobileSVG.scale(options.zoomIn);
-    };
-    instance.zoomOut = function(){
-      mobileSVG.scale(options.zoomOut);
-    };
     instance.fix = function(){ mobileSVG.fix(); };
     instance.options = options;
     instance._test = {

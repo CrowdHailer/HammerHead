@@ -177,12 +177,12 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
     });
 
-    xit('should have a zoom in hander, default 1.25', function(){
+    it('should have a zoom in hander, default 1.25', function(){
       viewer.zoomIn();
       expect(testSVG.getAttribute('viewBox')).toEqual('200 100 1600 800');
     });
 
-    xit('should have a zoom out hander, default 0.8', function(){
+    it('should have a zoom out hander, default 0.8', function(){
       viewer.zoomOut();
       expect(testSVG.getAttribute('viewBox')).toEqual('-250 -125 2500 1250');
     });
