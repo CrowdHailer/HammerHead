@@ -1,4 +1,4 @@
-var Hammerhead = (function(parent){
+(function(parent){
   var prototype = {
   };
 
@@ -81,8 +81,7 @@ var Hammerhead = (function(parent){
   };
 
   parent.MobileSVG = create;
-  return parent;
-}(Hammerhead || {}));
+}(Hammerhead));
 
 // var MobileSVG;
 // (function(){

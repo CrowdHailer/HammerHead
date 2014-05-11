@@ -1,4 +1,4 @@
-var Hammerhead = (function(parent){
+(function(parent){
   viewBoxPrototype = {
     x0: function(){ return this.getMinimal().x; },
     y0: function(){ return this.getMinimal().y; },
@@ -56,5 +56,4 @@ var Hammerhead = (function(parent){
   };
 
   parent.ViewBox = viewBox;
-  return parent;
-}(Hammerhead || {}));
+}(Hammerhead));

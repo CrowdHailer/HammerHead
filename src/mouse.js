@@ -1,4 +1,4 @@
-var Hammerhead = (function(parent){
+(function(parent){
   function getWheelDelta(event){
     if (event.wheelDelta) {
       return event.wheelDelta;
@@ -26,5 +26,4 @@ var Hammerhead = (function(parent){
   }
 
   parent.MouseWheel = init;
-  return parent;
-}(Hammerhead || {}));
+}(Hammerhead));
