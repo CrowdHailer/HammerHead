@@ -19,14 +19,16 @@ var Hammerhead = (function(parent){
     return this;
   }
 
-  // instance.dragX = function(x){
-  //     mobileSVG.drag(Pt(x || options.dragX, 0));
-  //     return this;
-  //   };
+  function dragY(y){
+    pt = Pt(0, y || this.options.dragX);
+    this.element.drag(pt);
+    return this;
+  }
 
   var prototype = {
     drag: drag,
-    dragX: dragX
+    dragX: dragX,
+    dragY: dragY
   };
 
   var DEFAULTS = {
@@ -94,15 +96,6 @@ var Hammerhead = (function(parent){
 
     var instance = Object.create(prototype);
     instance.element = mobileSVG;
-    // instance.drag = function(x, y){ 
-    //   mobileSVG.drag(Pt(x, y));
-    //   return this;
-    // };
-    
-    instance.dragY = function(y){
-      mobileSVG.drag(Pt(0, y || options.dragY));
-      return this;
-    };
     instance.zoom = function(x, y, m){
       mobileSVG.zoom(m, Pt(x, y));
     };
