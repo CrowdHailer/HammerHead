@@ -101,13 +101,13 @@ var Hammerhead = (function(parent){
         mobileSVG.fix();
       },
       drag: function(gesture){
-        mobileSVG.drag(Pt(gesture.deltaX, gesture.deltaY));
+        mobileSVG.drag(Pt(gesture));
       },
       transformstart: function(){
         mobileSVG.fix();
       },
       pinch: function(gesture){
-        mobileSVG.zoom(gesture.scale, Pt(gesture.center.pageX, gesture.center.pageY));
+        mobileSVG.zoom(gesture.scale, Pt(gesture.center));
       }
     };
 
