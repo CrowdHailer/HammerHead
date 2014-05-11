@@ -159,9 +159,9 @@ describe('api handle' ,function(){
     });
 
     it('should zoom from the same reference forzoom calls', function(){
-      viewer.zoom(2);
+      viewer.zoomIn(2);
       expect(testSVG.getAttribute('viewBox')).toEqual('500 250 1000 500');
-      viewer.zoom(2);
+      viewer.zoomIn(2);
       expect(testSVG.getAttribute('viewBox')).toEqual('500 250 1000 500');
     });
 

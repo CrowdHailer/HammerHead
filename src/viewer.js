@@ -29,8 +29,8 @@ var Hammerhead = (function(parent){
     this.element.scale(m);
   }
 
-  function zoomIn(){
-    this.zoom(this.options.zoomIn);
+  function zoomIn(m){
+    this.zoom(m || this.options.zoomIn);
   }
 
   function zoomOut(){
