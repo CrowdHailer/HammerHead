@@ -17,6 +17,11 @@ var Hammerhead = (function(parent){
     postfix: function(){},
   };
 
+  function drag(x, y){
+    pt = Pt(x, y);
+    this.mobileSVG.drag(pt);
+  }
+
   function create(id, options){
     options = _.extend({}, DEFAULTS, options);
     // console.log(options);
@@ -70,10 +75,12 @@ var Hammerhead = (function(parent){
     };
 
     var instance = Object.create(prototype);
-    instance.drag = function(x, y){ 
-      mobileSVG.drag(Pt(x, y));
-      return this;
-    };
+    instance.element = mobileSVG;
+    // instance.drag = function(x, y){ 
+    //   mobileSVG.drag(Pt(x, y));
+    //   return this;
+    // };
+    instance.drag = drag;
     instance.dragX = function(x){
       mobileSVG.drag(Pt(x || options.dragX, 0));
       return this;

@@ -95,7 +95,7 @@ describe('Hammerhead', function(){
   });
 
 describe('api handle' ,function(){
-    var viewer, testSVG, preventDefault;
+    var viewer, testSVG, preventDefault, Pt;
     beforeEach(function(){
       preventDefault = function(){};
       svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"><path id="test-path"></path></svg>';
@@ -103,48 +103,49 @@ describe('api handle' ,function(){
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
       viewer = Hammerhead('test', {throttleDelay: 0, conditions: function(){ return true; }});
+      Pt = Hammerhead.Point;
     });
 
     it('should drag from the same origin for drag calls', function(){
-      viewer.drag(500, 250);
+      viewer.element.drag(Pt(500, 250));
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
-      viewer.drag({x: 200, y: 100});
+      viewer.element.drag(Pt(200, 100));
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
     });
 
     it('should fix transformations', function(){
-      viewer.drag(500, 250).fix();
+      viewer.element.drag(Pt(500, 250)).fix();
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
-      viewer.drag({x: 200, y: 100});
+      viewer.element.drag(Pt(200, 100));
       expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
     });
 
     it('should zoom from the same reference forzoom calls', function(){
-      viewer.zoom(0, 0, 2);
+      viewer.element.zoom(0, 0, 2);
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
-      viewer.zoom(0, 0, 2);
+      viewer.element.zoom(0, 0, 2);
       expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
     });
 
     it('should have orthogonal drag handlers, default 100px', function(){
-      viewer.dragX().fix();
-      viewer.dragY();
+      viewer.element.dragX().fix();
+      viewer.element.dragY();
       expect(testSVG.getAttribute('viewBox')).toEqual('-400 -400 2000 1000');
     });
 
     it('should have orthogonal drag handlers, accept pixel distance', function(){
-      viewer.dragX(200).fix();
-      viewer.dragY(200);
+      viewer.element.dragX(200).fix();
+      viewer.element.dragY(200);
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
     });
 
     it('should have a zoom in hander, default 1.25', function(){
-      viewer.zoomIn();
+      viewer.element.zoomIn();
       expect(testSVG.getAttribute('viewBox')).toEqual('200 100 1600 800');
     });
 
     it('should have a zoom out hander, default 0.8', function(){
-      viewer.zoomOut();
+      viewer.element.zoomOut();
       expect(testSVG.getAttribute('viewBox')).toEqual('-250 -125 2500 1250');
     });
 
@@ -153,6 +154,66 @@ describe('api handle' ,function(){
       fix.parentElement.removeChild(fix);
     });
   });
+  // xdescribe('api handle' ,function(){
+  //   var viewer, testSVG, preventDefault, Pt;
+  //   beforeEach(function(){
+  //     preventDefault = function(){};
+  //     svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"><path id="test-path"></path></svg>';
+  //     document.body.innerHTML += svgString;
+  //     testSVG = document.getElementById('test');
+  //     testPath = document.getElementById('test-path');
+  //     viewer = Hammerhead('test', {throttleDelay: 0, conditions: function(){ return true; }});
+  //     Pt = Hammerhead.Point;
+  //   });
+
+  //   it('should drag from the same origin for drag calls', function(){
+  //     viewer.element.drag(Pt(500, 250));
+  //     expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+  //     viewer.element.drag(Pt(200, 100));
+  //     expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
+  //   });
+
+  //   it('should fix transformations', function(){
+  //     viewer.element.drag(500, 250).fix();
+  //     expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+  //     viewer.element.drag({x: 200, y: 100});
+  //     expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
+  //   });
+
+  //   it('should zoom from the same reference forzoom calls', function(){
+  //     viewer.element.zoom(0, 0, 2);
+  //     expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
+  //     viewer.element.zoom(0, 0, 2);
+  //     expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
+  //   });
+
+  //   it('should have orthogonal drag handlers, default 100px', function(){
+  //     viewer.element.dragX().fix();
+  //     viewer.element.dragY();
+  //     expect(testSVG.getAttribute('viewBox')).toEqual('-400 -400 2000 1000');
+  //   });
+
+  //   it('should have orthogonal drag handlers, accept pixel distance', function(){
+  //     viewer.element.dragX(200).fix();
+  //     viewer.element.dragY(200);
+  //     expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
+  //   });
+
+  //   it('should have a zoom in hander, default 1.25', function(){
+  //     viewer.element.zoomIn();
+  //     expect(testSVG.getAttribute('viewBox')).toEqual('200 100 1600 800');
+  //   });
+
+  //   it('should have a zoom out hander, default 0.8', function(){
+  //     viewer.element.zoomOut();
+  //     expect(testSVG.getAttribute('viewBox')).toEqual('-250 -125 2500 1250');
+  //   });
+
+  //   afterEach(function(){
+  //     var fix = document.getElementById('test');
+  //     fix.parentElement.removeChild(fix);
+  //   });
+  // });
   describe('Initialisation options' ,function(){
     var viewer, testSVG, preventDefault;
     beforeEach(function(){
