@@ -10,10 +10,11 @@
   var create = function(element, options){
     var temporary, current, HOME;
     DEFAULTS.conditions =  function(){
-      homeCenter = HOME.getMinimal().add(HOME.getMaximal()).multiply(0.5);
-      var scaleLimit = (this.dX() >= HOME.dX()/4) && (this.dX() <= HOME.dX()*4);
-      var xLimit = (this.x0() <= homeCenter.x) && (this.x1() >= homeCenter.x);
-      var yLimit = (this.y0() <= homeCenter.y) && (this.y1() >= homeCenter.y);
+      var max = HOME.getMaximal();
+      var min = HOME.getMinimal();
+      var scaleLimit = (this.dX() >= HOME.dX()/4);
+      var xLimit = (this.x0() >= min.x) && (this.x1() <= max.x);
+      var yLimit = (this.y0() >= min.y) && (this.y1() <= max.y);
       return scaleLimit && xLimit && yLimit;
     }; 
     options = _.extend({}, DEFAULTS, options);
