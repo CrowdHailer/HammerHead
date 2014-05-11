@@ -112,7 +112,8 @@ var Hammerhead = {};
 
   var DEFAULTS = {
     throttleDelay: 300,
-    centerScale: 4
+    centerScale: 4,
+    maxZoom: 4,
   };
 
   var create = function(element, options){
@@ -120,7 +121,7 @@ var Hammerhead = {};
     DEFAULTS.conditions =  function(){
       var max = HOME.getMaximal();
       var min = HOME.getMinimal();
-      var scaleLimit = (this.dX() >= HOME.dX()/4);
+      var scaleLimit = (this.dX() >= HOME.dX()/options.maxZoom);
       var xLimit = (this.x0() >= min.x) && (this.x1() <= max.x);
       var yLimit = (this.y0() >= min.y) && (this.y1() <= max.y);
       return scaleLimit && xLimit && yLimit;
@@ -192,13 +193,6 @@ var Hammerhead = {};
   parent.MobileSVG = create;
 }(Hammerhead));
 
-// var MobileSVG;
-// (function(){
-//   MobileSVG = function(element){
-//     var temporaryViewBox, inverseScreenCTM, viewBox, HOME;
-//     viewBox = ViewBox.fromString(element.getAttribute('viewBox'));
-//     HOME = viewBox;
-//     temporaryViewBox = viewBox;
 //     var getInverseScreenCTM = function(){
 //       var inverse = element.getScreenCTM().inverse();
 //       // Windows Phone hack
@@ -206,44 +200,8 @@ var Hammerhead = {};
 //       return inverse;
 //     };
 
-//     this.updateCTM = function(){
-//       inverseScreenCTM = getInverseScreenCTM();
-//     };
-//     this.updateCTM();
 
-//     this.translate = function(delta){
-//       temporaryViewBox = viewBox.translate(delta);
-//       element.setAttribute('viewBox', temporaryViewBox.toString());
-//       return this;
-//     };
 
-//     this.drag = function(screenDelta){
-//       var delta = screenDelta.scaleTransform(inverseScreenCTM);
-//       return this.translate(delta);
-//     };
-
-//     this.scale = function(center, magnfication){
-//       temporaryViewBox = viewBox.scale(center, magnfication);
-//       element.setAttribute('viewBox', temporaryViewBox.toString());
-//       return this;
-//     };
-
-//     this.zoom = function(screenCenter, magnfication){
-//       var center = screenCenter.transform(inverseScreenCTM);
-//       return this.scale(center, magnfication);
-//     };
-
-//     this.fix = function(){
-//       viewBox = temporaryViewBox;
-//       return this;
-//     };
-
-//     this.home = function(){
-//       viewBox = HOME;
-//       element.setAttribute('viewBox', viewBox.toString());
-//     };
-//   };
-// }());
 var Hammerhead = (function(parent){
   var Pt = Hammerhead.Point;
 
