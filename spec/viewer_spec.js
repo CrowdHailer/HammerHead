@@ -218,6 +218,16 @@ describe('api handle' ,function(){
       hammerHandle.trigger('release', {});
     });
 
+    // xit('should optionally take a Hammer instance', function(){
+    //   var hammertime = Hammer(document);
+    //   viewer = Hammerhead('test', {throttleDelay: 0, hammertime: hammertime});
+    //   spyOn(testSVG, "setAttribute");
+    //   hammertime.trigger('touch', {target: testPath, preventDefault: preventDefault});
+    //   hammertime.trigger('drag', {deltaX: 50, deltaY: 25, preventDefault: preventDefault, timeStamp: 1});
+    //   expect(testSVG.setAttribute.calls.length).toEqual(1);
+    //   hammertime.trigger('release', {});
+    // });
+
     it('should be possible to overide the default drag functions', function(){
       viewer = Hammerhead('test', {throttleDelay: 0, dragX: 10, dragY: 10, conditions: function(){ return true; }});
       viewer.dragX().fix();
