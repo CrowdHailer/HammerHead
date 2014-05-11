@@ -73,27 +73,9 @@ var Hammerhead = (function(parent){
 
     function releaseHandler (event) {
       activeElement.fix();
-      // activeElement.updateCTM();
       activityOff(hammertime);
       options.postfix();
     }
-
-    function activityOn(){
-      hammertime.on('dragstart drag transformstart pinch', gestureHandler);
-      hammertime.on('release', releaseHandler);
-    }
-
-    function activityOff(){
-      hammertime.off('dragstart drag transformstart pinch', gestureHandler);
-      hammertime.off('release', releaseHandler);
-    
-    }
-
-    var gestureHandler = function(event){
-      var gesture = event.gesture;
-      gesture.preventDefault();
-      handlers[event.type](gesture);
-    };
 
     var handlers = {
       dragstart: function(gesture){
@@ -109,6 +91,25 @@ var Hammerhead = (function(parent){
         activeElement.zoom(gesture.scale, Pt(gesture.center));
       }
     };
+
+    var gestures = _.keys(handlers).join(' ');
+
+    function activityOn(){
+      hammertime.on(gestures, gestureHandler);
+      hammertime.on('release', releaseHandler);
+    }
+
+    function activityOff(){
+      hammertime.off(gestures, gestureHandler);
+      hammertime.off('release', releaseHandler);
+    }
+
+    var gestureHandler = function(event){
+      var gesture = event.gesture;
+      gesture.preventDefault();
+      handlers[event.type](gesture);
+    };
+
 
     var instance = Object.create(prototype);
     instance.element = activeElement;
