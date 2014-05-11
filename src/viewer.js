@@ -62,7 +62,7 @@ var Hammerhead = (function(parent){
     options = _.extend({}, DEFAULTS, options);
     // console.log(options);
     var DOMElement = getSVG(id);
-    var mobileSVG = Hammerhead.MobileSVG(DOMElement, options);
+    var activeElement = Hammerhead.MobileSVG(DOMElement, options);
     var hammertime = Hammer(document).on('touch', touchHandler);
     
     function touchHandler (event) {
@@ -72,8 +72,8 @@ var Hammerhead = (function(parent){
     }
 
     function releaseHandler (event) {
-      mobileSVG.fix();
-      // mobileSVG.updateCTM();
+      activeElement.fix();
+      // activeElement.updateCTM();
       activityOff(hammertime);
       options.postfix();
     }
@@ -97,21 +97,21 @@ var Hammerhead = (function(parent){
 
     var handlers = {
       dragstart: function(gesture){
-        mobileSVG.fix();
+        activeElement.fix();
       },
       drag: function(gesture){
-        mobileSVG.drag(Pt(gesture));
+        activeElement.drag(Pt(gesture));
       },
       transformstart: function(){
-        mobileSVG.fix();
+        activeElement.fix();
       },
       pinch: function(gesture){
-        mobileSVG.zoom(gesture.scale, Pt(gesture.center));
+        activeElement.zoom(gesture.scale, Pt(gesture.center));
       }
     };
 
     var instance = Object.create(prototype);
-    instance.element = mobileSVG;
+    instance.element = activeElement;
     instance.options = options;
     instance._test = {
       hammertime: hammertime,
