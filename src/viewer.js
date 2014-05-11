@@ -61,15 +61,15 @@ var Hammerhead = (function(parent){
   function create(id, options){
     options = _.extend({}, DEFAULTS, options);
     // console.log(options);
-    var element = getSVG(id);
-    var mobileSVG = Hammerhead.MobileSVG(element, options);
+    var DOMElement = getSVG(id);
+    var mobileSVG = Hammerhead.MobileSVG(DOMElement, options);
     var hammertime = Hammer(document).on('touch', touchHandler);
     
 
     function touchHandler (event) {
       event.gesture.preventDefault();
       options.prefix();
-      if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
+      if (event.target.ownerSVGElement === DOMElement) { activityOn(hammertime); }  
     }
 
     function releaseHandler (event) {
