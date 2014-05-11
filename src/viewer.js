@@ -13,8 +13,20 @@ var Hammerhead = (function(parent){
     return this;
   }
 
+  function dragX(x){
+    pt = Pt(x || this.options.dragX, 0);
+    this.element.drag(pt);
+    return this;
+  }
+
+  // instance.dragX = function(x){
+  //     mobileSVG.drag(Pt(x || options.dragX, 0));
+  //     return this;
+  //   };
+
   var prototype = {
-    drag: drag
+    drag: drag,
+    dragX: dragX
   };
 
   var DEFAULTS = {
@@ -56,6 +68,7 @@ var Hammerhead = (function(parent){
     function activityOff(instance){
       instance.off('dragstart drag transformstart pinch', gestureHandler);
       instance.off('release', releaseHandler);
+    
     }
 
     var gestureHandler = function(event){
@@ -85,10 +98,7 @@ var Hammerhead = (function(parent){
     //   mobileSVG.drag(Pt(x, y));
     //   return this;
     // };
-    instance.dragX = function(x){
-      mobileSVG.drag(Pt(x || options.dragX, 0));
-      return this;
-    };
+    
     instance.dragY = function(y){
       mobileSVG.drag(Pt(0, y || options.dragY));
       return this;
@@ -103,6 +113,7 @@ var Hammerhead = (function(parent){
       mobileSVG.scale(options.zoomOut);
     };
     instance.fix = function(){ mobileSVG.fix(); };
+    instance.options = options;
     instance._test = {
       hammertime: hammertime,
       handlers: handlers

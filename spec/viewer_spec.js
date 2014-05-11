@@ -132,7 +132,7 @@ describe('api handle' ,function(){
       fix.parentElement.removeChild(fix);
     });
   });
-  describe('api handle' ,function(){
+  describe('TOPapi handle' ,function(){
     var viewer, testSVG, preventDefault, Pt;
     beforeEach(function(){
       preventDefault = function(){};
@@ -165,7 +165,7 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
     });
 
-    xit('should have orthogonal drag handlers, default 100px', function(){
+    it('should have orthogonal drag handlers, default 100px', function(){
       viewer.dragX().fix();
       viewer.dragY();
       expect(testSVG.getAttribute('viewBox')).toEqual('-400 -400 2000 1000');
