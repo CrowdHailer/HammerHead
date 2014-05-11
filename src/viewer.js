@@ -25,10 +25,15 @@ var Hammerhead = (function(parent){
     return this;
   }
 
+  function zoom(m){
+    this.element.scale(m);
+  }
+
   var prototype = {
     drag: drag,
     dragX: dragX,
-    dragY: dragY
+    dragY: dragY,
+    zoom: zoom
   };
 
   var DEFAULTS = {
@@ -96,9 +101,7 @@ var Hammerhead = (function(parent){
 
     var instance = Object.create(prototype);
     instance.element = mobileSVG;
-    instance.zoom = function(x, y, m){
-      mobileSVG.zoom(m, Pt(x, y));
-    };
+
     instance.zoomIn = function(){
       mobileSVG.scale(options.zoomIn);
     };

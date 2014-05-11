@@ -132,7 +132,7 @@ describe('api handle' ,function(){
       fix.parentElement.removeChild(fix);
     });
   });
-  describe('TOPapi handle' ,function(){
+  describe('TOP api handle' ,function(){
     var viewer, testSVG, preventDefault, Pt;
     beforeEach(function(){
       preventDefault = function(){};
@@ -158,11 +158,11 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
     });
 
-    xit('should zoom from the same reference forzoom calls', function(){
-      viewer.zoom(0, 0, 2);
-      expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
-      viewer.zoom(0, 0, 2);
-      expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
+    it('should zoom from the same reference forzoom calls', function(){
+      viewer.zoom(2);
+      expect(testSVG.getAttribute('viewBox')).toEqual('500 250 1000 500');
+      viewer.zoom(2);
+      expect(testSVG.getAttribute('viewBox')).toEqual('500 250 1000 500');
     });
 
     it('should have orthogonal drag handlers, default 100px', function(){
