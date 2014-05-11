@@ -3,7 +3,7 @@ var Hammerhead = (function(parent){
 
   function getSVG (id) {
     var element = document.getElementById(id);
-    if (element && element.tagName.toLowerCase() == 'svg') { return element; }
+    if (element && element.tagName.toLowerCase() === 'svg') { return element; }
     throw 'Id: ' + id + ' is not a SVG element';
   }
 

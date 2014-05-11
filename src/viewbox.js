@@ -1,5 +1,5 @@
 (function(parent){
-  viewBoxPrototype = {
+  var prototype = {
     x0: function(){ return this.getMinimal().x; },
     y0: function(){ return this.getMinimal().y; },
     x1: function(){ return this.getMaximal().x; },
@@ -33,7 +33,7 @@
     validator = validator || function(){ return true; };
     if (typeof minimal === 'string') { return fromString(minimal, maximal); }
 
-    var instance = Object.create(viewBoxPrototype);
+    var instance = Object.create(prototype);
     instance.getMinimal = function(){ return minimal; };
     instance.getMaximal = function(){ return maximal; };
     instance.setMinimal = function(min){ minimal = min; };

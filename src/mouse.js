@@ -11,7 +11,6 @@
   function init(hammerhead){
     function handleMouseWheel(event){
       if (event.target.ownerSVGElement) {
-        console.log(event);
         var delta = getWheelDelta(event);
         var scale = Math.pow(2,delta/720);
         console.log(scale);

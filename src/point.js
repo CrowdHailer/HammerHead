@@ -1,23 +1,23 @@
 (function(parent){
-  pointPrototype = {
+  var prototype = {
     add: function(other){
-      return point(this.x + other.x, this.y + other.y);
+      return create(this.x + other.x, this.y + other.y);
     },
     subtract: function(other){
-      return point(this.x - other.x, this.y - other.y);
+      return create(this.x - other.x, this.y - other.y);
     },
     multiply: function(scalar){
-      return point(this.x * scalar, this.y * scalar);
+      return create(this.x * scalar, this.y * scalar);
     },
     transform: function (matrix) {
-      return point(this.x * matrix.a + matrix.e, this.y * matrix.d + matrix.f);
+      return create(this.x * matrix.a + matrix.e, this.y * matrix.d + matrix.f);
     },
     scaleTransform: function (matrix) {
-      return point(this.x * matrix.a, this.y * matrix.d);
+      return create(this.x * matrix.a, this.y * matrix.d);
     }
   };
 
-  var point = function(first, orthogonal){
+  var create = function(first, orthogonal){
     var x, y;
 
     if (orthogonal === undefined ) {
@@ -36,11 +36,11 @@
       y = orthogonal;
     }
 
-    var instance = Object.create(pointPrototype);
+    var instance = Object.create(prototype);
     instance.x = x;
     instance.y = y;
     return instance;
   };
 
-  parent.Point = point;
+  parent.Point = create;
 }(Hammerhead));
