@@ -4,7 +4,8 @@
 
   var DEFAULTS = {
     throttleDelay: 300,
-    centerScale: 4
+    centerScale: 4,
+    maxZoom: 4,
   };
 
   var create = function(element, options){
@@ -12,7 +13,7 @@
     DEFAULTS.conditions =  function(){
       var max = HOME.getMaximal();
       var min = HOME.getMinimal();
-      var scaleLimit = (this.dX() >= HOME.dX()/4);
+      var scaleLimit = (this.dX() >= HOME.dX()/options.maxZoom);
       var xLimit = (this.x0() >= min.x) && (this.x1() <= max.x);
       var yLimit = (this.y0() >= min.y) && (this.y1() <= max.y);
       return scaleLimit && xLimit && yLimit;
