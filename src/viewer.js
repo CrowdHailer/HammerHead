@@ -7,7 +7,47 @@ var Hammerhead = (function(parent){
     throw 'Id: ' + id + ' is not a SVG element';
   }
 
-  var prototype = {};
+  function drag(x, y){
+    this.element.drag(Pt(x, y));
+    return this;
+  }
+
+  function dragX(x){
+    return this.drag(x || this.options.dragX, 0);
+  }
+
+  function dragY(y){
+    return this.drag(0, y || this.options.dragX);
+  }
+
+  function zoom(m){
+    this.element.scale(m);
+    return this;
+  }
+
+  function zoomIn(m){
+    return this.zoom(m || this.options.zoomIn);
+  }
+
+  function zoomOut(m){
+    return this.zoom(1.0/m || this.options.zoomOut);
+  }
+
+  function fix(){
+    this.element.fix();
+    return this;
+  }
+
+  var prototype = {
+    drag: drag,
+    dragX: dragX,
+    dragY: dragY,
+    zoom: zoom,
+    zoomIn: zoomIn,
+    zoomOut: zoomOut,
+    fix: fix
+  };
+
   var DEFAULTS = {
     dragX: 100,
     dragY: 100,
@@ -17,35 +57,51 @@ var Hammerhead = (function(parent){
     postfix: function(){},
   };
 
+
   function create(id, options){
     options = _.extend({}, DEFAULTS, options);
     // console.log(options);
-    var element = getSVG(id);
-    var mobileSVG = Hammerhead.MobileSVG(element, options);
+    var DOMElement = getSVG(id);
+    var activeElement = Hammerhead.MobileSVG(DOMElement, options);
     var hammertime = Hammer(document).on('touch', touchHandler);
     
-
     function touchHandler (event) {
       event.gesture.preventDefault();
       options.prefix();
-      if (event.target.ownerSVGElement === element) { activityOn(hammertime); }  
+      if (event.target.ownerSVGElement === DOMElement) { activityOn(); }  
     }
 
     function releaseHandler (event) {
-      mobileSVG.fix();
-      // mobileSVG.updateCTM();
+      activeElement.fix();
       activityOff(hammertime);
       options.postfix();
     }
 
-    function activityOn(instance){
-      instance.on('dragstart drag transformstart pinch', gestureHandler);
-      instance.on('release', releaseHandler);
+    var handlers = {
+      dragstart: function(gesture){
+        activeElement.fix();
+      },
+      drag: function(gesture){
+        activeElement.drag(Pt(gesture));
+      },
+      transformstart: function(){
+        activeElement.fix();
+      },
+      pinch: function(gesture){
+        activeElement.zoom(gesture.scale, Pt(gesture.center));
+      }
+    };
+
+    var gestures = _.keys(handlers).join(' ');
+
+    function activityOn(){
+      hammertime.on(gestures, gestureHandler);
+      hammertime.on('release', releaseHandler);
     }
 
-    function activityOff(instance){
-      instance.off('dragstart drag transformstart pinch', gestureHandler);
-      instance.off('release', releaseHandler);
+    function activityOff(){
+      hammertime.off(gestures, gestureHandler);
+      hammertime.off('release', releaseHandler);
     }
 
     var gestureHandler = function(event){
@@ -54,44 +110,10 @@ var Hammerhead = (function(parent){
       handlers[event.type](gesture);
     };
 
-    var handlers = {
-      dragstart: function(gesture){
-        mobileSVG.fix();
-      },
-      drag: function(gesture){
-        mobileSVG.drag(Pt(gesture.deltaX, gesture.deltaY));
-      },
-      transformstart: function(){
-        mobileSVG.fix();
-      },
-      pinch: function(gesture){
-        mobileSVG.zoom(gesture.scale, Pt(gesture.center.pageX, gesture.center.pageY));
-      }
-    };
 
     var instance = Object.create(prototype);
-    instance.drag = function(x, y){ 
-      mobileSVG.drag(Pt(x, y));
-      return this;
-    };
-    instance.dragX = function(x){
-      mobileSVG.drag(Pt(x || options.dragX, 0));
-      return this;
-    };
-    instance.dragY = function(y){
-      mobileSVG.drag(Pt(0, y || options.dragY));
-      return this;
-    };
-    instance.zoom = function(x, y, m){
-      mobileSVG.zoom(m, Pt(x, y));
-    };
-    instance.zoomIn = function(){
-      mobileSVG.scale(options.zoomIn);
-    };
-    instance.zoomOut = function(){
-      mobileSVG.scale(options.zoomOut);
-    };
-    instance.fix = function(){ mobileSVG.fix(); };
+    instance.element = activeElement;
+    instance.options = options;
     instance._test = {
       hammertime: hammertime,
       handlers: handlers

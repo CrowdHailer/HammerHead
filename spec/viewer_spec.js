@@ -95,7 +95,7 @@ describe('Hammerhead', function(){
   });
 
 describe('api handle' ,function(){
-    var viewer, testSVG, preventDefault;
+    var viewer, testSVG, preventDefault, Pt;
     beforeEach(function(){
       preventDefault = function(){};
       svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"><path id="test-path"></path></svg>';
@@ -103,27 +103,66 @@ describe('api handle' ,function(){
       testSVG = document.getElementById('test');
       testPath = document.getElementById('test-path');
       viewer = Hammerhead('test', {throttleDelay: 0, conditions: function(){ return true; }});
+      Pt = Hammerhead.Point;
+    });
+
+    it('should drag from the same origin for drag calls', function(){
+      viewer.element.drag(Pt(500, 250));
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+      viewer.element.drag(Pt(200, 100));
+      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
+    });
+
+    it('should fix transformations', function(){
+      viewer.element.drag(Pt(500, 250)).fix();
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
+      viewer.element.drag(Pt(200, 100));
+      expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
+    });
+
+    it('should zoom from the same reference forzoom calls', function(){
+      viewer.element.zoom(2, Pt(0, 0));
+      expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
+      viewer.element.zoom(2, Pt(0, 0));
+      expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
+    });
+
+    afterEach(function(){
+      var fix = document.getElementById('test');
+      fix.parentElement.removeChild(fix);
+    });
+  });
+  describe('TOP api handle' ,function(){
+    var viewer, testSVG, preventDefault, Pt;
+    beforeEach(function(){
+      preventDefault = function(){};
+      svgString = '<svg id="test" width="500" viewBox="0 0 2000 1000"><path id="test-path"></path></svg>';
+      document.body.innerHTML += svgString;
+      testSVG = document.getElementById('test');
+      testPath = document.getElementById('test-path');
+      viewer = Hammerhead('test', {throttleDelay: 0, conditions: function(){ return true; }});
+      Pt = Hammerhead.Point;
     });
 
     it('should drag from the same origin for drag calls', function(){
       viewer.drag(500, 250);
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
-      viewer.drag({x: 200, y: 100});
+      viewer.drag(200, 100);
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
     });
 
     it('should fix transformations', function(){
       viewer.drag(500, 250).fix();
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
-      viewer.drag({x: 200, y: 100});
+      viewer.drag(200, 100);
       expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
     });
 
     it('should zoom from the same reference forzoom calls', function(){
-      viewer.zoom(0, 0, 2);
-      expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
-      viewer.zoom(0, 0, 2);
-      expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
+      viewer.zoomIn(2);
+      expect(testSVG.getAttribute('viewBox')).toEqual('500 250 1000 500');
+      viewer.zoomIn(2);
+      expect(testSVG.getAttribute('viewBox')).toEqual('500 250 1000 500');
     });
 
     it('should have orthogonal drag handlers, default 100px', function(){
@@ -146,6 +185,11 @@ describe('api handle' ,function(){
     it('should have a zoom out hander, default 0.8', function(){
       viewer.zoomOut();
       expect(testSVG.getAttribute('viewBox')).toEqual('-250 -125 2500 1250');
+    });
+
+    it('should zoom in and out the same amount', function(){
+      viewer.zoomOut().fix().zoomIn();
+      expect(testSVG.getAttribute('viewBox')).toEqual('0 0 2000 1000');
     });
 
     afterEach(function(){
@@ -173,6 +217,16 @@ describe('api handle' ,function(){
       expect(testSVG.setAttribute.calls.length).toEqual(1);
       hammerHandle.trigger('release', {});
     });
+
+    // xit('should optionally take a Hammer instance', function(){
+    //   var hammertime = Hammer(document);
+    //   viewer = Hammerhead('test', {throttleDelay: 0, hammertime: hammertime});
+    //   spyOn(testSVG, "setAttribute");
+    //   hammertime.trigger('touch', {target: testPath, preventDefault: preventDefault});
+    //   hammertime.trigger('drag', {deltaX: 50, deltaY: 25, preventDefault: preventDefault, timeStamp: 1});
+    //   expect(testSVG.setAttribute.calls.length).toEqual(1);
+    //   hammertime.trigger('release', {});
+    // });
 
     it('should be possible to overide the default drag functions', function(){
       viewer = Hammerhead('test', {throttleDelay: 0, dragX: 10, dragY: 10, conditions: function(){ return true; }});
