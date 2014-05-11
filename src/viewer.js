@@ -7,7 +7,16 @@ var Hammerhead = (function(parent){
     throw 'Id: ' + id + ' is not a SVG element';
   }
 
-  var prototype = {};
+  function drag(x, y){
+    pt = Pt(x, y);
+    this.element.drag(pt);
+    return this;
+  }
+
+  var prototype = {
+    drag: drag
+  };
+
   var DEFAULTS = {
     dragX: 100,
     dragY: 100,
@@ -17,10 +26,6 @@ var Hammerhead = (function(parent){
     postfix: function(){},
   };
 
-  function drag(x, y){
-    pt = Pt(x, y);
-    this.element.drag(pt);
-  }
 
   function create(id, options){
     options = _.extend({}, DEFAULTS, options);
@@ -80,7 +85,6 @@ var Hammerhead = (function(parent){
     //   mobileSVG.drag(Pt(x, y));
     //   return this;
     // };
-    instance.drag = drag;
     instance.dragX = function(x){
       mobileSVG.drag(Pt(x || options.dragX, 0));
       return this;

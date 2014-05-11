@@ -151,10 +151,10 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-800 -400 2000 1000');
     });
 
-    xit('should fix transformations', function(){
+    it('should fix transformations', function(){
       viewer.drag(500, 250).fix();
       expect(testSVG.getAttribute('viewBox')).toEqual('-2000 -1000 2000 1000');
-      viewer.drag({x: 200, y: 100});
+      viewer.drag(200, 100);
       expect(testSVG.getAttribute('viewBox')).toEqual('-2800 -1400 2000 1000');
     });
 
