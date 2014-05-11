@@ -187,6 +187,11 @@ describe('api handle' ,function(){
       expect(testSVG.getAttribute('viewBox')).toEqual('-250 -125 2500 1250');
     });
 
+    it('should zoom in and out the same amount', function(){
+      viewer.zoomOut().fix().zoomIn();
+      expect(testSVG.getAttribute('viewBox')).toEqual('0 0 2000 1000');
+    });
+
     afterEach(function(){
       var fix = document.getElementById('test');
       fix.parentElement.removeChild(fix);

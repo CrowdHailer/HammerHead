@@ -31,10 +31,17 @@ var Hammerhead = (function(parent){
 
   function zoomIn(m){
     this.zoom(m || this.options.zoomIn);
+    return this;
   }
 
   function zoomOut(){
     this.zoom(this.options.zoomOut);
+    return this;
+  }
+
+  function fix(){
+    this.element.fix();
+    return this;
   }
 
   var prototype = {
@@ -43,7 +50,8 @@ var Hammerhead = (function(parent){
     dragY: dragY,
     zoom: zoom,
     zoomIn: zoomIn,
-    zoomOut: zoomOut
+    zoomOut: zoomOut,
+    fix: fix
   };
 
   var DEFAULTS = {
@@ -111,8 +119,6 @@ var Hammerhead = (function(parent){
 
     var instance = Object.create(prototype);
     instance.element = mobileSVG;
-
-    instance.fix = function(){ mobileSVG.fix(); };
     instance.options = options;
     instance._test = {
       hammertime: hammertime,
