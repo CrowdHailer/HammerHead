@@ -121,32 +121,10 @@ describe('api handle' ,function(){
     });
 
     it('should zoom from the same reference forzoom calls', function(){
-      viewer.element.zoom(0, 0, 2);
+      viewer.element.zoom(2, Pt(0, 0));
       expect(testSVG.getAttribute('viewBox')).toMatch(/-\d+\s-\d+\s1000\s500/);
-      viewer.element.zoom(0, 0, 2);
+      viewer.element.zoom(2, Pt(0, 0));
       expect(testSVG.getAttribute('viewBox')).toMatch(/\d+\s-\d+\s1000\s500/);
-    });
-
-    it('should have orthogonal drag handlers, default 100px', function(){
-      viewer.element.dragX().fix();
-      viewer.element.dragY();
-      expect(testSVG.getAttribute('viewBox')).toEqual('-400 -400 2000 1000');
-    });
-
-    it('should have orthogonal drag handlers, accept pixel distance', function(){
-      viewer.element.dragX(200).fix();
-      viewer.element.dragY(200);
-      expect(testSVG.getAttribute('viewBox')).toEqual('-800 -800 2000 1000');
-    });
-
-    it('should have a zoom in hander, default 1.25', function(){
-      viewer.element.zoomIn();
-      expect(testSVG.getAttribute('viewBox')).toEqual('200 100 1600 800');
-    });
-
-    it('should have a zoom out hander, default 0.8', function(){
-      viewer.element.zoomOut();
-      expect(testSVG.getAttribute('viewBox')).toEqual('-250 -125 2500 1250');
     });
 
     afterEach(function(){
