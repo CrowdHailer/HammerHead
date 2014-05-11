@@ -19,7 +19,7 @@ var Hammerhead = (function(parent){
 
   function drag(x, y){
     pt = Pt(x, y);
-    this.mobileSVG.drag(pt);
+    this.element.drag(pt);
   }
 
   function create(id, options){
