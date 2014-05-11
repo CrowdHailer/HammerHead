@@ -1,4 +1,4 @@
-var Hammerhead = (function(parent){
+(function(parent){
   pointPrototype = {
     add: function(other){
       return point(this.x + other.x, this.y + other.y);
@@ -43,5 +43,4 @@ var Hammerhead = (function(parent){
   };
 
   parent.Point = point;
-  return parent;
-}(Hammerhead || {}));
+}(Hammerhead));

@@ -100,7 +100,7 @@ var Hammerhead = (function(parent){
   }
 
   return _.extend(create, parent);
-}(Hammerhead || {}));
+}(Hammerhead));
 
 // var old;
 // (function (){
