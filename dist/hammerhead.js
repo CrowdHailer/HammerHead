@@ -1,3 +1,4 @@
+var Hammerhead = {};
 (function(parent){
   pointPrototype = {
     add: function(other){

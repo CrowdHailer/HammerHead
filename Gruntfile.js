@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [
-          'src/prefix',
+          'src/prefix.js',
           'src/point.js',
           'src/viewbox.js',
           'src/mobile.js',
