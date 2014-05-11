@@ -8,35 +8,29 @@ var Hammerhead = (function(parent){
   }
 
   function drag(x, y){
-    pt = Pt(x, y);
-    this.element.drag(pt);
+    this.element.drag(Pt(x, y));
     return this;
   }
 
   function dragX(x){
-    pt = Pt(x || this.options.dragX, 0);
-    this.element.drag(pt);
-    return this;
+    return this.drag(x || this.options.dragX, 0);
   }
 
   function dragY(y){
-    pt = Pt(0, y || this.options.dragX);
-    this.element.drag(pt);
-    return this;
+    return this.drag(0, y || this.options.dragX);
   }
 
   function zoom(m){
     this.element.scale(m);
+    return this;
   }
 
   function zoomIn(m){
-    this.zoom(m || this.options.zoomIn);
-    return this;
+    return this.zoom(m || this.options.zoomIn);
   }
 
-  function zoomOut(){
-    this.zoom(this.options.zoomOut);
-    return this;
+  function zoomOut(m){
+    return this.zoom(1.0/m || this.options.zoomOut);
   }
 
   function fix(){
