@@ -65,11 +65,10 @@ var Hammerhead = (function(parent){
     var mobileSVG = Hammerhead.MobileSVG(DOMElement, options);
     var hammertime = Hammer(document).on('touch', touchHandler);
     
-
     function touchHandler (event) {
       event.gesture.preventDefault();
       options.prefix();
-      if (event.target.ownerSVGElement === DOMElement) { activityOn(hammertime); }  
+      if (event.target.ownerSVGElement === DOMElement) { activityOn(); }  
     }
 
     function releaseHandler (event) {
@@ -79,14 +78,14 @@ var Hammerhead = (function(parent){
       options.postfix();
     }
 
-    function activityOn(instance){
-      instance.on('dragstart drag transformstart pinch', gestureHandler);
-      instance.on('release', releaseHandler);
+    function activityOn(){
+      hammertime.on('dragstart drag transformstart pinch', gestureHandler);
+      hammertime.on('release', releaseHandler);
     }
 
-    function activityOff(instance){
-      instance.off('dragstart drag transformstart pinch', gestureHandler);
-      instance.off('release', releaseHandler);
+    function activityOff(){
+      hammertime.off('dragstart drag transformstart pinch', gestureHandler);
+      hammertime.off('release', releaseHandler);
     
     }
 
