@@ -75,9 +75,14 @@
       return this; 
     }
 
+    instanceFunctions = {
+      translate: translate, drag: drag, scale: scale,
+      zoom: zoom, fix: fix, home: home, goTo: goTo
+    };
+
     var instance = Object.create(prototype);
-    [translate, drag, scale, zoom, fix, home, goTo].forEach(function(privilaged){
-      instance[privilaged.name] = privilaged;
+    _.each(instanceFunctions, function(privilaged, name){
+      instance[name] = privilaged;
     });
     return instance;
   };
