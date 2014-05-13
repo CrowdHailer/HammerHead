@@ -84,9 +84,6 @@
     _.each(instanceFunctions, function(privilaged, name){
       instance[name] = privilaged;
     });
-    // [translate, drag, scale, zoom, fix, home, goTo].forEach(function(privilaged){
-    //   instance[privilaged.name] = privilaged;
-    // });
     return instance;
   };
 
