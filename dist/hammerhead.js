@@ -1,24 +1,24 @@
 var Hammerhead = {};
 (function(parent){
-  pointPrototype = {
+  var prototype = {
     add: function(other){
-      return point(this.x + other.x, this.y + other.y);
+      return create(this.x + other.x, this.y + other.y);
     },
     subtract: function(other){
-      return point(this.x - other.x, this.y - other.y);
+      return create(this.x - other.x, this.y - other.y);
     },
     multiply: function(scalar){
-      return point(this.x * scalar, this.y * scalar);
+      return create(this.x * scalar, this.y * scalar);
     },
     transform: function (matrix) {
-      return point(this.x * matrix.a + matrix.e, this.y * matrix.d + matrix.f);
+      return create(this.x * matrix.a + matrix.e, this.y * matrix.d + matrix.f);
     },
     scaleTransform: function (matrix) {
-      return point(this.x * matrix.a, this.y * matrix.d);
+      return create(this.x * matrix.a, this.y * matrix.d);
     }
   };
 
-  var point = function(first, orthogonal){
+  var create = function(first, orthogonal){
     var x, y;
 
     if (orthogonal === undefined ) {
@@ -37,17 +37,17 @@ var Hammerhead = {};
       y = orthogonal;
     }
 
-    var instance = Object.create(pointPrototype);
+    var instance = Object.create(prototype);
     instance.x = x;
     instance.y = y;
     return instance;
   };
 
-  parent.Point = point;
+  parent.Point = create;
 }(Hammerhead));
 
 (function(parent){
-  viewBoxPrototype = {
+  var prototype = {
     x0: function(){ return this.getMinimal().x; },
     y0: function(){ return this.getMinimal().y; },
     x1: function(){ return this.getMaximal().x; },
@@ -81,7 +81,7 @@ var Hammerhead = {};
     validator = validator || function(){ return true; };
     if (typeof minimal === 'string') { return fromString(minimal, maximal); }
 
-    var instance = Object.create(viewBoxPrototype);
+    var instance = Object.create(prototype);
     instance.getMinimal = function(){ return minimal; };
     instance.getMaximal = function(){ return maximal; };
     instance.setMinimal = function(min){ minimal = min; };
@@ -207,7 +207,7 @@ var Hammerhead = (function(parent){
 
   function getSVG (id) {
     var element = document.getElementById(id);
-    if (element && element.tagName.toLowerCase() == 'svg') { return element; }
+    if (element && element.tagName.toLowerCase() === 'svg') { return element; }
     throw 'Id: ' + id + ' is not a SVG element';
   }
 
@@ -433,7 +433,6 @@ var Hammerhead = (function(parent){
   function init(hammerhead){
     function handleMouseWheel(event){
       if (event.target.ownerSVGElement) {
-        console.log(event);
         var delta = getWheelDelta(event);
         var scale = Math.pow(2,delta/720);
         console.log(scale);

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Hammerhead Example page</title>
-  <link rel="stylesheet" href="hammerhead.css">
+  <link rel="stylesheet" href="dist/hammerhead.css">
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 </head>
 <body>
@@ -101,14 +101,15 @@
       </rdf:RDF>
     </metadata>
   </svg>
+  <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
   <script src="bower_components/hammerjs/hammer.min.js"></script>
   <script src="bower_components/hammerjs/plugins/hammer.fakemultitouch.js"></script>
   <script src="bower_components/hammerjs/plugins/hammer.showtouches.js"></script>
-  <script src="hammerhead.js"></script>
+  <script src="dist/hammerhead.js"></script>
   <script>
     Hammer.plugins.fakeMultitouch();
     Hammer.plugins.showTouches();
-    viewer = new Viewer('svg4183');
+    viewer = Hammerhead('svg4183', {throttleDelay: 20, conditions: function(){ return true; }});
   </script>
 </body>
 </html>
